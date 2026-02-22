@@ -9,6 +9,7 @@ import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useTheme } from '@/app/providers'
+import { useSessionCache } from '@/context/session-cache-context'
 import { DashboardStats } from '@/components/dashboard-stats'
 import { VolumeChart } from '@/components/volume-chart'
 import { TopPairsWidget } from '@/components/top-pairs-widget'
@@ -39,6 +40,7 @@ function LoadingCard() {
 }
 
 function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
+  const { leaderboardCache, isPreloadingLeaderboard } = useSessionCache()
   const [activeTab, setActiveTab] = useState<'distribution' | 'reverse' | 'sopoints'>('distribution')
   const [brackets, setBrackets] = useState([
     { id: '1', volMin: '', volMax: '', pnlMin: '', pnlMax: '' }
@@ -69,30 +71,36 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
   const handleApply = async () => {
     setIsLoadingDistribution(true)
     try {
-      // Fetch pnl_leaderboard.csv directly from GitHub
-      const response = await fetch('https://raw.githubusercontent.com/Eliasdegemu61/sodex-finalised-raw-data/refs/heads/main/pnl_leaderboard.csv')
-      if (!response.ok) throw new Error('Failed to fetch data')
-      const csvText = await response.text()
+      let traders: any[] = []
 
-      // Parse CSV
-      const lines = csvText.trim().split('\n')
-      if (lines.length < 2) throw new Error('Empty CSV data')
+      // Use cached data if available
+      if (leaderboardCache?.pnlData && leaderboardCache.pnlData.length > 0) {
+        console.log('[v0] Using cached data for Distribution Analyzer')
+        traders = leaderboardCache.pnlData
+      } else {
+        // Fallback fetch
+        const response = await fetch('https://raw.githubusercontent.com/Eliasdegemu61/sodex-finalised-raw-data/refs/heads/main/pnl_leaderboard.csv')
+        if (!response.ok) throw new Error('Failed to fetch data')
+        const csvText = await response.text()
 
-      const headers = lines[0].split(',').map(h => h.trim())
-      const traders: any[] = []
+        // Parse CSV
+        const lines = csvText.trim().split('\n')
+        if (lines.length < 2) throw new Error('Empty CSV data')
 
-      for (let i = 1; i < lines.length; i++) {
-        const values = lines[i].split(',').map(v => v.trim())
-        const obj: any = {}
-        headers.forEach((header, index) => {
-          obj[header] = values[index] || ''
-        })
-        traders.push({
-          userId: obj.userId || obj.user_id || '',
-          address: obj.address || '',
-          pnl: obj.pnl || '0',
-          vol: obj.vol || '0',
-        })
+        const headers = lines[0].split(',').map(h => h.trim())
+        for (let i = 1; i < lines.length; i++) {
+          const values = lines[i].split(',').map(v => v.trim())
+          const obj: any = {}
+          headers.forEach((header, index) => {
+            obj[header] = values[index] || ''
+          })
+          traders.push({
+            userId: obj.userId || obj.user_id || '',
+            address: obj.address || '',
+            pnl: obj.pnl || '0',
+            vol: obj.vol || '0',
+          })
+        }
       }
 
       setAllTraders(traders)
@@ -148,33 +156,38 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
     setIsSearchingAddress(true)
     try {
       if (allTraders.length === 0) {
-        // Fetch pnl_leaderboard.csv from GitHub
-        const response = await fetch('https://raw.githubusercontent.com/Eliasdegemu61/sodex-finalised-raw-data/refs/heads/main/pnl_leaderboard.csv')
-        if (!response.ok) throw new Error('Failed to fetch data')
-        const csvText = await response.text()
+        // Use cached data if available
+        if (leaderboardCache?.pnlData && leaderboardCache.pnlData.length > 0) {
+          setAllTraders(leaderboardCache.pnlData)
+        } else {
+          // Fetch pnl_leaderboard.csv from GitHub
+          const response = await fetch('https://raw.githubusercontent.com/Eliasdegemu61/sodex-finalised-raw-data/refs/heads/main/pnl_leaderboard.csv')
+          if (!response.ok) throw new Error('Failed to fetch data')
+          const csvText = await response.text()
 
-        // Parse CSV
-        const lines = csvText.trim().split('\n')
-        if (lines.length < 2) throw new Error('Empty CSV data')
+          // Parse CSV
+          const lines = csvText.trim().split('\n')
+          if (lines.length < 2) throw new Error('Empty CSV data')
 
-        const headers = lines[0].split(',').map(h => h.trim())
-        const traders: any[] = []
+          const headers = lines[0].split(',').map(h => h.trim())
+          const traders: any[] = []
 
-        for (let i = 1; i < lines.length; i++) {
-          const values = lines[i].split(',').map(v => v.trim())
-          const obj: any = {}
-          headers.forEach((header, index) => {
-            obj[header] = values[index] || ''
-          })
-          traders.push({
-            userId: obj.userId || obj.user_id || '',
-            address: obj.address || '',
-            pnl: obj.pnl || '0',
-            vol: obj.vol || '0',
-          })
+          for (let i = 1; i < lines.length; i++) {
+            const values = lines[i].split(',').map(v => v.trim())
+            const obj: any = {}
+            headers.forEach((header, index) => {
+              obj[header] = values[index] || ''
+            })
+            traders.push({
+              userId: obj.userId || obj.user_id || '',
+              address: obj.address || '',
+              pnl: obj.pnl || '0',
+              vol: obj.vol || '0',
+            })
+          }
+
+          setAllTraders(traders)
         }
-
-        setAllTraders(traders)
       }
 
       const found = allTraders.find(t => (t.address || '').toLowerCase() === searchAddress.toLowerCase())
@@ -418,7 +431,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
                                 color: '#ffffff'
                               }}
                               labelStyle={{ color: '#ffffff' }}
-                              formatter={(value) => [`${value} traders`, ''], (name) => name}
+                              formatter={(value: any, name: any) => [`${value} traders`, name]}
                             />
                           </PieChart>
                         </ResponsiveContainer>
@@ -798,7 +811,7 @@ export default function Dashboard() {
 
       {currentPage === 'leaderboard' && (
         <Suspense fallback={<LoadingCard />}>
-          <LeaderboardPage />
+          <LeaderboardPage onBack={() => setCurrentPage('dex-status')} />
         </Suspense>
       )}
 

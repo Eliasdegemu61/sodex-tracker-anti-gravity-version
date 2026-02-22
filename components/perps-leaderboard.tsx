@@ -53,7 +53,7 @@ const parseCSV = (csvText: string): PerpsEntry[] => {
 }
 
 export function PerpsLeaderboard() {
-  const { leaderboardCache } = useSessionCache()
+  const { leaderboardCache, isPreloadingLeaderboard } = useSessionCache()
   const [volumeData, setVolumeData] = useState<PerpsEntry[]>([])
   const [pnlData, setPnlData] = useState<PerpsEntry[]>([])
   const [loading, setLoading] = useState(true)
@@ -63,46 +63,39 @@ export function PerpsLeaderboard() {
   const [rowsPerPage, setRowsPerPage] = useState(20)
   const [copiedAddress, setCopiedAddress] = useState<string | null>(null)
 
-  // Fetch CSV data
+  // Sync with cache and handle preloading
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true)
+    if (leaderboardCache?.volumeData && leaderboardCache?.pnlData) {
+      setVolumeData(leaderboardCache.volumeData)
+      setPnlData(leaderboardCache.pnlData)
+      setLoading(false)
+    } else if (!isPreloadingLeaderboard) {
+      // Only fetch if not already preloading and no cache
+      const fetchData = async () => {
+        try {
+          setLoading(true)
+          const [volResponse, pnlResponse] = await Promise.all([
+            fetch('https://raw.githubusercontent.com/Eliasdegemu61/sodex-finalised-raw-data/refs/heads/main/vol_leaderboard.csv'),
+            fetch('https://raw.githubusercontent.com/Eliasdegemu61/sodex-finalised-raw-data/refs/heads/main/pnl_leaderboard.csv'),
+          ])
 
-        // Use cached data if available
-        if (leaderboardCache?.volumeData && leaderboardCache?.pnlData &&
-          leaderboardCache.volumeData.length > 0 && leaderboardCache.pnlData.length > 0) {
-          console.log('[v0] Using cached perps leaderboard data')
-          setVolumeData(leaderboardCache.volumeData)
-          setPnlData(leaderboardCache.pnlData)
+          const volText = await volResponse.text()
+          const pnlText = await pnlResponse.text()
+
+          const volEntries = parseCSV(volText)
+          const pnlEntries = parseCSV(pnlText)
+
+          setVolumeData(volEntries)
+          setPnlData(pnlEntries)
+        } catch (error) {
+          console.error('Error fetching leaderboard data:', error)
+        } finally {
           setLoading(false)
-          return
         }
-
-        // Fetch both CSV files
-        const [volResponse, pnlResponse] = await Promise.all([
-          fetch('https://raw.githubusercontent.com/Eliasdegemu61/sodex-finalised-raw-data/refs/heads/main/vol_leaderboard.csv'),
-          fetch('https://raw.githubusercontent.com/Eliasdegemu61/sodex-finalised-raw-data/refs/heads/main/pnl_leaderboard.csv'),
-        ])
-
-        const volText = await volResponse.text()
-        const pnlText = await pnlResponse.text()
-
-        // Parse CSV data
-        const volEntries = parseCSV(volText)
-        const pnlEntries = parseCSV(pnlText)
-
-        setVolumeData(volEntries)
-        setPnlData(pnlEntries)
-      } catch (error) {
-        console.error('Error fetching leaderboard data:', error)
-      } finally {
-        setLoading(false)
       }
+      fetchData()
     }
-
-    fetchData()
-  }, [])
+  }, [leaderboardCache, isPreloadingLeaderboard])
 
   // Get current data based on sort selection
   const currentData = sortBy === 'volume' ? volumeData : pnlData

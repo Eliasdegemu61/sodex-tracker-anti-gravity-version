@@ -99,6 +99,11 @@ export function SessionCacheProvider({ children }: { children: ReactNode }) {
     }
   }, [leaderboardCache])
 
+  // Automatically trigger preload on mount
+  useEffect(() => {
+    preloadLeaderboardData()
+  }, [])
+
   return (
     <SessionCacheContext.Provider
       value={{

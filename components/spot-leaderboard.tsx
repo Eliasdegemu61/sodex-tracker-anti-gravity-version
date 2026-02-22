@@ -98,7 +98,7 @@ function AnimatedLoadingTable() {
 }
 
 export function SpotLeaderboard() {
-  const { leaderboardCache } = useSessionCache()
+  const { leaderboardCache, isPreloadingLeaderboard } = useSessionCache()
   const [data, setData] = useState<SpotLeaderboardEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [searchAddress, setSearchAddress] = useState('')
@@ -108,55 +108,49 @@ export function SpotLeaderboard() {
   const [searchResult, setSearchResult] = useState<SpotLeaderboardEntry | null>(null)
 
   useEffect(() => {
-    const fetchLeaderboard = async () => {
-      try {
-        setLoading(true)
+    if (leaderboardCache?.spotData) {
+      setData(leaderboardCache.spotData)
+      setLoading(false)
+    } else if (!isPreloadingLeaderboard) {
+      const fetchLeaderboard = async () => {
+        try {
+          setLoading(true)
+          const response = await fetch(
+            'https://raw.githubusercontent.com/Eliasdegemu61/sodex-finalised-raw-data/main/spot_leaderboard.csv'
+          )
 
-        // Use cached data if available, otherwise fetch
-        if (leaderboardCache?.spotData && leaderboardCache.spotData.length > 0) {
-          console.log('[v0] Using cached spot leaderboard data')
-          setData(leaderboardCache.spotData)
+          if (!response.ok) {
+            throw new Error(`Failed to fetch leaderboard: ${response.status}`)
+          }
+
+          const csv = await response.text()
+          const lines = csv.split('\n').filter((line) => line.trim())
+
+          const parsed: SpotLeaderboardEntry[] = lines
+            .slice(1)
+            .map((line) => {
+              const parts = line.split(',')
+              return {
+                rank: parseInt(parts[0]),
+                userId: parts[1],
+                address: parts[2].trim(),
+                vol: parseFloat(parts[3]),
+              }
+            })
+            .filter((entry) => entry.address && !isNaN(entry.vol))
+            .sort((a, b) => a.rank - b.rank)
+
+          setData(parsed)
+        } catch (error) {
+          console.error('[v0] Error fetching leaderboard:', error)
+          setData([])
+        } finally {
           setLoading(false)
-          return
         }
-
-        const response = await fetch(
-          'https://raw.githubusercontent.com/Eliasdegemu61/sodex-finalised-raw-data/main/spot_leaderboard.csv'
-        )
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch leaderboard: ${response.status}`)
-        }
-
-        const csv = await response.text()
-        const lines = csv.split('\n').filter((line) => line.trim())
-
-        // Parse CSV data
-        const parsed: SpotLeaderboardEntry[] = lines
-          .slice(1) // Skip header
-          .map((line) => {
-            const parts = line.split(',')
-            return {
-              rank: parseInt(parts[0]),
-              userId: parts[1],
-              address: parts[2].trim(),
-              vol: parseFloat(parts[3]),
-            }
-          })
-          .filter((entry) => entry.address && !isNaN(entry.vol))
-          .sort((a, b) => a.rank - b.rank)
-
-        setData(parsed)
-      } catch (error) {
-        console.error('[v0] Error fetching leaderboard:', error)
-        setData([])
-      } finally {
-        setLoading(false)
       }
+      fetchLeaderboard()
     }
-
-    fetchLeaderboard()
-  }, [])
+  }, [leaderboardCache, isPreloadingLeaderboard])
 
   const formatNumber = (num: number) => {
     if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M'

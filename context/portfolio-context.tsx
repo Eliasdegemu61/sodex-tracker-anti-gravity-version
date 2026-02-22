@@ -143,18 +143,13 @@ export function PortfolioProvider({
   );
 
   const enterDemoMode = useCallback(async () => {
-    console.log('[v0] Triggering Cinematic Demo Mode - Instant Access Activated');
+    console.log('[v0] Triggering Simplified Demo Mode - Instant Access Activated');
     setIsTransitioning(true);
     setError(null);
-
-    // 1. Immediate Fallback Set (Zero Delay)
     setIsDemoMode(true);
-    setWalletAddressState(DEMO_DISPLAY_ADDRESS);
-    setSourceWalletAddressState(DEMO_SOURCE_ADDRESS);
-    setUserIdState('1036'); // Static valid userId for demo
     localStorage.setItem('portfolio_demo_mode', 'true');
 
-    // 2. Background Revalidation (Silent)
+    // 1. Silent Background Revalidation (Started immediately)
     const silentRevalidate = async () => {
       try {
         const uid = await getUserIdByAddress(DEMO_SOURCE_ADDRESS);
@@ -167,16 +162,21 @@ export function PortfolioProvider({
         setUserIdState(uid);
         setPositions(enriched);
         setVaultBalanceState(balance.futuresBalance);
-        console.log('[v0] Demo data revalidated silently');
+        console.log('[v0] Demo data fetched in background');
       } catch (err) {
-        console.warn('[v0] Background revalidation failed, keeping fallback:', err);
-        // Do NOT set error state here to keep UX smooth
+        console.warn('[v0] Background revalidation failed:', err);
       }
     };
-
     silentRevalidate();
 
-    // The transition component will call onComplete which should handle the rest
+    // 2. Delay the address setting and transition end by 1.5s
+    setTimeout(() => {
+      setWalletAddressState(DEMO_DISPLAY_ADDRESS);
+      setSourceWalletAddressState(DEMO_SOURCE_ADDRESS);
+      setUserIdState('1036'); // Ensure we have a valid initial UID
+      setIsTransitioning(false);
+      console.log('[v0] Demo loading complete, showing data');
+    }, 1500);
   }, []);
 
   const exitDemoMode = useCallback(() => {

@@ -49,6 +49,14 @@ export function PortfolioSection() {
     setShowUnbindConfirm(false);
   };
 
+  if (isLoading || isTransitioning) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <LoadingSpinner message={isTransitioning ? "Retrieving demo account data..." : "Calculating portfolio data..."} />
+      </div>
+    );
+  }
+
   if (!walletAddress) {
     return (
       <div className="space-y-6">

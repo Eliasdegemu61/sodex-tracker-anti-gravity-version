@@ -106,15 +106,10 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
     const valueToSearch = (addressToSearch || searchInput || '').trim();
     if (!valueToSearch) return;
 
-    // Special handling for DEMO - Instant feel with transition
+    // Special handling for DEMO - Loading feel with transition
     if (valueToSearch === DEMO_DISPLAY_ADDRESS) {
-      console.log('[v0] Triggering Cinematic Demo Search');
+      console.log('[v0] Triggering Demo Search');
       setIsTransitioning(true);
-
-      // Immediate state set
-      setWalletAddress(DEMO_DISPLAY_ADDRESS);
-      setSourceWalletAddress(DEMO_SOURCE_ADDRESS);
-      setUserId('1036');
       setError(null);
 
       // Silent background fetch
@@ -125,12 +120,20 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
           const enrichedPositions = await enrichPositions(fetchedPositions);
           setUserId(foundUserId);
           setPositions(enrichedPositions);
-          console.log('[v0] Tracker demo data revalidated');
+          console.log('[v0] Tracker demo data fetched');
         } catch (err) {
           console.warn('[v0] Tracker demo background fetch failed:', err);
         }
       };
       silentFetch();
+
+      // Delay showing the data
+      setTimeout(() => {
+        setWalletAddress(DEMO_DISPLAY_ADDRESS);
+        setSourceWalletAddress(DEMO_SOURCE_ADDRESS);
+        setUserId('1036');
+        setIsTransitioning(false);
+      }, 1500);
       return;
     }
 
@@ -185,6 +188,15 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
       handleSearch();
     }
   };
+
+  // Render portfolio data when wallet is found
+  if (isLoading || isTransitioning) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <LoadingSpinner message={isTransitioning ? "Retrieving demo account data..." : "Searching wallet..."} />
+      </div>
+    );
+  }
 
   // Render search UI when no wallet is selected
   if (!walletAddress) {
@@ -247,15 +259,6 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
             </Button>
           </div>
         </Card>
-      </div>
-    );
-  }
-
-  // Render portfolio data when wallet is found
-  if (isLoading || isTransitioning) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner message={isTransitioning ? "Retrieving demo account data..." : "Searching wallet..."} />
       </div>
     );
   }

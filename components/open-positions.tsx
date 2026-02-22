@@ -3,7 +3,7 @@
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowUpRight, ArrowDownLeft, ChevronLeft, ChevronRight, AlertCircle, ChevronDown } from 'lucide-react';
+import { ArrowUpRight, ArrowDownLeft, ChevronLeft, ChevronRight, AlertCircle, ChevronDown, Loader2 } from 'lucide-react';
 import { usePortfolio } from '@/context/portfolio-context';
 import { useMemo, useState, useEffect } from 'react';
 import { fetchOpenPositions, fetchAccountDetails, type OpenPositionData, type BalanceData } from '@/lib/sodex-api';
@@ -19,7 +19,6 @@ export function OpenPositions() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [lastUpdateTime, setLastUpdateTime] = useState<string>('');
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [countdownSeconds, setCountdownSeconds] = useState(1);
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
 
   const toggleExpand = (id: string) => {
@@ -48,7 +47,6 @@ export function OpenPositions() {
       setBalanceData(accountData.balances[0] || null);
       setLastUpdateTime(new Date().toLocaleTimeString());
       setError(null);
-      setCountdownSeconds(1); // Reset countdown after refresh
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch open positions';
       console.error('[v0] Error fetching open positions:', errorMessage);
@@ -78,20 +76,6 @@ export function OpenPositions() {
 
     return () => clearInterval(refreshInterval);
   }, [userId]);
-
-  // Countdown timer
-  useEffect(() => {
-    const countdownInterval = setInterval(() => {
-      setCountdownSeconds((prev) => {
-        if (prev <= 1) {
-          return 1;
-        }
-        return prev - 1;
-      });
-    }, 1000); // Update every second
-
-    return () => clearInterval(countdownInterval);
-  }, []);
 
   const displayPositions = useMemo(() => {
     return openPositions.map((position, idx) => ({
@@ -183,11 +167,8 @@ export function OpenPositions() {
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-3 md:mb-4 gap-2">
         <div className="flex items-center gap-2 md:gap-3">
           <h3 className="text-base md:text-lg font-bold text-foreground">Open Positions</h3>
-          <div className="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1 md:py-1.5 rounded-full bg-primary/10 border border-primary/30">
-            <div className="w-1.5 md:w-2 h-1.5 md:h-2 bg-primary rounded-full animate-pulse"></div>
-            <span className="text-xs text-primary font-semibold">
-              REFRESHING IN {countdownSeconds}SEC
-            </span>
+          <div className="flex items-center justify-center p-1.5 md:p-2 rounded-full bg-primary/10 border border-primary/30">
+            <Loader2 className="w-3.5 md:w-4 h-3.5 md:h-4 text-primary animate-spin" />
           </div>
         </div>
         {lastUpdateTime && (

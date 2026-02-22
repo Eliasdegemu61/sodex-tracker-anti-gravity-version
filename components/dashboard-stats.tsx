@@ -2,7 +2,7 @@
 
 import { Card } from '@/components/ui/card'
 import { useState } from 'react'
-import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
+import { ResponsiveContainer, PieChart, Pie, Cell, Sector } from 'recharts'
 import { formatNumber } from '@/lib/format-number'
 import { useDexData } from '@/context/dex-data-context'
 import { useVolumeData } from '@/context/volume-data-context'
@@ -117,7 +117,24 @@ export function DashboardStats({ variant = 'default' }: DashboardStatsProps) {
                 isAnimationActive={false}
                 stroke="none"
                 filter="url(#glow)"
-                onClick={() => {}}
+                onClick={() => { }}
+                // @ts-ignore
+                activeIndex={0}
+                activeShape={(props: any) => {
+                  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
+                  return (
+                    <Sector
+                      cx={cx}
+                      cy={cy}
+                      innerRadius={innerRadius}
+                      outerRadius={outerRadius + 15}
+                      startAngle={startAngle}
+                      endAngle={endAngle}
+                      fill={fill}
+                      filter="url(#glow)"
+                    />
+                  );
+                }}
               >
                 <Cell fill="#fb923c" />
                 <Cell fill="#ea580c" />

@@ -18,25 +18,12 @@ import { RankingCard } from './ranking-card';
 import { VaultCard } from './vault-card';
 import { DemoTransition } from './demo-transition';
 
-// Loading Animation Component with Dots
-function LoadingDots() {
+// Loading Spinner Component
+function LoadingSpinner({ message }: { message: string }) {
   return (
-    <div className="flex items-center justify-center gap-2">
-      <div className="flex gap-1.5">
-        <div
-          className="w-2.5 h-2.5 bg-primary rounded-full animate-bounce"
-          style={{ animationDelay: '0s' }}
-        />
-        <div
-          className="w-2.5 h-2.5 bg-primary rounded-full animate-bounce"
-          style={{ animationDelay: '0.2s' }}
-        />
-        <div
-          className="w-2.5 h-2.5 bg-primary rounded-full animate-bounce"
-          style={{ animationDelay: '0.4s' }}
-        />
-      </div>
-      <span className="text-sm text-muted-foreground ml-2">Calculating portfolio data</span>
+    <div className="flex flex-col items-center justify-center gap-4 py-12">
+      <Loader2 className="w-8 h-8 text-primary animate-spin" />
+      <span className="text-sm font-medium text-muted-foreground animate-pulse">{message}</span>
     </div>
   );
 }
@@ -95,10 +82,10 @@ export function PortfolioSection() {
     );
   }
 
-  if (isLoading) {
+  if (isLoading || isTransitioning) {
     return (
-      <div className="flex items-center justify-center min-h-96">
-        <LoadingDots />
+      <div className="flex items-center justify-center min-h-[400px]">
+        <LoadingSpinner message={isTransitioning ? "Retrieving demo account data..." : "Calculating portfolio data..."} />
       </div>
     );
   }
@@ -197,9 +184,6 @@ export function PortfolioSection() {
         </AlertDialogContent>
       </AlertDialog>
 
-      {isTransitioning && (
-        <DemoTransition onComplete={() => setIsTransitioning(false)} />
-      )}
     </>
   );
 }

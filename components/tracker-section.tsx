@@ -24,25 +24,12 @@ import { DEMO_SOURCE_ADDRESS, DEMO_DISPLAY_ADDRESS } from '@/lib/demo-config';
 import { usePortfolio } from '@/context/portfolio-context';
 import { DemoTransition } from './demo-transition';
 
-// Loading Animation Component with Dots
-function LoadingDots() {
+// Loading Spinner Component
+function LoadingSpinner({ message }: { message: string }) {
   return (
-    <div className="flex items-center justify-center gap-2">
-      <div className="flex gap-1.5">
-        <div
-          className="w-2.5 h-2.5 bg-primary rounded-full animate-bounce"
-          style={{ animationDelay: '0s' }}
-        />
-        <div
-          className="w-2.5 h-2.5 bg-primary rounded-full animate-bounce"
-          style={{ animationDelay: '0.2s' }}
-        />
-        <div
-          className="w-2.5 h-2.5 bg-primary rounded-full animate-bounce"
-          style={{ animationDelay: '0.4s' }}
-        />
-      </div>
-      <span className="text-sm text-muted-foreground ml-2">Fetching latest data</span>
+    <div className="flex flex-col items-center justify-center gap-4 py-12">
+      <Loader2 className="w-8 h-8 text-primary animate-spin" />
+      <span className="text-sm font-medium text-muted-foreground animate-pulse">{message}</span>
     </div>
   );
 }
@@ -60,7 +47,7 @@ function TrackerLoadingSkeleton() {
   if (showDots) {
     return (
       <div className="flex items-center justify-center min-h-96">
-        <LoadingDots />
+        <LoadingSpinner message="Fetching latest data..." />
       </div>
     );
   }
@@ -265,10 +252,10 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
   }
 
   // Render portfolio data when wallet is found
-  if (isLoading) {
+  if (isLoading || isTransitioning) {
     return (
-      <div className="p-4 md:p-6">
-        <TrackerLoadingSkeleton />
+      <div className="flex items-center justify-center min-h-[400px]">
+        <LoadingSpinner message={isTransitioning ? "Retrieving demo account data..." : "Searching wallet..."} />
       </div>
     );
   }
@@ -333,9 +320,6 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
         <PortfolioHeatmap />
       </div>
 
-      {isTransitioning && (
-        <DemoTransition onComplete={() => setIsTransitioning(false)} />
-      )}
     </PortfolioProvider>
   );
 }

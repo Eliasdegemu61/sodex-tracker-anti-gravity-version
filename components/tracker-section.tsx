@@ -100,7 +100,7 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
   const [error, setError] = useState<string | null>(null);
 
   // Global context for demo transition
-  const { isTransitioning, setIsTransitioning } = usePortfolio();
+  const { isTransitioning, setIsTransitioning, isDemoMode } = usePortfolio();
 
   const handleSearch = async (addressToSearch?: string) => {
     const valueToSearch = (addressToSearch || searchInput || '').trim();
@@ -277,7 +277,7 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
           <div className="space-y-2">
             <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">Wallet Tracker</h1>
             <p className="text-xs md:text-sm text-muted-foreground">
-              Tracking: <span className="blur-[6px] select-none inline-block align-middle ml-1">{walletAddress}</span>
+              Tracking: <span className={`${isDemoMode ? 'blur-[6px] select-none' : ''} inline-block align-middle ml-1`}>{walletAddress}</span>
             </p>
           </div>
           <Button

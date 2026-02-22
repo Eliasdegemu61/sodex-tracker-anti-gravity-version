@@ -114,7 +114,7 @@ export function PortfolioSection() {
               )}
             </div>
             <p className="text-xs md:text-sm text-muted-foreground break-all">
-              Account: <span className="blur-[6px] select-none inline-block align-middle ml-1">{walletAddress}</span>
+              Account: <span className={`${isDemoMode ? 'blur-[6px] select-none' : ''} inline-block align-middle ml-1`}>{walletAddress}</span>
             </p>
           </div>
           <div className="flex items-center gap-2 w-full md:w-auto">

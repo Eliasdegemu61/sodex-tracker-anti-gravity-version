@@ -1,0 +1,196 @@
+'use client';
+
+import { Card } from '@/components/ui/card';
+import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, Area } from 'recharts';
+import { usePortfolio } from '@/context/portfolio-context';
+import { useMemo, useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
+interface PnLChartProps {
+  title?: string;
+}
+
+export function PnLChart({ title = 'Profit & Loss' }: PnLChartProps) {
+  const { positions } = usePortfolio();
+  const [timePeriod, setTimePeriod] = useState<'all' | '1w' | '1m' | '3m' | '1y'>('all');
+
+  const getFilteredPositions = useMemo(() => {
+    if (!positions || positions.length === 0) {
+      return [];
+    }
+
+    const now = new Date();
+    let startDate = new Date(0); // Default: all time
+
+    switch (timePeriod) {
+      case '1w':
+        startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        break;
+      case '1m':
+        startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+        break;
+      case '3m':
+        startDate = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
+        break;
+      case '1y':
+        startDate = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
+        break;
+      case 'all':
+      default:
+        startDate = new Date(0);
+    }
+
+    return positions.filter((pos) => new Date(pos.created_at) >= startDate);
+  }, [positions, timePeriod]);
+
+  const chartData = useMemo(() => {
+    if (!getFilteredPositions || getFilteredPositions.length === 0) {
+      return [];
+    }
+
+    // Group positions by day using ISO date key for proper sorting
+    const dayMap = new Map<string, { pnl: number; fullDate: string }>();
+    getFilteredPositions.forEach((position) => {
+      const date = new Date(position.created_at);
+      const isoDateKey = date.toISOString().split('T')[0]; // YYYY-MM-DD for sorting
+      const displayDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' });
+
+      const current = dayMap.get(isoDateKey) || { pnl: 0, fullDate: displayDate };
+      dayMap.set(isoDateKey, {
+        pnl: current.pnl + position.realizedPnlValue,
+        fullDate: displayDate,
+      });
+    });
+
+    // Convert to array and sort by ISO date
+    const sortedData = Array.from(dayMap.entries())
+      .sort((a, b) => {
+        // Sort by ISO date key (YYYY-MM-DD)
+        return a[0].localeCompare(b[0]);
+      })
+      .map(([dateKey, { pnl, fullDate }]) => ({
+        date: fullDate,
+        pnl,
+      }));
+
+    // Calculate cumulative PnL
+    let cumulativePnL = 0;
+    return sortedData.map((day) => {
+      const prevCumulative = cumulativePnL;
+      cumulativePnL += day.pnl;
+      return {
+        ...day,
+        cumulative: cumulativePnL,
+        waterfall: [prevCumulative, cumulativePnL],
+      };
+    });
+  }, [getFilteredPositions]);
+
+  const stats = useMemo(() => {
+    if (chartData.length === 0) {
+      return { totalPnL: 0, percentageChange: '0', isPositive: true, displayValue: '$0' };
+    }
+
+    const totalPnL = chartData[chartData.length - 1].cumulative;
+    const initialValue = 10000; // Starting value for percentage calculation
+    const percentageChange = ((totalPnL / initialValue) * 100).toFixed(2);
+    const isPositive = totalPnL >= 0;
+
+    // Format display value - use K only if value > 999
+    let displayValue: string;
+    if (Math.abs(totalPnL) > 999) {
+      displayValue = `$${(totalPnL / 1000).toFixed(1)}K`;
+    } else {
+      displayValue = `$${totalPnL.toFixed(2)}`;
+    }
+
+    return { totalPnL, percentageChange, isPositive, displayValue };
+  }, [chartData]);
+
+  const getBarColor = (value: number) => {
+    return value >= 0 ? '#10b98166' : '#ef444466'; // Semi-transparent green for positive, red for negative
+  };
+
+  const hasData = chartData.length > 0;
+
+  return (
+    <Card className="p-3 md:p-6 bg-card border border-border">
+      <div className="mb-4 md:mb-6">
+        <div className="flex items-center justify-between mb-3 md:mb-4">
+          <h3 className="text-base md:text-lg font-bold text-foreground">{title}</h3>
+          <Select value={timePeriod} onValueChange={(value: any) => setTimePeriod(value)}>
+            <SelectTrigger className="w-32 h-9 text-sm">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Time</SelectItem>
+              <SelectItem value="1w">1 Week</SelectItem>
+              <SelectItem value="1m">1 Month</SelectItem>
+              <SelectItem value="3m">3 Months</SelectItem>
+              <SelectItem value="1y">1 Year</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex items-baseline gap-2 md:gap-3">
+          <p className={`text-lg md:text-2xl font-bold ${stats.isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
+            {stats.displayValue}
+          </p>
+          <p className={`text-[10px] md:text-xs font-semibold ${stats.isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
+            {stats.isPositive ? '+' : ''}{stats.percentageChange}%
+          </p>
+        </div>
+      </div>
+
+      <div className="h-[250px] w-full flex items-center justify-center relative">
+        {!hasData ? (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/5 rounded-lg border border-dashed border-border/50 transition-colors">
+            <p className="text-sm text-muted-foreground font-medium">No data available for this time frame</p>
+            <p className="text-[10px] text-muted-foreground/60 mt-1">Try selecting a different range</p>
+          </div>
+        ) : (
+          <ResponsiveContainer width="100%" height="100%">
+            <ComposedChart data={chartData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+              <XAxis dataKey="date" stroke="#666" style={{ fontSize: '10px' }} tick={{ fontSize: 10 }} />
+              <YAxis stroke="#666" style={{ fontSize: '10px' }} tick={{ fontSize: 10 }} />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: '#1a1a1a',
+                  border: '1px solid #333',
+                  borderRadius: '8px',
+                  color: '#fff',
+                  fontSize: '12px',
+                }}
+                labelStyle={{ color: '#fff' }}
+                formatter={(value: any, name: any, props: any) => {
+                  if (name === 'waterfall') return null;
+                  const numValue = value as number;
+                  const displayValue = Math.abs(numValue) > 999
+                    ? `$${(numValue / 1000).toFixed(1)}K`
+                    : `$${numValue.toFixed(2)}`;
+
+                  if (props.payload && name === 'cumulative') {
+                    return [displayValue, 'Cumulative PnL'];
+                  }
+                  return [displayValue, name === 'pnl' ? 'Daily PnL' : name];
+                }}
+              />
+              <Bar dataKey="waterfall" radius={[2, 2, 2, 2]} barSize={8}>
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={getBarColor(entry.pnl)} />
+                ))}
+              </Bar>
+              <Line
+                type="monotone"
+                dataKey="cumulative"
+                stroke="#f97316"
+                strokeWidth={2}
+                dot={false}
+                isAnimationActive={false}
+              />
+            </ComposedChart>
+          </ResponsiveContainer>
+        )}
+      </div>
+    </Card>
+  );
+}

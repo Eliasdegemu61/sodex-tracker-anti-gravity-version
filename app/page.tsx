@@ -575,6 +575,11 @@ export default function Dashboard() {
     }
   }, []);
 
+  // Reset scroll position when page changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [currentPage]);
+
   const handleSearchBarSubmit = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && searchAddressInput.trim()) {
       setTrackerSearchAddress(searchAddressInput)

@@ -270,7 +270,9 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
         <div className="flex items-start justify-between">
           <div className="space-y-2">
             <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">Wallet Tracker</h1>
-            <p className="text-xs md:text-sm text-muted-foreground">Tracking: {walletAddress}</p>
+            <p className="text-xs md:text-sm text-muted-foreground">
+              Tracking: <span className="blur-[6px] select-none inline-block align-middle ml-1">{walletAddress}</span>
+            </p>
           </div>
           <Button
             variant="outline"

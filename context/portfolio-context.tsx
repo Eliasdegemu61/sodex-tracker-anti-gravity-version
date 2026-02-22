@@ -143,40 +143,44 @@ export function PortfolioProvider({
   );
 
   const enterDemoMode = useCallback(async () => {
-    console.log('[v0] Triggering Simplified Demo Mode - Instant Access Activated');
+    console.log('[v0] Triggering Demo Mode - Synchronizing data load');
     setIsTransitioning(true);
     setError(null);
     setIsDemoMode(true);
     localStorage.setItem('portfolio_demo_mode', 'true');
 
-    // 1. Silent Background Revalidation (Started immediately)
-    const silentRevalidate = async () => {
-      try {
+    try {
+      // 1. Create a promise for the minimum 1.5s delay
+      const waitPromise = new Promise(resolve => setTimeout(resolve, 1500));
+
+      // 2. Start the background fetch immediately
+      const fetchDataPromise = (async () => {
         const uid = await getUserIdByAddress(DEMO_SOURCE_ADDRESS);
         const [pos, balance] = await Promise.all([
           fetchAllPositions(uid),
           fetchTotalBalance(uid)
         ]);
         const enriched = await enrichPositions(pos);
+        return { uid, enriched, balance };
+      })();
 
-        setUserIdState(uid);
-        setPositions(enriched);
-        setVaultBalanceState(balance.futuresBalance);
-        console.log('[v0] Demo data fetched in background');
-      } catch (err) {
-        console.warn('[v0] Background revalidation failed:', err);
-      }
-    };
-    silentRevalidate();
+      // 3. Wait for BOTH the timer and the data fetch to complete
+      const [_, data] = await Promise.all([waitPromise, fetchDataPromise]);
 
-    // 2. Delay the address setting and transition end by 1.5s
-    setTimeout(() => {
+      // 4. Update state only after everything is ready
+      setUserIdState(data.uid);
+      setPositions(data.enriched);
+      setVaultBalanceState(data.balance.futuresBalance);
       setWalletAddressState(DEMO_DISPLAY_ADDRESS);
       setSourceWalletAddressState(DEMO_SOURCE_ADDRESS);
-      setUserIdState('1036'); // Ensure we have a valid initial UID
+
+      console.log('[v0] Demo loading complete, showing data for UID:', data.uid);
+    } catch (err) {
+      console.error('[v0] Failed to load demo data:', err);
+      setError('Failed to load demo data. Please try again.');
+    } finally {
       setIsTransitioning(false);
-      console.log('[v0] Demo loading complete, showing data');
-    }, 1500);
+    }
   }, []);
 
   const exitDemoMode = useCallback(() => {

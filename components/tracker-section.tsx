@@ -108,32 +108,38 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
 
     // Special handling for DEMO - Loading feel with transition
     if (valueToSearch === DEMO_DISPLAY_ADDRESS) {
-      console.log('[v0] Triggering Demo Search');
+      console.log('[v0] Triggering Demo Search - Synchronizing data load');
       setIsTransitioning(true);
       setError(null);
 
-      // Silent background fetch
-      const silentFetch = async () => {
-        try {
-          const foundUserId = await getUserIdByAddress(DEMO_SOURCE_ADDRESS);
-          const fetchedPositions = await fetchAllPositions(foundUserId);
-          const enrichedPositions = await enrichPositions(fetchedPositions);
-          setUserId(foundUserId);
-          setPositions(enrichedPositions);
-          console.log('[v0] Tracker demo data fetched');
-        } catch (err) {
-          console.warn('[v0] Tracker demo background fetch failed:', err);
-        }
-      };
-      silentFetch();
+      try {
+        // 1. Create a promise for the minimum 1.5s delay
+        const waitPromise = new Promise(resolve => setTimeout(resolve, 1500));
 
-      // Delay showing the data
-      setTimeout(() => {
+        // 2. Fetch data properly and wait for it
+        const fetchDataPromise = (async () => {
+          const uid = await getUserIdByAddress(DEMO_SOURCE_ADDRESS);
+          const fetchedPositions = await fetchAllPositions(uid);
+          const enrichedPositions = await enrichPositions(fetchedPositions);
+          return { uid, enrichedPositions };
+        })();
+
+        // 3. Wait for BOTH
+        const [_, data] = await Promise.all([waitPromise, fetchDataPromise]);
+
+        // 4. Update state only after everything is ready
+        setUserId(data.uid);
+        setPositions(data.enrichedPositions);
         setWalletAddress(DEMO_DISPLAY_ADDRESS);
         setSourceWalletAddress(DEMO_SOURCE_ADDRESS);
-        setUserId('1036');
+        console.log('[v0] Tracker demo loading complete for UID:', data.uid);
+      } catch (err) {
+        console.error('[v0] Tracker demo loading failed:', err);
+        setError('Failed to load demo data. Please try again.');
+        setWalletAddress(null);
+      } finally {
         setIsTransitioning(false);
-      }, 1500);
+      }
       return;
     }
 

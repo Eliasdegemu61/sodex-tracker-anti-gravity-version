@@ -18,7 +18,7 @@ export function LeaderboardPage({ onBack }: { onBack: () => void }) {
         <div className="flex gap-2 p-1 bg-card/20 backdrop-blur-xl border border-border/20 rounded-2xl w-fit">
           <button
             onClick={() => setActiveTab('perps')}
-            className={`px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] italic rounded-xl transition-all ${activeTab === 'perps'
+            className={`px-6 py-2.5 text-[10px] font-bold   rounded-xl transition-all ${activeTab === 'perps'
                 ? 'bg-orange-500/10 text-orange-400 shadow-sm'
                 : 'text-muted-foreground/40 hover:text-foreground'
               }`}
@@ -27,7 +27,7 @@ export function LeaderboardPage({ onBack }: { onBack: () => void }) {
           </button>
           <button
             onClick={() => setActiveTab('spot')}
-            className={`px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] italic rounded-xl transition-all ${activeTab === 'spot'
+            className={`px-6 py-2.5 text-[10px] font-bold   rounded-xl transition-all ${activeTab === 'spot'
                 ? 'bg-orange-500/10 text-orange-400 shadow-sm'
                 : 'text-muted-foreground/40 hover:text-foreground'
               }`}
@@ -44,3 +44,4 @@ export function LeaderboardPage({ onBack }: { onBack: () => void }) {
     </div>
   )
 }
+

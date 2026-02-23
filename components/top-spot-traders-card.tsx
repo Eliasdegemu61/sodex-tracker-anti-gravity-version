@@ -23,7 +23,7 @@ export function TopSpotTradersCard() {
   if (isLoading) {
     return (
       <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-4">Spotting Whales</h3>
+        <h3 className="text-xs font-semibold text-muted-foreground/60 mb-4">Spotting Whales</h3>
         <div className="space-y-3">
           {[1, 2, 3, 4, 5].map(i => (
             <div key={i} className="h-8 bg-secondary/10 rounded-xl" />
@@ -36,8 +36,8 @@ export function TopSpotTradersCard() {
   return (
     <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm group">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Global Power</h3>
-        <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold uppercase tracking-widest">Spot</div>
+        <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Top Performers Spot</h3>
+        <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold ">Spot</div>
       </div>
 
       <div className="space-y-2">
@@ -52,9 +52,10 @@ export function TopSpotTradersCard() {
             </div>
           ))
         ) : (
-          <div className="text-[10px] text-muted-foreground/30 font-bold uppercase tracking-widest italic text-center py-6">Intelligence Blank</div>
+          <div className="text-[10px] text-muted-foreground/30 font-bold   text-center py-6">Intelligence Blank</div>
         )}
       </div>
     </Card>
   )
 }
+

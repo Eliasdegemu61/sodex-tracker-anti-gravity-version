@@ -23,7 +23,7 @@ export function TopGainersCard() {
   if (isLoading) {
     return (
       <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-4">Filtering Profits</h3>
+        <h3 className="text-xs font-semibold text-muted-foreground/60 mb-4">Filtering Profits</h3>
         <div className="space-y-3">
           {[1, 2, 3, 4, 5].map(idx => (
             <div key={idx} className="h-10 bg-secondary/10 rounded-xl" />
@@ -40,7 +40,7 @@ export function TopGainersCard() {
   return (
     <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm group">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Top 5 Gainers</h3>
+        <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Top 5 Gainers</h3>
         <TrendingUp className="w-4 h-4 text-green-400/40" />
       </div>
 
@@ -56,9 +56,10 @@ export function TopGainersCard() {
             </div>
           ))
         ) : (
-          <div className="text-[10px] text-muted-foreground/30 font-bold uppercase tracking-widest italic text-center py-6">Identity Shielded</div>
+          <div className="text-[10px] text-muted-foreground/30 font-bold   text-center py-6">Identity Shielded</div>
         )}
       </div>
     </Card>
   )
 }
+

@@ -171,7 +171,7 @@ export function WhaleTracker() {
             {/* Search Header */}
             <div className="relative overflow-hidden rounded-3xl bg-secondary/10 border border-border/20 p-6 md:p-10">
                 <div className="relative z-10 max-w-2xl mx-auto space-y-4">
-                    <h1 className="text-sm md:text-base font-medium text-muted-foreground/60 italic lowercase text-center">
+                    <h1 className="text-sm md:text-base font-medium text-muted-foreground/60  lowercase text-center">
                         tracking open positions in real time...
                     </h1>
 
@@ -214,7 +214,7 @@ export function WhaleTracker() {
                                 <Target className="w-4 h-4" />
                             </div>
                             <div className="min-w-0">
-                                <p className="text-[9px] text-muted-foreground/50 uppercase tracking-widest font-bold">Target</p>
+                                <p className="text-[9px] text-muted-foreground/50  font-bold">Target</p>
                                 <p className="text-xs font-bold text-foreground/80 truncate">{whaleInfo.address}</p>
                             </div>
                         </div>
@@ -228,11 +228,11 @@ export function WhaleTracker() {
                     <div className="flex items-center justify-between px-2">
                         <div className="flex items-center gap-2">
                             <div className="w-1 h-1 rounded-full bg-green-500 animate-pulse" />
-                            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40">
+                            <h2 className="text-[10px] font-bold  text-muted-foreground/40">
                                 active positions ({whaleData.length})
                             </h2>
                         </div>
-                        <div className="text-[9px] text-muted-foreground/30 uppercase italic">
+                        <div className="text-[9px] text-muted-foreground/30 uppercase ">
                             live update • {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                         </div>
                     </div>
@@ -331,7 +331,7 @@ export function WhaleTracker() {
                                             </div>
                                         </div>
 
-                                        <div className="pt-4 flex items-center justify-between text-[8px] text-muted-foreground/20 font-bold uppercase tracking-widest border-t border-border/5">
+                                        <div className="pt-4 flex items-center justify-between text-[8px] text-muted-foreground/20 font-bold  border-t border-border/5">
                                             <div className="flex items-center gap-4">
                                                 <span className="flex items-center gap-1.5"><Clock className="w-2.5 h-2.5" /> {formatTime(pos.opened_at).split(',')[1]}</span>
                                                 <span className="opacity-50">fees: {formatCurrency(pos.fees_paid)}</span>
@@ -347,10 +347,11 @@ export function WhaleTracker() {
             ) : whaleData && whaleData.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-20 bg-secondary/5 rounded-3xl border border-dashed border-border/10">
                     <TrendingDown className="w-6 h-6 text-muted-foreground/10 mb-4" />
-                    <h3 className="text-xs font-bold text-muted-foreground/20 lowercase italic">ocean is quiet...</h3>
+                    <h3 className="text-xs font-bold text-muted-foreground/20 lowercase ">ocean is quiet...</h3>
                 </div>
             ) : null}
 
         </div>
     );
 }
+

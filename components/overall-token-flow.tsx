@@ -48,7 +48,7 @@ export function OverallDepositsCard() {
     if (isLoading) {
         return (
             <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-4">Tracking Inflows</h3>
+                <h3 className="text-xs font-semibold text-muted-foreground/60 mb-4">Tracking Inflows</h3>
                 <div className="space-y-3">
                     {[1, 2, 3].map(i => (
                         <div key={i} className="h-8 bg-secondary/10 rounded-xl" />
@@ -61,7 +61,7 @@ export function OverallDepositsCard() {
     return (
         <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm group">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Global Token Flow</h3>
+                <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Token Flow</h3>
                 <Wallet className="w-3.5 h-3.5 text-orange-400/40" />
             </div>
             <div className="space-y-2">
@@ -70,14 +70,14 @@ export function OverallDepositsCard() {
                         <span className="text-[11px] font-bold text-foreground/80 w-16 truncate">{item.token}</span>
                         <div className="flex items-center gap-4">
                             <div className="flex flex-col items-end">
-                                <span className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest italic leading-none mb-1">Inflow</span>
+                                <span className="text-[7px] text-muted-foreground/20 font-bold   leading-none mb-1">Inflow</span>
                                 <span className="flex items-center gap-1 text-[10px] font-bold text-green-400">
                                     <ArrowDownRight className="w-2.5 h-2.5" />
                                     {formatNumber(item.overall_deposit)}
                                 </span>
                             </div>
                             <div className="flex flex-col items-end">
-                                <span className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest italic leading-none mb-1">Outflow</span>
+                                <span className="text-[7px] text-muted-foreground/20 font-bold   leading-none mb-1">Outflow</span>
                                 <span className="flex items-center gap-1 text-[10px] font-bold text-red-400">
                                     <ArrowUpRight className="w-2.5 h-2.5" />
                                     {formatNumber(item.overall_withdrawal)}
@@ -132,7 +132,7 @@ export function NetRemainingCard() {
     if (isLoading) {
         return (
             <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-4">Auditing Reserves</h3>
+                <h3 className="text-xs font-semibold text-muted-foreground/60 mb-4">Auditing Reserves</h3>
                 <div className="space-y-3">
                     {[1, 2].map(i => (
                         <div key={i} className="h-8 bg-secondary/10 rounded-xl" />
@@ -145,8 +145,8 @@ export function NetRemainingCard() {
     if (data.length === 0) {
         return (
             <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl">
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/80 italic mb-2">Net Reserves</h3>
-                <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic">No positive retention detected</p>
+                <h3 className="text-[10px] font-bold  text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/80  mb-2">Net Reserves</h3>
+                <p className="text-[10px] text-muted-foreground/30 font-bold uppercase ">No positive retention detected</p>
             </Card>
         )
     }
@@ -154,7 +154,7 @@ export function NetRemainingCard() {
     return (
         <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm flex-1 group">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/80 italic">Net Token Retention</h3>
+                <h3 className="text-[10px] font-bold  text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/80 ">Net Token Retention</h3>
                 <Wallet className="w-3.5 h-3.5 text-green-500/40" />
             </div>
             <div className="space-y-2">
@@ -162,7 +162,7 @@ export function NetRemainingCard() {
                     <div key={item.token} className="flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-green-500/5 transition-all duration-300">
                         <span className="text-[11px] font-bold text-foreground/80">{item.token}</span>
                         <div className="flex flex-col items-end">
-                            <span className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest italic leading-none mb-1">Retained</span>
+                            <span className="text-[7px] text-muted-foreground/20 font-bold   leading-none mb-1">Retained</span>
                             <span className="text-[11px] font-bold text-green-400">{formatNumber(item.net_remaining)}</span>
                         </div>
                     </div>
@@ -171,3 +171,4 @@ export function NetRemainingCard() {
         </Card>
     )
 }
+

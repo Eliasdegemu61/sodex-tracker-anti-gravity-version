@@ -631,7 +631,7 @@ export default function Dashboard() {
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-orange-400 italic leading-none">Intelligence</span>
+              <span className="text-xs font-bold text-orange-500 leading-none">Intelligence</span>
               <span className="text-xs font-bold text-foreground/80 tracking-tight">TERMINAL</span>
             </div>
           </div>
@@ -643,7 +643,7 @@ export default function Dashboard() {
               </div>
               <Input
                 placeholder="Scan Network Address..."
-                className="h-10 pl-11 pr-4 bg-secondary/5 border-border/10 focus:border-orange-500/30 focus:ring-0 rounded-2xl text-[12px] tracking-tight transition-all placeholder:text-muted-foreground/20 placeholder:italic"
+                className="h-10 pl-11 pr-4 bg-secondary/5 border-border/10 focus:border-orange-500/30 focus:ring-0 rounded-2xl text-sm tracking-tight transition-all placeholder:text-muted-foreground/20"
                 value={searchAddressInput}
                 onChange={(e) => setSearchAddressInput(e.target.value)}
                 onKeyDown={handleSearchBarSubmit}
@@ -662,7 +662,7 @@ export default function Dashboard() {
               <button
                 key={item.id}
                 onClick={() => setCurrentPage(item.id as any)}
-                className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-[0.15em] italic transition-all duration-300 ${currentPage === item.id
+                className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 ${currentPage === item.id
                   ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
                   : 'text-muted-foreground/60 hover:text-foreground hover:bg-secondary/10'
                   }`}
@@ -677,7 +677,7 @@ export default function Dashboard() {
               onMouseLeave={() => setShowMoreMenu(false)}
             >
               <button
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-[0.15em] italic transition-all duration-300 ${currentPage === 'about' || currentPage === 'whale-tracker'
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 ${currentPage === 'about' || currentPage === 'whale-tracker'
                   ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
                   : 'text-muted-foreground/60 hover:text-foreground hover:bg-secondary/10'
                   }`}
@@ -691,15 +691,13 @@ export default function Dashboard() {
                   <div className="bg-card/90 backdrop-blur-2xl border border-border/20 rounded-[2rem] shadow-2xl p-2 animate-in fade-in slide-in-from-top-4 duration-300">
                     <button
                       onClick={() => { setCurrentPage('whale-tracker'); setShowMoreMenu(false); }}
-                      className={`w-full text-left px-5 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all ${currentPage === 'whale-tracker' ? 'bg-orange-500 text-white' : 'text-muted-foreground/60 hover:bg-secondary/20 hover:text-foreground'
-                        }`}
+                      className={`w-full text-left px-5 py-3 rounded-2xl text-xs font-medium transition-all ${currentPage === 'whale-tracker' ? 'bg-orange-500 text-white' : 'text-muted-foreground/60 hover:bg-secondary/20 hover:text-foreground'}`}
                     >
                       Whale Signals
                     </button>
                     <button
                       onClick={() => { setCurrentPage('about'); setShowMoreMenu(false); }}
-                      className={`w-full text-left px-5 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all ${currentPage === 'about' ? 'bg-orange-500 text-white' : 'text-muted-foreground/60 hover:bg-secondary/20 hover:text-foreground'
-                        }`}
+                      className={`w-full text-left px-5 py-3 rounded-2xl text-xs font-medium transition-all ${currentPage === 'about' ? 'bg-orange-500 text-white' : 'text-muted-foreground/60 hover:bg-secondary/20 hover:text-foreground'}`}
                     >
                       System Protocol
                     </button>

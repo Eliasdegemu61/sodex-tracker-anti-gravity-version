@@ -146,13 +146,13 @@ export async function enrichPositions(
       const symbol = symbolMap.get(position.symbol_id);
       const pairName = symbol?.name || `SYMBOL_${position.symbol_id}`;
       const marginModeLabel = position.margin_mode === 1 ? 'ISOLATED' : 'CROSS';
-      
+
       // Handle position_side: 2 = LONG, 3 = SHORT (can be string or number)
-      const positionSideValue = typeof position.position_side === 'string' 
-        ? parseInt(position.position_side) 
+      const positionSideValue = typeof position.position_side === 'string'
+        ? parseInt(position.position_side)
         : position.position_side;
       const positionSideLabel = positionSideValue === 2 ? 'LONG' : positionSideValue === 3 ? 'SHORT' : 'UNKNOWN';
-      
+
       const realizedPnlValue = parseFloat(position.realized_pnl || '0');
       const tradingFee = parseFloat(position.cum_trading_fee || '0');
       const closedSize = parseFloat(position.cum_closed_size || '0');
@@ -222,10 +222,10 @@ export interface AccountDetailsResponse {
 
 export async function fetchAccountDetails(userId: string | number): Promise<AccountDetailsData> {
   const cacheKey = `accountDetails_${userId}`;
-  
+
   return cacheManager.deduplicate(cacheKey, async () => {
-    const url = `https://mainnet-gw.sodex.dev/futures/fapi/user/v1/public/account/details?accountId=${userId}`;
-    
+    const url = `/api/perps/account-details?accountId=${userId}`;
+
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Failed to fetch account details: ${response.statusText}`);
@@ -262,10 +262,10 @@ export interface SpotBalanceResponse {
 
 export async function fetchSpotBalance(userId: string | number): Promise<SpotBalance[]> {
   const cacheKey = `spotBalance_${userId}`;
-  
+
   return cacheManager.deduplicate(cacheKey, async () => {
     const url = `https://mainnet-gw.sodex.dev/pro/p/user/balance/list?accountId=${userId}`;
-    
+
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Failed to fetch spot balance: ${response.statusText}`);
@@ -294,10 +294,10 @@ export interface MarkPriceResponse {
 
 export async function fetchMarkPrices(): Promise<MarkPrice[]> {
   const cacheKey = 'markPrices';
-  
+
   return cacheManager.deduplicate(cacheKey, async () => {
     const url = `https://mainnet-gw.sodex.dev/futures/fapi/market/v1/public/q/mark-price`;
-    
+
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`Failed to fetch mark prices: ${response.statusText}`);
@@ -325,10 +325,10 @@ interface FallbackMarkPriceResponse {
 
 export async function fetchFallbackMarkPrices(): Promise<Map<string, number>> {
   const cacheKey = 'fallbackMarkPrices';
-  
+
   return cacheManager.deduplicate(cacheKey, async () => {
     const url = `https://mainnet-gw.sodex.dev/api/v1/perps/markets/mark-prices`;
-    
+
     const response = await fetch(url);
     if (!response.ok) {
       console.warn('[v0] Failed to fetch fallback mark prices:', response.statusText);
@@ -358,12 +358,12 @@ export async function fetchFallbackMarkPrices(): Promise<Map<string, number>> {
 function normalizeTokenName(coin: string): string {
   // Remove "v" prefix
   let normalized = coin.startsWith('v') ? coin.slice(1) : coin;
-  
+
   // Handle special cases
   if (normalized === 'SOSO' || normalized === 'WSOSO') return 'SOSO';
   if (normalized === 'MAG7.ssi') return 'MAG7';
   if (normalized === 'USDC') return 'USDC';
-  
+
   return normalized;
 }
 
@@ -403,7 +403,7 @@ async function fetchCoinGeckoPrice(tokenName: string): Promise<number | null> {
     const response = await fetch(
       `https://api.coingecko.com/api/v3/simple/price?ids=${coinGeckoId}&vs_currencies=usd&x_cg_pro_api_key=CG-VoXjqhPDCQRHXxJHRjqH6hpr`
     );
-    
+
     if (!response.ok) {
       console.log('[v0] CoinGecko API error for', tokenName, ':', response.statusText);
       return null;
@@ -411,7 +411,7 @@ async function fetchCoinGeckoPrice(tokenName: string): Promise<number | null> {
 
     const data = await response.json();
     const price = data[coinGeckoId]?.usd;
-    
+
     if (price !== undefined) {
       console.log('[v0] Got CoinGecko price for', tokenName, ':', price);
       return price;
@@ -426,7 +426,7 @@ async function fetchCoinGeckoPrice(tokenName: string): Promise<number | null> {
 
 export async function fetchDetailedBalance(userId: string | number): Promise<BalanceData> {
   const cacheKey = `detailedBalance_${userId}`;
-  
+
   return cacheManager.deduplicate(cacheKey, async () => {
     try {
       const accountId = userId;
@@ -483,7 +483,7 @@ export async function fetchDetailedBalance(userId: string | number): Promise<Bal
 
 export async function fetchTotalBalance(userId: string | number): Promise<{ spotBalance: number; futuresBalance: number; totalBalance: number }> {
   const cacheKey = `totalBalance_${userId}`;
-  
+
   return cacheManager.deduplicate(cacheKey, async () => {
     try {
       // Fetch account details and spot balance in parallel

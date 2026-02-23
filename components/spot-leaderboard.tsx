@@ -190,7 +190,7 @@ export function SpotLeaderboard() {
     return (
       <div className="flex flex-col items-center justify-center py-20 animate-pulse">
         <div className="w-10 h-10 rounded-full border-2 border-orange-500/20 border-t-orange-500 animate-spin mb-4" />
-        <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest italic">Scanning market participants...</p>
+        <p className="text-[10px] text-muted-foreground/40 font-bold  ">Scanning market participants...</p>
       </div>
     )
   }
@@ -202,9 +202,9 @@ export function SpotLeaderboard() {
         <Card className="lg:col-span-12 p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-4">
-              <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/70 italic">Leaderboard Logic</h3>
+              <h3 className="text-[10px] font-bold  text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/70 ">Leaderboard Logic</h3>
               <div className="flex gap-2">
-                <div className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-400">
+                <div className="px-4 py-2 text-[10px] font-bold  rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-400">
                   Spot Volume
                 </div>
               </div>
@@ -231,8 +231,8 @@ export function SpotLeaderboard() {
           <div className="flex flex-col md:flex-row md:items-center gap-8">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
-                <span className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold uppercase tracking-widest">Matched Identity</span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">Spot Profile</span>
+                <span className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold ">Matched Identity</span>
+                <span className="text-xs font-semibold text-muted-foreground/60">Spot Profile</span>
               </div>
               <div className="flex items-center gap-3">
                 <p className="text-lg md:text-2xl font-bold text-foreground tracking-tight break-all">
@@ -253,11 +253,11 @@ export function SpotLeaderboard() {
 
             <div className="grid grid-cols-2 gap-6 min-w-[200px]">
               <div className="space-y-1 text-center">
-                <p className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Rank</p>
+                <p className="text-[8px] text-muted-foreground/30 font-bold  ">Rank</p>
                 <p className="text-2xl font-bold text-orange-400">#{foundResult.rank}</p>
               </div>
               <div className="space-y-1 text-center">
-                <p className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Volume</p>
+                <p className="text-[8px] text-muted-foreground/30 font-bold  ">Volume</p>
                 <p className="text-2xl font-bold text-foreground/80">${formatNumber(foundResult.vol)}</p>
               </div>
             </div>
@@ -268,18 +268,18 @@ export function SpotLeaderboard() {
       {/* Table Section */}
       <Card className="flex-1 overflow-hidden bg-card/10 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col p-6 md:p-10">
         <div className="flex items-center justify-between mb-8">
-          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/70 italic">
+          <h3 className="text-[10px] font-bold  text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/70 ">
             Spot Volume Dominance
           </h3>
-          <div className="text-[9px] text-muted-foreground/20 italic">DATA_SOURCE: SODEX_SPOT</div>
+          <div className="text-[9px] text-muted-foreground/20 ">DATA_SOURCE: SODEX_SPOT</div>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full border-separate border-spacing-y-2">
             <thead>
-              <tr className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/30 italic">
+              <tr className="text-[10px] font-bold  text-muted-foreground/30 ">
                 <th className="px-6 py-3 text-left">Rank</th>
-                <th className="px-6 py-3 text-left">Network Entity</th>
+                <th className="px-6 py-3 text-left">Address</th>
                 <th className="px-6 py-3 text-right">Volume</th>
               </tr>
             </thead>
@@ -310,7 +310,7 @@ export function SpotLeaderboard() {
         {/* Pagination Controls */}
         <div className="flex flex-col md:flex-row items-center justify-between mt-auto pt-10 gap-6">
           <div className="flex items-center gap-4">
-            <span className="text-[9px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Stride</span>
+            <span className="text-[9px] text-muted-foreground/30 font-bold  ">Stride</span>
             <div className="flex gap-1.5 p-1 bg-secondary/5 rounded-xl border border-border/10">
               {[10, 20, 50, 100].map((v) => (
                 <button
@@ -353,3 +353,4 @@ export function SpotLeaderboard() {
     </div>
   )
 }
+

@@ -338,3 +338,4 @@ export function TrackerSection({ initialSearchAddress }: { initialSearchAddress?
     <TrackerContent initialSearchAddress={initialSearchAddress} />
   );
 }
+

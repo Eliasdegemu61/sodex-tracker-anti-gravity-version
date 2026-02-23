@@ -91,7 +91,7 @@ export function PositionsTable() {
   return (
     <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">
+        <h3 className="text-xs font-semibold text-muted-foreground/60">
           position history
         </h3>
       </div>
@@ -100,7 +100,7 @@ export function PositionsTable() {
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full text-[11px] border-separate border-spacing-y-1.5">
           <thead>
-            <tr className="text-muted-foreground/40 font-bold uppercase tracking-widest italic">
+            <tr className="text-muted-foreground/40 font-bold  ">
               <th className="text-left py-2 px-3">Pair</th>
               <th className="text-left py-2 px-3">Side</th>
               <th className="text-left py-2 px-3">Mode</th>
@@ -166,11 +166,11 @@ export function PositionsTable() {
                 </div>
                 <div className="flex items-center gap-4 text-[10px]">
                   <div className="flex flex-col">
-                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-0.5 italic">Entry</span>
+                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-0.5 ">Entry</span>
                     <span className="text-muted-foreground/60">${position.entry.toFixed(2)}</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-0.5 italic">Realized</span>
+                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-0.5 ">Realized</span>
                     <span className={position.pnl >= 0 ? 'text-green-400 font-bold' : 'text-red-400 font-bold'}>
                       {position.pnl >= 0 ? '+' : ''}${Math.abs(position.pnl).toFixed(2)}
                     </span>
@@ -186,33 +186,33 @@ export function PositionsTable() {
             {expandedRows.has(position.id) && (
               <div className="p-4 border-t border-border/5 bg-secondary/[0.02] grid grid-cols-2 gap-y-4 gap-x-6">
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Close Price</span>
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Close Price</span>
                   <p className="font-bold text-[11px] text-foreground/80">${position.close.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</p>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Size</span>
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Size</span>
                   <p className="font-bold text-[11px] text-foreground/80">{position.size.toFixed(4)}</p>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Leverage</span>
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Leverage</span>
                   <p className="font-bold text-[11px] text-foreground/80">{position.leverage}</p>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Mode</span>
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Mode</span>
                   <p className="font-bold text-[11px] text-foreground/80 uppercase tracking-tighter">{position.marginMode}</p>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Fee</span>
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Fee</span>
                   <p className="font-bold text-[11px] text-muted-foreground/60">${position.fee.toFixed(4)}</p>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Return %</span>
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Return %</span>
                   <p className={`font-bold text-[11px] ${position.pnlPercent >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                     {position.pnlPercent >= 0 ? '+' : ''}{position.pnlPercent.toFixed(2)}%
                   </p>
                 </div>
                 <div className="col-span-2 flex flex-col pt-2 border-t border-border/5">
-                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Date Closed</span>
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Date Closed</span>
                   <p className=" text-[11px] text-muted-foreground/60">{position.createdAt}</p>
                 </div>
               </div>
@@ -224,7 +224,7 @@ export function PositionsTable() {
       {/* Pagination Controls */}
       <div className="flex flex-col md:flex-row items-center justify-between mt-8 pt-6 border-t border-border/5 gap-6">
         <div className="flex items-center gap-4">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/30 italic">Show Rows</span>
+          <span className="text-[10px] font-bold  text-muted-foreground/30 ">Show Rows</span>
           <div className="flex gap-1 p-1 bg-secondary/10 rounded-xl border border-border/5">
             {[5, 10, 20, 50].map((value) => (
               <button
@@ -243,7 +243,7 @@ export function PositionsTable() {
 
         <div className="flex items-center gap-4">
           <div className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-tighter">
-            {startIndex + 1}—{Math.min(endIndex, displayPositions.length)} <span className="text-muted-foreground/20 italic mx-1">of</span> {displayPositions.length}
+            {startIndex + 1}—{Math.min(endIndex, displayPositions.length)} <span className="text-muted-foreground/20  mx-1">of</span> {displayPositions.length}
           </div>
 
           <div className="flex items-center gap-2">
@@ -274,3 +274,4 @@ export function PositionsTable() {
     </Card>
   );
 }
+

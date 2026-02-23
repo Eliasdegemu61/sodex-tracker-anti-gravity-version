@@ -111,7 +111,7 @@ export function RankingCard({ walletAddress }: RankingCardProps) {
 
   const RankBadge = ({ label, rank }: { label: string; rank: number | null }) => (
     <div className="flex flex-col items-center p-4 rounded-2xl bg-secondary/10 border border-border/5 hover:border-accent/10 transition-all group">
-      <p className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-[0.2em] mb-3 text-center italic group-hover:text-muted-foreground/50 transition-colors">{label}</p>
+      <p className="text-[8px] text-muted-foreground/30 font-bold  mb-3 text-center  group-hover:text-muted-foreground/50 transition-colors">{label}</p>
       {rankData.isLoading ? (
         <div className="h-8 w-12 bg-secondary/20 rounded-lg animate-pulse" />
       ) : rank !== null ? (
@@ -122,14 +122,14 @@ export function RankingCard({ walletAddress }: RankingCardProps) {
           </p>
         </div>
       ) : (
-        <p className="text-[10px] text-muted-foreground/20 font-bold uppercase tracking-widest italic">unranked</p>
+        <p className="text-[10px] text-muted-foreground/20 font-bold  ">unranked</p>
       )}
     </div>
   );
 
   return (
     <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
-      <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-6">World Rankings</h3>
+      <h3 className="text-xs font-semibold text-muted-foreground/60 mb-6">World Rankings</h3>
       <div className="grid grid-cols-3 gap-3">
         <RankBadge label="Perps Vol" rank={rankData.perpsVolumeRank} />
         <RankBadge label="Spot Vol" rank={rankData.spotVolumeRank} />
@@ -138,3 +138,4 @@ export function RankingCard({ walletAddress }: RankingCardProps) {
     </Card>
   );
 }
+

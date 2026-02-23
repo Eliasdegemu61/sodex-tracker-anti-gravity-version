@@ -162,7 +162,7 @@ export function PortfolioHeatmap() {
   return (
     <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">Activity Heatmap</h3>
+        <h3 className="text-xs font-semibold text-muted-foreground/60">Activity Heatmap</h3>
         <div className="flex gap-1.5 p-1 bg-secondary/10 rounded-xl border border-border/5 overflow-x-auto max-w-full">
           {availableYears.map((year) => (
             <button
@@ -182,29 +182,29 @@ export function PortfolioHeatmap() {
       {/* Stats Section */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-10">
         <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
-          <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Net Return</p>
+          <p className="text-[7px] text-muted-foreground/30 font-bold  ">Net Return</p>
           <p className={`text-base font-bold ${stats.totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
             {stats.totalPnL >= 0 ? '+' : ''}${stats.totalPnL.toFixed(2)}
           </p>
         </div>
 
         <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
-          <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Volume</p>
+          <p className="text-[7px] text-muted-foreground/30 font-bold  ">Volume</p>
           <p className="text-base font-bold text-foreground/80">{stats.totalTrades}</p>
         </div>
 
         <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
-          <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Green</p>
+          <p className="text-[7px] text-muted-foreground/30 font-bold  ">Green</p>
           <p className="text-base font-bold text-green-400">{stats.wins}</p>
         </div>
 
         <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
-          <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Red</p>
+          <p className="text-[7px] text-muted-foreground/30 font-bold  ">Red</p>
           <p className="text-base font-bold text-red-400">{stats.losses}</p>
         </div>
 
         <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
-          <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Efficiency</p>
+          <p className="text-[7px] text-muted-foreground/30 font-bold  ">Efficiency</p>
           <p className="text-base font-bold text-foreground/80">{stats.winRate}%</p>
         </div>
       </div>
@@ -232,7 +232,7 @@ export function PortfolioHeatmap() {
       </div>
 
       <div className="flex items-center gap-4 mt-10">
-        <span className="text-[8px] text-muted-foreground/20 font-bold uppercase tracking-widest italic">Negative</span>
+        <span className="text-[8px] text-muted-foreground/20 font-bold  ">Negative</span>
         <div className="flex items-center gap-1.5">
           <div className="w-3 h-3 rounded-sm bg-red-900/80"></div>
           <div className="w-3 h-3 rounded-sm bg-red-700/60"></div>
@@ -242,8 +242,9 @@ export function PortfolioHeatmap() {
           <div className="w-3 h-3 rounded-sm bg-green-700/60"></div>
           <div className="w-3 h-3 rounded-sm bg-green-900/80"></div>
         </div>
-        <span className="text-[8px] text-muted-foreground/20 font-bold uppercase tracking-widest italic">Positive</span>
+        <span className="text-[8px] text-muted-foreground/20 font-bold  ">Positive</span>
       </div>
     </Card>
   );
 }
+

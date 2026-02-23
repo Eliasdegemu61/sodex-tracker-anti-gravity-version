@@ -117,11 +117,11 @@ export function PnLChart({ title = 'Profit & Loss' }: PnLChartProps) {
     <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">
+          <h3 className="text-xs font-semibold text-muted-foreground/60">
             {title}
           </h3>
           <Select value={timePeriod} onValueChange={(value: any) => setTimePeriod(value)}>
-            <SelectTrigger className="w-28 h-7 text-[10px] font-bold uppercase tracking-widest bg-secondary/10 border-border/10 rounded-lg">
+            <SelectTrigger className="w-28 h-7 text-[10px] font-bold  bg-secondary/10 border-border/10 rounded-lg">
               <SelectValue />
             </SelectTrigger>
             <SelectContent className="bg-card border-border/10">
@@ -146,7 +146,7 @@ export function PnLChart({ title = 'Profit & Loss' }: PnLChartProps) {
       <div className="h-[250px] w-full flex items-center justify-center relative">
         {!hasData ? (
           <div className="absolute inset-0 flex flex-col items-center justify-center bg-secondary/5 rounded-2xl border border-dashed border-border/10 transition-colors">
-            <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest italic">No data available...</p>
+            <p className="text-[10px] text-muted-foreground/40 font-bold  ">No data available...</p>
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
@@ -211,3 +211,4 @@ export function PnLChart({ title = 'Profit & Loss' }: PnLChartProps) {
     </Card>
   );
 }
+

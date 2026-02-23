@@ -51,8 +51,8 @@ export function TVLCard() {
   if (error) {
     return (
       <Card className="p-5 bg-card/20 backdrop-blur-xl border border-red-500/20 rounded-3xl">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400/60 italic mb-2">Sync Error</h3>
-        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic">TVL connectivity lost</p>
+        <h3 className="text-[10px] font-bold  text-red-400/60  mb-2">Sync Error</h3>
+        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase ">TVL connectivity lost</p>
       </Card>
     )
   }
@@ -60,17 +60,18 @@ export function TVLCard() {
   return (
     <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm group hover:border-orange-500/20 transition-all duration-300">
       <div className="flex items-center justify-between mb-2">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Value Locked</h3>
+        <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Value Locked</h3>
         <div className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
       </div>
       <div className="flex items-baseline gap-2">
         <div className="text-xl font-bold tracking-tight text-foreground">
           ${formatNumber(tvl)}
         </div>
-        <div className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic group-hover:text-orange-400/40 transition-colors">
+        <div className="text-[8px] text-muted-foreground/30 font-bold   group-hover:text-orange-400/40 transition-colors">
           MAG7.SSI
         </div>
       </div>
     </Card>
   )
 }
+

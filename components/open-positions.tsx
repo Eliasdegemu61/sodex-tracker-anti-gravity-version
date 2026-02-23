@@ -121,8 +121,8 @@ export function OpenPositions() {
     return (
       <Card className="p-12 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl text-center">
         <AlertCircle className="w-12 h-12 text-muted-foreground/20 mx-auto mb-3" />
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-2">No Account Bound</h3>
-        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic">Bind your account to view open positions</p>
+        <h3 className="text-xs font-semibold text-muted-foreground/60 mb-2">No Account Bound</h3>
+        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase ">Bind your account to view open positions</p>
       </Card>
     );
   }
@@ -132,7 +132,7 @@ export function OpenPositions() {
       <Card className="p-12 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl text-center">
         <div className="flex flex-col items-center justify-center p-8">
           <div className="w-8 h-8 rounded-full border-2 border-accent/20 border-t-accent animate-spin mb-4" />
-          <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest italic">scanning perimeter...</p>
+          <p className="text-[10px] text-muted-foreground/40 font-bold  ">scanning perimeter...</p>
         </div>
       </Card>
     );
@@ -143,8 +143,8 @@ export function OpenPositions() {
       <Card className="p-8 bg-card/20 backdrop-blur-xl border border-red-500/20 rounded-3xl">
         <div className="flex flex-col items-center justify-center py-6 text-center">
           <AlertCircle className="w-8 h-8 text-red-400/40 mb-3" />
-          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400/60 italic mb-1">Signal Interrupted</h3>
-          <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic">{error}</p>
+          <h3 className="text-[10px] font-bold  text-red-400/60  mb-1">Signal Interrupted</h3>
+          <p className="text-[10px] text-muted-foreground/30 font-bold uppercase ">{error}</p>
         </div>
       </Card>
     );
@@ -153,8 +153,8 @@ export function OpenPositions() {
   if (openPositions.length === 0) {
     return (
       <Card className="p-12 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl text-center">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-2">No Open Positions</h3>
-        <p className="text-[10px] text-muted-foreground/20 font-bold uppercase tracking-widest italic">All systems clear</p>
+        <h3 className="text-xs font-semibold text-muted-foreground/60 mb-2">No Open Positions</h3>
+        <p className="text-[10px] text-muted-foreground/20 font-bold  ">All systems clear</p>
       </Card>
     );
   }
@@ -163,13 +163,13 @@ export function OpenPositions() {
     <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm overflow-hidden">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
         <div className="flex items-center gap-3">
-          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">Open Positions</h3>
+          <h3 className="text-xs font-semibold text-muted-foreground/60">Open Positions</h3>
           <div className="flex items-center justify-center w-5 h-5 rounded-full bg-accent/10 border border-accent/20">
             <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
           </div>
         </div>
         {lastUpdateTime && (
-          <span className="text-[9px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">
+          <span className="text-[9px] text-muted-foreground/30 font-bold  ">
             Sync: {lastUpdateTime}
           </span>
         )}
@@ -179,19 +179,19 @@ export function OpenPositions() {
       {balanceData && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
           <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
-            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Wallet Balance</p>
+            <p className="text-[7px] text-muted-foreground/30 font-bold  ">Wallet Balance</p>
             <p className="text-xl font-bold tracking-tight text-foreground/80">${parseFloat(balanceData.walletBalance).toFixed(2)}</p>
-            <p className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest">perpetuals (usdc)</p>
+            <p className="text-[7px] text-muted-foreground/20 font-bold ">perpetuals (usdc)</p>
           </div>
           <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
-            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Liquidity</p>
+            <p className="text-[7px] text-muted-foreground/30 font-bold  ">Liquidity</p>
             <p className="text-xl font-bold tracking-tight text-green-400">${parseFloat(balanceData.availableBalance).toFixed(2)}</p>
-            <p className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest">Available to trade</p>
+            <p className="text-[7px] text-muted-foreground/20 font-bold ">Available to trade</p>
           </div>
           <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
-            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Exposure</p>
+            <p className="text-[7px] text-muted-foreground/30 font-bold  ">Exposure</p>
             <p className="text-xl font-bold tracking-tight text-orange-400">${parseFloat(balanceData.openOrderMarginFrozen).toFixed(2)}</p>
-            <p className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest">Margin in use</p>
+            <p className="text-[7px] text-muted-foreground/20 font-bold ">Margin in use</p>
           </div>
         </div>
       )}
@@ -200,7 +200,7 @@ export function OpenPositions() {
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full text-[11px] border-separate border-spacing-y-1.5">
           <thead>
-            <tr className="text-muted-foreground/40 font-bold uppercase tracking-widest italic">
+            <tr className="text-muted-foreground/40 font-bold  ">
               <th className="text-left py-2 px-3">Symbol</th>
               <th className="text-left py-2 px-3">Side</th>
               <th className="text-right py-2 px-3">Size</th>
@@ -263,11 +263,11 @@ export function OpenPositions() {
                 </div>
                 <div className="flex items-center gap-4 text-[10px]">
                   <div className="flex flex-col">
-                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-0.5 italic">Size</span>
+                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-0.5 ">Size</span>
                     <span className="text-muted-foreground/60">{position.size.toFixed(4)}</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-0.5 italic">uPnL</span>
+                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-0.5 ">uPnL</span>
                     <span className={position.unrealized >= 0 ? 'text-green-400 font-bold' : 'text-red-400 font-bold'}>
                       {position.unrealized >= 0 ? '+' : ''}${Math.abs(position.unrealized).toFixed(2)}
                     </span>
@@ -283,27 +283,27 @@ export function OpenPositions() {
             {expandedRows.has(position.id) && (
               <div className="p-4 border-t border-border/5 bg-secondary/[0.02] grid grid-cols-2 gap-y-4 gap-x-6">
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Entry</span>
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Entry</span>
                   <p className="font-bold text-[11px] text-foreground/80">${position.entry.toFixed(4)}</p>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Liq. Price</span>
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Liq. Price</span>
                   <p className="font-bold text-[11px] text-red-400/60">${position.liquidation.toFixed(4)}</p>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Leverage</span>
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Leverage</span>
                   <p className="font-bold text-[11px] text-accent/60">{position.leverage}x</p>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Margin</span>
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Margin</span>
                   <p className="font-bold text-[11px] text-foreground/60">${position.margin.toFixed(4)}</p>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Fee</span>
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Fee</span>
                   <p className="font-bold text-[11px] text-muted-foreground/40">${position.fee.toFixed(6)}</p>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Opened</span>
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Opened</span>
                   <p className="font-bold text-[9px] text-muted-foreground/30">{position.createdAt}</p>
                 </div>
               </div>
@@ -315,7 +315,7 @@ export function OpenPositions() {
       {/* Pagination Controls */}
       <div className="flex flex-col md:flex-row items-center justify-between mt-8 pt-8 border-t border-border/5 gap-6">
         <div className="flex items-center gap-3">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/30 italic">Rows</span>
+          <span className="text-[10px] font-bold  text-muted-foreground/30 ">Rows</span>
           <div className="flex gap-1.5 p-1 bg-secondary/10 rounded-xl border border-border/5">
             {[5, 10, 20, 50].map((value) => (
               <button
@@ -332,7 +332,7 @@ export function OpenPositions() {
           </div>
         </div>
 
-        <div className="text-[10px] font-bold text-muted-foreground/20 uppercase tracking-widest">
+        <div className="text-[10px] font-bold text-muted-foreground/20 ">
           {startIndex + 1}-{Math.min(endIndex, displayPositions.length)} of {displayPositions.length}
         </div>
 
@@ -341,7 +341,7 @@ export function OpenPositions() {
             onClick={handlePrevPage}
             disabled={currentPage === 1}
             variant="outline"
-            className="h-8 md:h-9 bg-secondary/10 border-border/10 rounded-xl hover:bg-accent/10 hover:text-accent transition-all text-[10px] font-bold uppercase tracking-widest"
+            className="h-8 md:h-9 bg-secondary/10 border-border/10 rounded-xl hover:bg-accent/10 hover:text-accent transition-all text-[10px] font-bold "
           >
             <ChevronLeft className="w-4 h-4 mr-1" />
             Prev
@@ -357,7 +357,7 @@ export function OpenPositions() {
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
             variant="outline"
-            className="h-8 md:h-9 bg-secondary/10 border-border/10 rounded-xl hover:bg-accent/10 hover:text-accent transition-all text-[10px] font-bold uppercase tracking-widest"
+            className="h-8 md:h-9 bg-secondary/10 border-border/10 rounded-xl hover:bg-accent/10 hover:text-accent transition-all text-[10px] font-bold "
           >
             Next
             <ChevronRight className="w-4 h-4 ml-1" />
@@ -367,3 +367,4 @@ export function OpenPositions() {
     </Card>
   );
 }
+

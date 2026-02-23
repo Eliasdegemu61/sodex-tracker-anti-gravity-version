@@ -67,7 +67,7 @@ export function VaultCard({ walletAddress }: { walletAddress: string }) {
     return (
       <Card className="p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse flex flex-col items-center justify-center min-h-[160px]">
         <div className="w-8 h-8 rounded-full border-2 border-accent/20 border-t-accent animate-spin mb-4" />
-        <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest italic">checking vault...</p>
+        <p className="text-[10px] text-muted-foreground/40 font-bold  ">checking vault...</p>
       </Card>
     );
   }
@@ -75,8 +75,8 @@ export function VaultCard({ walletAddress }: { walletAddress: string }) {
   if (error) {
     return (
       <Card className="p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl flex flex-col items-center justify-center min-h-[160px]">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-2">Vault</h3>
-        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic">{error}</p>
+        <h3 className="text-xs font-semibold text-muted-foreground/60 mb-2">Vault</h3>
+        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase ">{error}</p>
       </Card>
     );
   }
@@ -90,30 +90,30 @@ export function VaultCard({ walletAddress }: { walletAddress: string }) {
   return (
     <Card className="group relative overflow-hidden p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl transition-all hover:border-accent/10 shadow-sm">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">Vault</h3>
-        <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold uppercase tracking-widest"> MAG7.ssi </div>
+        <h3 className="text-xs font-semibold text-muted-foreground/60">Vault</h3>
+        <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold "> MAG7.ssi </div>
       </div>
 
       <div className="grid grid-cols-2 gap-6">
         {/* PnL */}
         <div className="space-y-2">
-          <p className="text-[9px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">management</p>
+          <p className="text-[9px] text-muted-foreground/30 font-bold  ">management</p>
           <div className="flex items-center gap-2">
             <span className={`text-xl font-bold tracking-tight ${isPnlPositive ? 'text-green-400' : 'text-red-400'}`}>
               {isPnlPositive ? '+' : ''}{vaultData.pnl.toFixed(4)}
             </span>
           </div>
-          <p className="text-[8px] text-muted-foreground/20 font-bold uppercase tracking-widest">Realized PnL</p>
+          <p className="text-[8px] text-muted-foreground/20 font-bold ">Realized PnL</p>
         </div>
 
         {/* Shares */}
         <div className="space-y-2 text-right">
-          <p className="text-[9px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">valuation</p>
+          <p className="text-[9px] text-muted-foreground/30 font-bold  ">valuation</p>
           <div className="flex flex-col items-end">
             <p className="text-xl font-bold tracking-tight text-foreground/80">
               ${(vaultData.sharesUsd || 0).toLocaleString('en-US', { maximumFractionDigits: 2 })}
             </p>
-            <p className="text-[8px] text-muted-foreground/20 font-bold uppercase tracking-widest mt-1">
+            <p className="text-[8px] text-muted-foreground/20 font-bold  mt-1">
               {vaultData.shares.toFixed(4)} units
             </p>
           </div>
@@ -122,3 +122,4 @@ export function VaultCard({ walletAddress }: { walletAddress: string }) {
     </Card>
   );
 }
+

@@ -113,7 +113,7 @@ export function AnnouncementsPanel() {
   if (isLoading) {
     return (
       <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-4">Scanning Broadcasts</h3>
+        <h3 className="text-xs font-semibold text-muted-foreground/60 mb-4">Scanning Broadcasts</h3>
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
             <div key={i} className="h-16 bg-secondary/10 rounded-2xl" />
@@ -126,18 +126,19 @@ export function AnnouncementsPanel() {
   if (announcements.length === 0) {
     return (
       <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic mb-4">System Broadcasts</h3>
-        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic text-center py-6">No active transmissions</p>
+        <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60 mb-4">Latest Announcement</h3>
+        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase  text-center py-6">No active transmissions</p>
       </Card>
     )
   }
 
   return (
     <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
-      <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic mb-4">System Broadcasts</h3>
+      <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60 mb-4">Latest Announcement</h3>
       <div className="space-y-3">
         {announcementItems}
       </div>
     </Card>
   )
 }
+

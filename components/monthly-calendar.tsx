@@ -156,7 +156,7 @@ export function MonthlyCalendar() {
       <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
         {/* Header with Month/Year and Navigation */}
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">{monthYear}</h3>
+          <h3 className="text-xs font-semibold text-muted-foreground/60">{monthYear}</h3>
           <div className="flex gap-2">
             <Button
               onClick={previousMonth}
@@ -178,21 +178,21 @@ export function MonthlyCalendar() {
         {/* Month Stats */}
         <div className="grid grid-cols-4 gap-3 mb-6 p-4 bg-secondary/5 rounded-2xl border border-border/5">
           <div className="text-center space-y-1">
-            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Return</p>
+            <p className="text-[7px] text-muted-foreground/30 font-bold  ">Return</p>
             <p className={`text-sm font-bold ${monthStats.totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
               {monthStats.totalPnL >= 0 ? '+' : ''}${Math.abs(monthStats.totalPnL).toFixed(0)}
             </p>
           </div>
           <div className="text-center space-y-1">
-            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Volume</p>
+            <p className="text-[7px] text-muted-foreground/30 font-bold  ">Volume</p>
             <p className="text-sm font-bold text-foreground/80">{monthStats.totalTrades}</p>
           </div>
           <div className="text-center space-y-1">
-            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">green</p>
+            <p className="text-[7px] text-muted-foreground/30 font-bold  ">green</p>
             <p className="text-sm font-bold text-green-400">{monthStats.winningDays}</p>
           </div>
           <div className="text-center space-y-1">
-            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">red</p>
+            <p className="text-[7px] text-muted-foreground/30 font-bold  ">red</p>
             <p className="text-sm font-bold text-red-400">{monthStats.losingDays}</p>
           </div>
         </div>
@@ -202,7 +202,7 @@ export function MonthlyCalendar() {
           {weekDaysFull.map((day) => (
             <div
               key={day}
-              className="text-center text-[8px] font-bold text-muted-foreground/20 tracking-widest uppercase italic"
+              className="text-center text-[8px] font-bold text-muted-foreground/20 tracking-widest uppercase "
             >
               {day[0]}
             </div>
@@ -248,13 +248,13 @@ export function MonthlyCalendar() {
             {/* Header */}
             <div className="flex items-center justify-between p-8 border-b border-white/5">
               <div>
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-2">
+                <h3 className="text-xs font-semibold text-muted-foreground/60 mb-2">
                   {selectedDate?.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
                 </h3>
                 <p className={`text-2xl font-bold tracking-tight ${selectedDayTrades.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                   {selectedDayTrades.pnl >= 0 ? '+' : ''}${selectedDayTrades.pnl.toFixed(2)}
                 </p>
-                <p className="text-[8px] text-muted-foreground/20 font-bold uppercase tracking-widest mt-1">Daily Realized PnL</p>
+                <p className="text-[8px] text-muted-foreground/20 font-bold  mt-1">Daily Realized PnL</p>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -274,20 +274,20 @@ export function MonthlyCalendar() {
                       <span className={`text-sm font-bold ${trade.realizedPnlValue >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                         {trade.realizedPnlValue >= 0 ? '+' : ''}${trade.realizedPnlValue.toFixed(2)}
                       </span>
-                      <span className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest">Realized</span>
+                      <span className="text-[7px] text-muted-foreground/20 font-bold ">Realized</span>
                     </div>
                   </div>
                   <div className="grid grid-cols-3 gap-4">
                     <div className="flex flex-col">
-                      <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic mb-1">Position</span>
+                      <span className="text-[8px] text-muted-foreground/30 font-bold   mb-1">Position</span>
                       <span className="text-[11px] font-bold text-foreground/70">{trade.positionSideLabel} {trade.leverage}x</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic mb-1">Entry / Close</span>
+                      <span className="text-[8px] text-muted-foreground/30 font-bold   mb-1">Entry / Close</span>
                       <span className="text-[11px] font-bold text-foreground/70">${parseFloat(trade.avg_entry_price).toFixed(2)} / ${parseFloat(trade.avg_close_price).toFixed(2)}</span>
                     </div>
                     <div className="flex flex-col text-right">
-                      <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic mb-1">Size</span>
+                      <span className="text-[8px] text-muted-foreground/30 font-bold   mb-1">Size</span>
                       <span className="text-[11px] font-bold text-foreground/70">{trade.closedSize.toFixed(4)}</span>
                     </div>
                   </div>
@@ -299,7 +299,7 @@ export function MonthlyCalendar() {
             <div className="p-8 border-t border-white/5 bg-secondary/[0.02]">
               <Button
                 onClick={() => setIsModalOpen(false)}
-                className="w-full h-12 bg-secondary/10 border-border/10 rounded-2xl hover:bg-accent/10 hover:text-accent transition-all text-xs font-bold uppercase tracking-widest"
+                className="w-full h-12 bg-secondary/10 border-border/10 rounded-2xl hover:bg-accent/10 hover:text-accent transition-all text-xs font-bold "
                 variant="outline"
               >
                 Close Connection
@@ -311,3 +311,4 @@ export function MonthlyCalendar() {
     </>
   );
 }
+

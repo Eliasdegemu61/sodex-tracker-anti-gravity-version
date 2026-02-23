@@ -101,7 +101,7 @@ export function FundFlowChart() {
     if (isLoading) {
         return (
             <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] animate-pulse mt-4">
-                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-8">Interrogating Flows</h3>
+                <h3 className="text-xs font-semibold text-muted-foreground/60 mb-8">Interrogating Flows</h3>
                 <div className="h-64 bg-secondary/10 rounded-2xl" />
             </Card>
         )
@@ -111,8 +111,8 @@ export function FundFlowChart() {
         <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col mt-4">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
                 <div>
-                    <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Fund Velocity</h3>
-                    <p className="text-[8px] text-muted-foreground/10 mt-1 italic uppercase tracking-widest">Real-time custody pulse</p>
+                    <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Fund Velocity</h3>
+                    <p className="text-[8px] text-muted-foreground/10 mt-1  ">Real-time custody pulse</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
                     <Select value={selectedToken} onValueChange={setSelectedToken}>
@@ -130,7 +130,7 @@ export function FundFlowChart() {
                             <button
                                 key={range}
                                 onClick={() => setTimeRange(range)}
-                                className={`text-[9px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-lg transition-all ${timeRange === range
+                                className={`text-[9px] font-bold  px-3 py-1.5 rounded-lg transition-all ${timeRange === range
                                     ? 'bg-orange-500 text-white shadow-lg'
                                     : 'text-muted-foreground/40 hover:text-foreground hover:bg-secondary/20'
                                     }`}
@@ -187,7 +187,7 @@ export function FundFlowChart() {
                                         const dateStr = !isNaN(d.getTime()) ? d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : label;
                                         return (
                                             <div className="bg-card/90 backdrop-blur-xl border border-border/20 p-4 rounded-2xl shadow-2xl min-w-[160px]">
-                                                <p className="text-[9px] text-muted-foreground/40 font-bold uppercase tracking-widest italic mb-3">{dateStr}</p>
+                                                <p className="text-[9px] text-muted-foreground/40 font-bold   mb-3">{dateStr}</p>
                                                 <div className="space-y-2">
                                                     {payload.map((entry: any, index: number) => (
                                                         <div key={index} className="flex items-center justify-between gap-4">
@@ -249,7 +249,7 @@ export function FundFlowChart() {
                     </ResponsiveContainer>
                 ) : (
                     <div className="flex h-full items-center justify-center">
-                        <p className="text-[10px] text-muted-foreground/20 font-bold uppercase tracking-widest italic">Data stream offline for {selectedToken}</p>
+                        <p className="text-[10px] text-muted-foreground/20 font-bold  ">Data stream offline for {selectedToken}</p>
                     </div>
                 )}
             </div>
@@ -258,11 +258,11 @@ export function FundFlowChart() {
                 <div className="flex items-center gap-6">
                     <div className="flex items-center gap-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                        <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic leading-none">Global Deposits</span>
+                        <span className="text-[8px] text-muted-foreground/30 font-bold   leading-none">Global Deposits</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                        <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic leading-none">Global Withdrawals</span>
+                        <span className="text-[8px] text-muted-foreground/30 font-bold   leading-none">Global Withdrawals</span>
                     </div>
                 </div>
 
@@ -275,7 +275,7 @@ export function FundFlowChart() {
                     />
                     <label
                         htmlFor="show-net-remaining"
-                        className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/60 cursor-pointer select-none"
+                        className="text-[9px] font-bold  text-muted-foreground/60 cursor-pointer select-none"
                     >
                         Trace Retention
                     </label>
@@ -284,3 +284,4 @@ export function FundFlowChart() {
         </Card>
     )
 }
+

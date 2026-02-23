@@ -12,7 +12,7 @@ export function TopPairsWidget() {
   if (isLoading || !volumeData) {
     return (
       <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] animate-pulse">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-8">Auditing Volume</h3>
+        <h3 className="text-xs font-semibold text-muted-foreground/60 mb-8">Auditing Volume</h3>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="h-16 bg-secondary/10 rounded-2xl" />
@@ -40,26 +40,26 @@ export function TopPairsWidget() {
   return (
     <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col">
       <div className="flex items-center justify-between mb-8">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Historical Dominance</h3>
+        <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Historical Dominance</h3>
         <TrendingUp className="w-4 h-4 text-orange-400/40" />
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-8">
         <div className="p-4 bg-secondary/5 border border-border/5 rounded-2xl flex flex-col items-center">
-          <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic mb-1">Total Spot</span>
+          <span className="text-[8px] text-muted-foreground/30 font-bold   mb-1">Total Spot</span>
           <span className="text-xl font-bold text-orange-400">${formatVolume(stats.total_spot_volume)}</span>
         </div>
         <div className="p-4 bg-secondary/5 border border-border/5 rounded-2xl flex flex-col items-center">
-          <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic mb-1">Total Futures</span>
+          <span className="text-[8px] text-muted-foreground/30 font-bold   mb-1">Total Futures</span>
           <span className="text-xl font-bold text-orange-600">${formatVolume(stats.total_futures_volume)}</span>
         </div>
       </div>
 
       <Tabs defaultValue="all" className="w-full">
         <TabsList className="grid grid-cols-3 bg-secondary/5 p-1 rounded-2xl border border-border/5">
-          <TabsTrigger value="all" className="text-[10px] font-bold uppercase tracking-widest py-2 rounded-xl data-[state=active]:bg-orange-500 data-[state=active]:text-white transition-all">All</TabsTrigger>
-          <TabsTrigger value="spot" className="text-[10px] font-bold uppercase tracking-widest py-2 rounded-xl data-[state=active]:bg-orange-400 data-[state=active]:text-white transition-all">Spot</TabsTrigger>
-          <TabsTrigger value="futures" className="text-[10px] font-bold uppercase tracking-widest py-2 rounded-xl data-[state=active]:bg-orange-600 data-[state=active]:text-white transition-all">Futures</TabsTrigger>
+          <TabsTrigger value="all" className="text-[10px] font-bold  py-2 rounded-xl data-[state=active]:bg-orange-500 data-[state=active]:text-white transition-all">All</TabsTrigger>
+          <TabsTrigger value="spot" className="text-[10px] font-bold  py-2 rounded-xl data-[state=active]:bg-orange-400 data-[state=active]:text-white transition-all">Spot</TabsTrigger>
+          <TabsTrigger value="futures" className="text-[10px] font-bold  py-2 rounded-xl data-[state=active]:bg-orange-600 data-[state=active]:text-white transition-all">Futures</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="mt-6 space-y-2 outline-none">
@@ -80,7 +80,7 @@ export function TopPairsWidget() {
                 </div>
                 <div className="flex flex-col">
                   <span className="text-[12px] font-bold text-foreground/80">{pair.pair}</span>
-                  <span className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest italic">{pair.pair.includes('-') ? 'Futures' : 'Spot'}</span>
+                  <span className="text-[7px] text-muted-foreground/20 font-bold  ">{pair.pair.includes('-') ? 'Futures' : 'Spot'}</span>
                 </div>
               </div>
               <span className="text-[12px] font-bold text-orange-400/90">${formatVolume(pair.volume)}</span>
@@ -115,3 +115,4 @@ export function TopPairsWidget() {
     </Card>
   )
 }
+

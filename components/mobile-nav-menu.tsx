@@ -91,7 +91,7 @@ export function MobileNavMenu({ currentPage, onNavigate }: MobileNavMenuProps) {
               >
                 <div className="flex items-center gap-4">
                   <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-orange-400/60'}`} />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] italic">{item.label}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] ">{item.label}</span>
                 </div>
                 {isActive && <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />}
               </button>
@@ -100,7 +100,7 @@ export function MobileNavMenu({ currentPage, onNavigate }: MobileNavMenuProps) {
 
           <div className="mt-4 pt-4 border-t border-border/10">
             <a href="https://sodex.com/join/TRADING" target="_blank" rel="noopener noreferrer">
-              <Button className="w-full h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] italic shadow-lg shadow-orange-500/20">
+              <Button className="w-full h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl text-[10px] font-bold   shadow-lg shadow-orange-500/20">
                 Execute Trade
               </Button>
             </a>
@@ -110,3 +110,4 @@ export function MobileNavMenu({ currentPage, onNavigate }: MobileNavMenuProps) {
     </>
   );
 }
+

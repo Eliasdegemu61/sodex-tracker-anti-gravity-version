@@ -147,7 +147,7 @@ export function AssetFlowCard({ walletAddress }: AssetFlowCardProps) {
     return (
       <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse flex flex-col items-center justify-center min-h-[200px]">
         <div className="w-8 h-8 rounded-full border-2 border-accent/20 border-t-accent animate-spin mb-4" />
-        <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest italic">checking holdings...</p>
+        <p className="text-[10px] text-muted-foreground/40 font-bold  ">checking holdings...</p>
       </Card>
     );
   }
@@ -155,8 +155,8 @@ export function AssetFlowCard({ walletAddress }: AssetFlowCardProps) {
   if (error) {
     return (
       <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl flex flex-col items-center justify-center min-h-[200px]">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-2">Asset Allocation</h3>
-        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic">{error}</p>
+        <h3 className="text-xs font-semibold text-muted-foreground/60 mb-2">Asset Allocation</h3>
+        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase ">{error}</p>
       </Card>
     );
   }
@@ -164,8 +164,8 @@ export function AssetFlowCard({ walletAddress }: AssetFlowCardProps) {
   if (assets.length === 0) {
     return (
       <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl flex flex-col items-center justify-center min-h-[200px]">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-2">Asset Allocation</h3>
-        <p className="text-[10px] text-muted-foreground/20 font-bold uppercase italic">no holdings detected</p>
+        <h3 className="text-xs font-semibold text-muted-foreground/60 mb-2">Asset Allocation</h3>
+        <p className="text-[10px] text-muted-foreground/20 font-bold uppercase ">no holdings detected</p>
       </Card>
     );
   }
@@ -175,7 +175,7 @@ export function AssetFlowCard({ walletAddress }: AssetFlowCardProps) {
       <div className="space-y-6">
         {/* Holdings List */}
         <div className="space-y-4">
-          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">Asset Allocation</h3>
+          <h3 className="text-xs font-semibold text-muted-foreground/60">Asset Allocation</h3>
 
           <div className="grid grid-cols-1 gap-2">
             {assets.map((asset, idx) => {
@@ -213,7 +213,7 @@ export function AssetFlowCard({ walletAddress }: AssetFlowCardProps) {
                         {getDisplayName(asset.coin)}
                       </span>
                       {asset.isFuture && (
-                        <span className="text-[7px] text-accent/40 font-bold uppercase tracking-widest italic leading-none mt-0.5">futures</span>
+                        <span className="text-[7px] text-accent/40 font-bold   leading-none mt-0.5">futures</span>
                       )}
                     </div>
                   </div>
@@ -232,3 +232,4 @@ export function AssetFlowCard({ walletAddress }: AssetFlowCardProps) {
     </Card>
   );
 }
+

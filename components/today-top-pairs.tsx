@@ -17,8 +17,8 @@ export function TodayTopPairs() {
   if (error) {
     return (
       <Card className="p-5 bg-card/20 backdrop-blur-xl border border-red-500/20 rounded-3xl">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400/60 italic mb-2">Sync Error</h3>
-        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic">{error}</p>
+        <h3 className="text-[10px] font-bold  text-red-400/60  mb-2">Sync Error</h3>
+        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase ">{error}</p>
       </Card>
     )
   }
@@ -47,8 +47,8 @@ export function TodayTopPairs() {
     <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm overflow-hidden flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div className="flex flex-col">
-          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Top Performers</h3>
-          <span className="text-[8px] text-muted-foreground/20 italic">{todayData.date}</span>
+          <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">todays Top Performers perps</h3>
+          <span className="text-[8px] text-muted-foreground/20 ">{todayData.date}</span>
         </div>
         <TrendingUp className="w-4 h-4 text-orange-400/40" />
       </div>
@@ -87,9 +87,10 @@ export function TodayTopPairs() {
             )
           })
         ) : (
-          <div className="text-[10px] text-muted-foreground/30 font-bold uppercase tracking-widest italic text-center py-6">Identity Shielded</div>
+          <div className="text-[10px] text-muted-foreground/30 font-bold   text-center py-6">Identity Shielded</div>
         )}
       </div>
     </Card>
   )
 }
+

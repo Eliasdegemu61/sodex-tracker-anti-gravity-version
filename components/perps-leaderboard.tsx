@@ -128,7 +128,7 @@ export function PerpsLeaderboard() {
     return (
       <div className="flex flex-col items-center justify-center py-20 animate-pulse">
         <div className="w-10 h-10 rounded-full border-2 border-orange-500/20 border-t-orange-500 animate-spin mb-4" />
-        <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest italic">Indexing global rankings...</p>
+        <p className="text-[10px] text-muted-foreground/40 font-bold  ">Indexing global rankings...</p>
       </div>
     )
   }
@@ -140,21 +140,21 @@ export function PerpsLeaderboard() {
         <Card className="lg:col-span-12 p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-4">
-              <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/70 italic">Leaderboard Logic</h3>
+              <h3 className="text-[10px] font-bold  text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/70 ">Leaderboard Logic</h3>
               <div className="flex gap-2">
                 <button
                   onClick={() => { setSortBy('pnl'); setCurrentPage(1); setSearchAddress(''); }}
-                  className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all border ${sortBy === 'pnl' ? 'bg-orange-500/10 border-orange-500/20 text-orange-400' : 'bg-secondary/5 border-border/5 text-muted-foreground/40 hover:text-foreground'
+                  className={`px-4 py-2 text-[10px] font-bold  rounded-xl transition-all border ${sortBy === 'pnl' ? 'bg-orange-500/10 border-orange-500/20 text-orange-400' : 'bg-secondary/5 border-border/5 text-muted-foreground/40 hover:text-foreground'
                     }`}
                 >
-                  PnL Performance
+                  PnL
                 </button>
                 <button
                   onClick={() => { setSortBy('volume'); setCurrentPage(1); setSearchAddress(''); }}
-                  className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all border ${sortBy === 'volume' ? 'bg-orange-500/10 border-orange-500/20 text-orange-400' : 'bg-secondary/5 border-border/5 text-muted-foreground/40 hover:text-foreground'
+                  className={`px-4 py-2 text-[10px] font-bold  rounded-xl transition-all border ${sortBy === 'volume' ? 'bg-orange-500/10 border-orange-500/20 text-orange-400' : 'bg-secondary/5 border-border/5 text-muted-foreground/40 hover:text-foreground'
                     }`}
                 >
-                  Volume Intensity
+                  Volume
                 </button>
               </div>
             </div>
@@ -163,7 +163,7 @@ export function PerpsLeaderboard() {
               <div className="relative">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground/50" />
                 <Input
-                  placeholder="Scrutinize address..."
+                  placeholder="Search address..."
                   value={searchAddress}
                   onChange={(e) => { setSearchAddress(e.target.value); setCurrentPage(1); }}
                   className="h-11 pl-10 bg-background/20 border-border/10 rounded-xl text-sm placeholder:text-muted-foreground/30 focus:border-orange-500/20 focus:ring-0"
@@ -180,8 +180,8 @@ export function PerpsLeaderboard() {
           <div className="flex flex-col md:flex-row md:items-center gap-8">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
-                <span className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold uppercase tracking-widest">Matched Identity</span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">Global Profile</span>
+                <span className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold ">Matched Identity</span>
+                <span className="text-xs font-semibold text-muted-foreground/60">Global Profile</span>
               </div>
               <div className="flex items-center gap-3">
                 <p className="text-lg md:text-2xl font-bold text-foreground tracking-tight break-all">
@@ -202,15 +202,15 @@ export function PerpsLeaderboard() {
 
             <div className="grid grid-cols-3 gap-6 min-w-[300px]">
               <div className="space-y-1 text-center">
-                <p className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Rank</p>
+                <p className="text-[8px] text-muted-foreground/30 font-bold  ">Rank</p>
                 <p className="text-2xl font-bold text-orange-400">#{searchResult.rank}</p>
               </div>
               <div className="space-y-1 text-center">
-                <p className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Volume</p>
+                <p className="text-[8px] text-muted-foreground/30 font-bold  ">Volume</p>
                 <p className="text-2xl font-bold text-foreground/80">${formatNumber(searchResult.vol)}</p>
               </div>
               <div className="space-y-1 text-center">
-                <p className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">PnL</p>
+                <p className="text-[8px] text-muted-foreground/30 font-bold  ">PnL</p>
                 <p className={`text-2xl font-bold ${searchResult.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                   {searchResult.pnl >= 0 ? '+' : ''}${formatNumber(Math.abs(searchResult.pnl))}
                 </p>
@@ -223,18 +223,18 @@ export function PerpsLeaderboard() {
       {/* Table Section */}
       <Card className="flex-1 overflow-hidden bg-card/10 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col p-6 md:p-10">
         <div className="flex items-center justify-between mb-8">
-          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/70 italic">
+          <h3 className="text-[10px] font-bold  text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/70 ">
             {sortBy === 'volume' ? 'Volume Dominance' : 'Profit Efficiency'} Rankings
           </h3>
-          <div className="text-[9px] text-muted-foreground/20 italic">DATA_SOURCE: SODEX_MAINNET</div>
+          <div className="text-[9px] text-muted-foreground/20 ">DATA_SOURCE: SODEX_MAINNET</div>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full border-separate border-spacing-y-2">
             <thead>
-              <tr className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/30 italic">
-                <th className="px-6 py-3 text-left">Descriptor</th>
-                <th className="px-6 py-3 text-left">Network Entity</th>
+              <tr className="text-[10px] font-bold  text-muted-foreground/30 ">
+                <th className="px-6 py-3 text-left">Rank</th>
+                <th className="px-6 py-3 text-left">Address</th>
                 <th className="px-6 py-3 text-right">Volume</th>
                 <th className="px-6 py-3 text-right">PnL Flow</th>
               </tr>
@@ -269,7 +269,7 @@ export function PerpsLeaderboard() {
         {/* Pagination Controls */}
         <div className="flex flex-col md:flex-row items-center justify-between mt-auto pt-10 gap-6">
           <div className="flex items-center gap-4">
-            <span className="text-[9px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Stride</span>
+            <span className="text-[9px] text-muted-foreground/30 font-bold  ">Stride</span>
             <div className="flex gap-1.5 p-1 bg-secondary/5 rounded-xl border border-border/10">
               {[10, 20, 50, 100].map((v) => (
                 <button
@@ -312,3 +312,4 @@ export function PerpsLeaderboard() {
     </div>
   )
 }
+

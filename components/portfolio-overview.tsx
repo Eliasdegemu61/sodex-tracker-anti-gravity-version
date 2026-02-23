@@ -325,7 +325,7 @@ export function PortfolioOverview() {
           <Card key={idx} className="group relative overflow-hidden p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl transition-all hover:border-accent/30 shadow-sm">
             <div className="flex items-start justify-between relative z-10">
               <div className="flex-1 min-w-0">
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-2">
+                <p className="text-xs font-semibold text-muted-foreground/60 mb-2">
                   {stat.label}
                 </p>
 
@@ -342,7 +342,7 @@ export function PortfolioOverview() {
                     </div>
 
                     {stat.subtitle && (
-                      <p className="text-[9px] text-accent/50 font-bold uppercase tracking-widest italic">
+                      <p className="text-[9px] text-accent/50 font-bold  ">
                         {stat.subtitle}
                       </p>
                     )}
@@ -393,3 +393,4 @@ export function PortfolioOverview() {
     </div>
   );
 }
+

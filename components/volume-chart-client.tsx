@@ -59,13 +59,13 @@ export function VolumeChartClient({ data, chartData }: VolumeChartClientProps) {
   return (
     <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col">
       <div className="flex items-center justify-between mb-8">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Volume Dynamics</h3>
+        <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Volume Dynamics</h3>
         <div className="flex gap-1 bg-secondary/10 p-1 rounded-xl border border-border/5">
           {(['1w', '1m', '3m', '6m', '1y'] as TimeRange[]).map((range) => (
             <button
               key={range}
               onClick={() => setTimeRange(range)}
-              className={`text-[9px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-lg transition-all ${timeRange === range
+              className={`text-[9px] font-bold  px-3 py-1.5 rounded-lg transition-all ${timeRange === range
                 ? 'bg-orange-500 text-white shadow-lg'
                 : 'text-muted-foreground/40 hover:text-foreground hover:bg-secondary/20'
                 }`}
@@ -115,7 +115,7 @@ export function VolumeChartClient({ data, chartData }: VolumeChartClientProps) {
                 if (active && payload && payload.length) {
                   return (
                     <div className="bg-card/90 backdrop-blur-xl border border-border/20 p-4 rounded-2xl shadow-2xl min-w-[140px]">
-                      <p className="text-[9px] text-muted-foreground/40 font-bold uppercase tracking-widest italic mb-3">{label}</p>
+                      <p className="text-[9px] text-muted-foreground/40 font-bold   mb-3">{label}</p>
                       <div className="space-y-2">
                         {payload.map((entry: any, index: number) => (
                           <div key={index} className="flex items-center justify-between gap-4">
@@ -165,15 +165,16 @@ export function VolumeChartClient({ data, chartData }: VolumeChartClientProps) {
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-orange-400" />
-            <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Spot Ledger</span>
+            <span className="text-[8px] text-muted-foreground/30 font-bold  ">Spot Ledger</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-1.5 h-1.5 rounded-full bg-orange-600" />
-            <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Futures Orderbook</span>
+            <span className="text-[8px] text-muted-foreground/30 font-bold  ">Futures Orderbook</span>
           </div>
         </div>
-        <span className="text-[8px] text-muted-foreground/10 italic">UNIT: MILLION_USD</span>
+        <span className="text-[8px] text-muted-foreground/10 ">UNIT: MILLION_USD</span>
       </div>
     </Card>
   )
 }
+

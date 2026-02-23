@@ -126,3 +126,4 @@ export function WalletBindDialog({ open, onOpenChange }: WalletBindDialogProps) 
     </Dialog>
   );
 }
+

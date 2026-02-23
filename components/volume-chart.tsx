@@ -40,3 +40,4 @@ export function VolumeChart() {
 
   return <VolumeChartClient data={null} chartData={chartData} />
 }
+

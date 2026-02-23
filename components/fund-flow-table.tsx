@@ -205,7 +205,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
       <Card className="p-12 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl text-center">
         <div className="flex flex-col items-center justify-center p-8">
           <div className="w-8 h-8 rounded-full border-2 border-accent/20 border-t-accent animate-spin mb-4" />
-          <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest italic">Interrogating ledgers...</p>
+          <p className="text-[10px] text-muted-foreground/40 font-bold  ">Interrogating ledgers...</p>
         </div>
       </Card>
     );
@@ -216,9 +216,9 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
       <Card className="p-8 bg-card/20 backdrop-blur-xl border border-red-500/20 rounded-3xl">
         <div className="flex flex-col items-center justify-center py-6 text-center">
           <AlertCircle className="w-8 h-8 text-red-400/40 mb-3" />
-          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400/60 italic mb-1">Stream Blocked</h3>
-          <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic">{error}</p>
-          <Button onClick={fetchFundFlow} variant="outline" size="sm" className="mt-4 bg-secondary/10 border-border/10 rounded-xl text-[10px] font-bold uppercase tracking-widest">
+          <h3 className="text-[10px] font-bold  text-red-400/60  mb-1">Stream Blocked</h3>
+          <p className="text-[10px] text-muted-foreground/30 font-bold uppercase ">{error}</p>
+          <Button onClick={fetchFundFlow} variant="outline" size="sm" className="mt-4 bg-secondary/10 border-border/10 rounded-xl text-[10px] font-bold ">
             Retry Sync
           </Button>
         </div>
@@ -229,8 +229,8 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
   if (flows.length === 0) {
     return (
       <Card className="p-12 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl text-center">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-2">Fund Flow</h3>
-        <p className="text-[10px] text-muted-foreground/20 font-bold uppercase tracking-widest italic">No transfers detected</p>
+        <h3 className="text-xs font-semibold text-muted-foreground/60 mb-2">Fund Flow</h3>
+        <p className="text-[10px] text-muted-foreground/20 font-bold  ">No transfers detected</p>
       </Card>
     );
   }
@@ -238,24 +238,24 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
   return (
     <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm overflow-hidden">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
-        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">Fund Flow</h3>
+        <h3 className="text-xs font-semibold text-muted-foreground/60">Fund Flow</h3>
 
         {/* Netflow Info */}
         <div className="grid grid-cols-3 gap-3">
           <div className="bg-green-500/5 border border-green-500/10 rounded-2xl p-4 space-y-1">
-            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic text-center">Inflow</p>
+            <p className="text-[7px] text-muted-foreground/30 font-bold   text-center">Inflow</p>
             <p className="text-sm font-bold text-green-400 text-center">
               ${netflowStats.deposits.toLocaleString('en-US', { maximumFractionDigits: 0 })}
             </p>
           </div>
           <div className="bg-red-500/5 border border-red-500/10 rounded-2xl p-4 space-y-1">
-            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic text-center">Outflow</p>
+            <p className="text-[7px] text-muted-foreground/30 font-bold   text-center">Outflow</p>
             <p className="text-sm font-bold text-red-400 text-center">
               ${netflowStats.withdrawals.toLocaleString('en-US', { maximumFractionDigits: 0 })}
             </p>
           </div>
           <div className={`rounded-2xl p-4 border space-y-1 ${netflowStats.netflow >= 0 ? 'bg-green-500/5 border-green-500/10' : 'bg-red-500/5 border-red-500/10'}`}>
-            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic text-center">Net</p>
+            <p className="text-[7px] text-muted-foreground/30 font-bold   text-center">Net</p>
             <p className={`text-sm font-bold text-center ${netflowStats.netflow >= 0 ? 'text-green-400' : 'text-red-400'}`}>
               ${(netflowStats.netflow >= 0 ? '+' : '')}{netflowStats.netflow.toLocaleString('en-US', { maximumFractionDigits: 0 })}
             </p>
@@ -276,7 +276,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
               setFilterType(type.id as any);
               setCurrentPage(1);
             }}
-            className={`px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-xl transition-all border ${filterType === type.id
+            className={`px-4 py-2 text-[10px] font-bold  rounded-xl transition-all border ${filterType === type.id
               ? `bg-${type.color}/10 border-${type.color}/20 text-${type.color === 'accent' ? 'foreground' : type.color}`
               : 'bg-secondary/5 border-border/5 text-muted-foreground/40 hover:text-foreground hover:bg-secondary/10'
               }`}
@@ -290,7 +290,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
       <div className="hidden md:block overflow-x-auto">
         <table className="w-full text-[11px] border-separate border-spacing-y-1.5">
           <thead>
-            <tr className="text-muted-foreground/40 font-bold uppercase tracking-widest italic">
+            <tr className="text-muted-foreground/40 font-bold  ">
               <th className="text-left py-2 px-3">Type</th>
               <th className="text-left py-2 px-3">Asset</th>
               <th className="text-right py-2 px-3">Amount</th>
@@ -318,7 +318,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
                   {isDeposit(flow.type) ? '+' : '-'} {formatAmount(flow.amount, flow.decimals)}
                 </td>
                 <td className="py-3 px-2">
-                  <span className="px-2 py-0.5 rounded-lg bg-secondary/20 text-muted-foreground/50 text-[9px] font-bold uppercase tracking-widest">
+                  <span className="px-2 py-0.5 rounded-lg bg-secondary/20 text-muted-foreground/50 text-[9px] font-bold ">
                     {flow.chain.replace('_', ' ')}
                   </span>
                 </td>
@@ -371,15 +371,15 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
               {expandedRows.has(rowId) && (
                 <div className="p-4 border-t border-border/5 bg-secondary/[0.02] grid grid-cols-2 gap-y-4 gap-x-6">
                   <div className="flex flex-col">
-                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Network</span>
+                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Network</span>
                     <p className="font-bold text-[11px] text-foreground/80">{flow.chain.replace('_', ' ')}</p>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Timestamp</span>
+                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Timestamp</span>
                     <p className="font-bold text-[9px] text-muted-foreground/30">{formatDate(flow.statusTime)}</p>
                   </div>
                   <div className="col-span-2">
-                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Total Value</span>
+                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 ">Total Value</span>
                     <p className={`font-bold text-sm ${isDeposit(flow.type) ? 'text-green-400' : 'text-red-400'}`}>
                       {isDeposit(flow.type) ? '+' : '-'} {formatAmount(flow.amount, flow.decimals)} {flow.coin}
                     </p>
@@ -394,7 +394,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
       {/* Pagination Controls */}
       <div className="flex flex-col md:flex-row items-center justify-between mt-8 pt-8 border-t border-border/5 gap-6">
         <div className="flex items-center gap-3">
-          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/30 italic">Rows</span>
+          <span className="text-[10px] font-bold  text-muted-foreground/30 ">Rows</span>
           <div className="flex gap-1.5 p-1 bg-secondary/10 rounded-xl border border-border/5">
             {[5, 10, 20, 50].map((value) => (
               <button
@@ -411,7 +411,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
           </div>
         </div>
 
-        <div className="text-[10px] font-bold text-muted-foreground/20 uppercase tracking-widest">
+        <div className="text-[10px] font-bold text-muted-foreground/20 ">
           {startIndex + 1}-{Math.min(endIndex, displayFlows.length)} of {displayFlows.length}
         </div>
 
@@ -420,7 +420,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
             onClick={handlePrevPage}
             disabled={currentPage === 1}
             variant="outline"
-            className="h-8 md:h-9 bg-secondary/10 border-border/10 rounded-xl hover:bg-accent/10 hover:text-accent transition-all text-[10px] font-bold uppercase tracking-widest"
+            className="h-8 md:h-9 bg-secondary/10 border-border/10 rounded-xl hover:bg-accent/10 hover:text-accent transition-all text-[10px] font-bold "
           >
             <ChevronLeft className="w-4 h-4 mr-1" />
             Prev
@@ -436,7 +436,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
             variant="outline"
-            className="h-8 md:h-9 bg-secondary/10 border-border/10 rounded-xl hover:bg-accent/10 hover:text-accent transition-all text-[10px] font-bold uppercase tracking-widest"
+            className="h-8 md:h-9 bg-secondary/10 border-border/10 rounded-xl hover:bg-accent/10 hover:text-accent transition-all text-[10px] font-bold "
           >
             Next
             <ChevronRight className="w-4 h-4 ml-1" />
@@ -446,3 +446,4 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
     </Card>
   );
 }
+

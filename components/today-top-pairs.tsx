@@ -47,7 +47,7 @@ export function TodayTopPairs() {
     <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm overflow-hidden flex flex-col">
       <div className="flex items-center justify-between mb-4">
         <div className="flex flex-col">
-          <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">todays Top Performers perps</h3>
+          <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">todays Top Performers</h3>
           <span className="text-[8px] text-muted-foreground/20 ">{todayData.date}</span>
         </div>
         <TrendingUp className="w-4 h-4 text-orange-400/40" />

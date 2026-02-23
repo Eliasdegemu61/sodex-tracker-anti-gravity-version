@@ -111,8 +111,7 @@ export function FundFlowChart() {
         <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col mt-4">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
                 <div>
-                    <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Fund Velocity</h3>
-                    <p className="text-[8px] text-muted-foreground/10 mt-1  ">Real-time custody pulse</p>
+                    <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">fund flow</h3>
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
                     <Select value={selectedToken} onValueChange={setSelectedToken}>
@@ -258,11 +257,11 @@ export function FundFlowChart() {
                 <div className="flex items-center gap-6">
                     <div className="flex items-center gap-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                        <span className="text-[8px] text-muted-foreground/30 font-bold   leading-none">Global Deposits</span>
+                        <span className="text-[8px] text-muted-foreground/30 font-bold   leading-none">deposits</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                        <span className="text-[8px] text-muted-foreground/30 font-bold   leading-none">Global Withdrawals</span>
+                        <span className="text-[8px] text-muted-foreground/30 font-bold   leading-none">withdrawals</span>
                     </div>
                 </div>
 

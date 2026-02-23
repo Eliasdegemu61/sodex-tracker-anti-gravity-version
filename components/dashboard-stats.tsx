@@ -86,7 +86,7 @@ export function DashboardStats({ variant = 'default' }: DashboardStatsProps) {
         <div className="relative w-full h-40 flex items-center justify-center">
           <div className="absolute inset-0 bg-orange-500/5 blur-3xl rounded-full scale-50 opacity-50" />
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart className="animate-[spin_40s_linear_infinite] hover:scale-105 transition-transform duration-700">
+            <PieChart className="animate-spin hover:scale-105 transition-transform duration-700" style={{ animationDuration: '20s' }}>
               <defs>
                 <filter id="glow">
                   <feGaussianBlur stdDeviation="2" result="coloredBlur" />

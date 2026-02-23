@@ -36,6 +36,7 @@ import { TrackerSection } from '@/components/tracker-section'
 import { Footer } from '@/components/footer'
 import { SopointsAnalyzer } from '@/components/sopoints-analyzer'
 import { AboutSodex } from '@/components/about-sodex'
+import { WhaleTracker } from '@/components/whale-tracker'
 
 function LoadingCard() {
   return <Card className="p-4 md:p-6 bg-card border border-border h-64 animate-pulse" />
@@ -554,14 +555,15 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
 
 export default function Dashboard() {
   const { theme, toggleTheme, mounted } = useTheme()
-  const [currentPage, setCurrentPage] = useState<'dex-status' | 'tracker' | 'portfolio' | 'leaderboard' | 'analyzer' | 'about'>('dex-status')
+  const [currentPage, setCurrentPage] = useState<'dex-status' | 'tracker' | 'portfolio' | 'leaderboard' | 'analyzer' | 'about' | 'whale-tracker'>('dex-status')
   const [searchAddressInput, setSearchAddressInput] = useState('')
   const [trackerSearchAddress, setTrackerSearchAddress] = useState('')
+  const [showMoreMenu, setShowMoreMenu] = useState(false)
 
   // Handle tab parameter from URL - lazy load only when user navigates
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
-    const tabParam = searchParams.get('tab') as 'dex-status' | 'tracker' | 'portfolio' | 'leaderboard' | 'analyzer' | null;
+    const tabParam = searchParams.get('tab') as any;
     const addressParam = searchParams.get('address');
 
     // Set tracker search address if provided
@@ -569,8 +571,8 @@ export default function Dashboard() {
       setTrackerSearchAddress(decodeURIComponent(addressParam));
     }
 
-    if (tabParam && ['dex-status', 'tracker', 'portfolio', 'leaderboard', 'analyzer', 'about'].includes(tabParam)) {
-      setCurrentPage(tabParam as any);
+    if (tabParam && ['dex-status', 'tracker', 'portfolio', 'leaderboard', 'analyzer', 'about', 'whale-tracker'].includes(tabParam)) {
+      setCurrentPage(tabParam);
     } else {
       // Default to dex-status on first load
       setCurrentPage('dex-status');
@@ -665,15 +667,44 @@ export default function Dashboard() {
             >
               Analyzer
             </button>
-            <button
-              onClick={() => setCurrentPage('about')}
-              className={`text-xs md:text-sm border-b-2 transition-all pb-1 ${currentPage === 'about'
-                ? 'text-foreground border-b-orange-400 font-bold'
-                : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
-                }`}
+            {/* More Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setShowMoreMenu(true)}
+              onMouseLeave={() => setShowMoreMenu(false)}
             >
-              What is SoDEX
-            </button>
+              <button
+                onClick={() => setShowMoreMenu(!showMoreMenu)}
+                className={`flex items-center gap-1 text-xs md:text-sm border-b-2 transition-all pb-1 ${currentPage === 'about' || currentPage === 'whale-tracker'
+                  ? 'text-foreground border-b-orange-400 font-bold'
+                  : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
+                  }`}
+              >
+                More
+                <ChevronDown className={`w-4 h-4 transition-transform ${showMoreMenu ? 'rotate-180' : ''}`} />
+              </button>
+
+              {showMoreMenu && (
+                <div className="absolute top-full left-0 pt-2 w-48 z-50">
+                  <div className="bg-card border border-border rounded-xl shadow-xl py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <button
+                      onClick={() => { setCurrentPage('whale-tracker'); setShowMoreMenu(false); }}
+                      className={`w-full text-left px-4 py-2 text-sm hover:bg-secondary transition-colors ${currentPage === 'whale-tracker' ? 'text-accent font-bold' : 'text-foreground'
+                        }`}
+                    >
+                      Whale Tracker
+                    </button>
+                    <button
+                      onClick={() => { setCurrentPage('about'); setShowMoreMenu(false); }}
+                      className={`w-full text-left px-4 py-2 text-sm hover:bg-secondary transition-colors ${currentPage === 'about' ? 'text-accent font-bold' : 'text-foreground'
+                        }`}
+                    >
+                      What is SoDEX
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           <MobileNavMenu currentPage={currentPage} onNavigate={(page: any) => setCurrentPage(page)} />
@@ -883,6 +914,12 @@ export default function Dashboard() {
             <DistributionAnalyzerPage onBack={() => setCurrentPage('dex-status')} />
           </div>
         </Suspense>
+      )}
+
+      {currentPage === 'whale-tracker' && (
+        <div className="p-4 md:p-8 max-w-7xl mx-auto w-full">
+          <WhaleTracker />
+        </div>
       )}
 
       {currentPage === 'about' && (

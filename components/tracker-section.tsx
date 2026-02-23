@@ -10,7 +10,6 @@ import { PortfolioOverview } from './portfolio-overview';
 import { PortfolioHeatmap } from './portfolio-heatmap';
 import { PnLChart } from './pnl-chart';
 import { PositionsTable } from './positions-table';
-import { PortfolioMetrics } from './portfolio-metrics';
 import { OpenPositions } from './open-positions';
 import { FundFlowTable } from './fund-flow-table';
 import { AssetFlowCard } from './asset-flow-card';
@@ -313,8 +312,7 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
           <AssetFlowCard walletAddress={sourceWalletAddress || walletAddress || ''} />
         </div>
 
-        {/* Advanced Metrics */}
-        <PortfolioMetrics />
+
 
         {/* Calendar and Ranking Side by Side */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

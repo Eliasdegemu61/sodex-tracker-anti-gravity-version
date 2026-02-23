@@ -10,7 +10,6 @@ import { PortfolioHeatmap } from './portfolio-heatmap';
 import { PnLChart } from './pnl-chart';
 import { PositionsTable } from './positions-table';
 import { WalletBindForm } from './wallet-bind-form';
-import { PortfolioMetrics } from './portfolio-metrics';
 import { FundFlowTable } from './fund-flow-table';
 import { AssetFlowCard } from './asset-flow-card';
 import { MonthlyCalendar } from './monthly-calendar';
@@ -160,8 +159,7 @@ export function PortfolioSection() {
           {walletAddress && <AssetFlowCard walletAddress={sourceWalletAddress || walletAddress} />}
         </div>
 
-        {/* Advanced Metrics */}
-        <PortfolioMetrics />
+
 
         {/* Calendar and Ranking Side by Side */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

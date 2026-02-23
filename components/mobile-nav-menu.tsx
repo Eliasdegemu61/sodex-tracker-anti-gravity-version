@@ -20,6 +20,7 @@ export function MobileNavMenu({ currentPage, onNavigate }: MobileNavMenuProps) {
     { id: 'portfolio', label: 'Portfolio', icon: Wallet },
     { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },
     { id: 'analyzer', label: 'Analyzer', icon: Zap },
+    { id: 'whale-tracker', label: 'Whale Tracker', icon: Zap },
     { id: 'about', label: 'What is SoDEX', icon: Info },
   ];
 
@@ -87,8 +88,8 @@ export function MobileNavMenu({ currentPage, onNavigate }: MobileNavMenuProps) {
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isActive
-                    ? 'bg-orange-400/20 text-orange-400 border border-orange-400/30'
-                    : 'text-foreground hover:bg-secondary/50 border border-transparent'
+                  ? 'bg-orange-400/20 text-orange-400 border border-orange-400/30'
+                  : 'text-foreground hover:bg-secondary/50 border border-transparent'
                   }`}
               >
                 <Icon className="w-4 h-4 flex-shrink-0" />

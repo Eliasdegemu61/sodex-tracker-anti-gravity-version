@@ -34,6 +34,8 @@ import { OpenPositions } from '@/components/open-positions'
 import { TrackerSection } from '@/components/tracker-section'
 import { Footer } from '@/components/footer'
 import { SopointsAnalyzer } from '@/components/sopoints-analyzer'
+import { AboutSodex } from '@/components/about-sodex'
+import { WhaleTracker } from '@/components/whale-tracker'
 import { useSessionCache } from '@/context/session-cache-context'
 
 function LoadingCard() {
@@ -41,7 +43,7 @@ function LoadingCard() {
 }
 
 function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
-  const [activeTab, setActiveTab] = useState<'distribution' | 'reverse' | 'sopoints'>('distribution')
+  const [activeTab, setActiveTab] = useState<'distribution' | 'reverse' | 'sopoints' | 'new-traders'>('distribution')
   const [brackets, setBrackets] = useState([
     { id: '1', volMin: '', volMax: '', pnlMin: '', pnlMax: '' }
   ])
@@ -420,7 +422,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
                               dataKey="value"
                               stroke="none"
                             >
-                              {bracketResult.donutData.map((entry, index) => (
+                              {bracketResult.donutData.map((entry: any, index: number) => (
                                 <Cell
                                   key={`cell-${index}`}
                                   fill={entry.color}
@@ -438,7 +440,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
                                 color: '#ffffff'
                               }}
                               labelStyle={{ color: '#ffffff' }}
-                              formatter={(value) => [`${value} traders`, ''], (name) => name}
+                              formatter={(value: any, name: any) => [`${value} traders`, name]}
                             />
                           </PieChart>
                         </ResponsiveContainer>
@@ -574,9 +576,10 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
 export default function Dashboard() {
   const { theme, toggleTheme, mounted } = useTheme()
   const { preloadLeaderboardData } = useSessionCache()
-  const [currentPage, setCurrentPage] = useState<'dex-status' | 'tracker' | 'portfolio' | 'leaderboard' | 'analyzer'>('dex-status')
+  const [currentPage, setCurrentPage] = useState<'dex-status' | 'tracker' | 'portfolio' | 'leaderboard' | 'analyzer' | 'about' | 'whale-tracker'>('dex-status')
   const [searchAddressInput, setSearchAddressInput] = useState('')
   const [trackerSearchAddress, setTrackerSearchAddress] = useState('')
+  const [showMoreMenu, setShowMoreMenu] = useState(false)
 
   // Preload leaderboard data on mount
   useEffect(() => {
@@ -595,8 +598,8 @@ export default function Dashboard() {
       setTrackerSearchAddress(decodeURIComponent(addressParam));
     }
 
-    if (tabParam && ['dex-status', 'tracker', 'portfolio', 'leaderboard', 'analyzer'].includes(tabParam)) {
-      setCurrentPage(tabParam);
+    if (tabParam && ['dex-status', 'tracker', 'portfolio', 'leaderboard', 'analyzer', 'about', 'whale-tracker'].includes(tabParam as any)) {
+      setCurrentPage(tabParam as any);
     } else {
       // Default to leaderboard on first load (faster load than dex-status)
       setCurrentPage('leaderboard');
@@ -686,9 +689,47 @@ export default function Dashboard() {
             >
               Analyzer
             </button>
+            {/* More Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setShowMoreMenu(true)}
+              onMouseLeave={() => setShowMoreMenu(false)}
+            >
+              <button
+                onClick={() => setShowMoreMenu(!showMoreMenu)}
+                className={`flex items-center gap-1 text-xs md:text-sm border-b-2 transition-all pb-1 ${currentPage === 'about' || currentPage === 'whale-tracker'
+                  ? 'text-foreground border-b-orange-400 font-bold'
+                  : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
+                  }`}
+              >
+                More
+                <ChevronDown className={`w-4 h-4 transition-transform ${showMoreMenu ? 'rotate-180' : ''}`} />
+              </button>
+
+              {showMoreMenu && (
+                <div className="absolute top-full left-0 pt-2 w-48 z-50">
+                  <div className="bg-card border border-border rounded-xl shadow-xl py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <button
+                      onClick={() => { setCurrentPage('whale-tracker'); setShowMoreMenu(false); }}
+                      className={`w-full text-left px-4 py-2 text-sm hover:bg-secondary transition-colors ${currentPage === 'whale-tracker' ? 'text-accent font-bold' : 'text-foreground'
+                        }`}
+                    >
+                      Whale Tracker
+                    </button>
+                    <button
+                      onClick={() => { setCurrentPage('about'); setShowMoreMenu(false); }}
+                      className={`w-full text-left px-4 py-2 text-sm hover:bg-secondary transition-colors ${currentPage === 'about' ? 'text-accent font-bold' : 'text-foreground'
+                        }`}
+                    >
+                      What is SoDEX
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
-          <MobileNavMenu currentPage={currentPage} onNavigate={setCurrentPage} />
+          <MobileNavMenu currentPage={currentPage} onNavigate={(page: any) => setCurrentPage(page)} />
 
           <div className="flex items-center gap-2 md:gap-4">
             {mounted && (
@@ -839,7 +880,7 @@ export default function Dashboard() {
 
       {currentPage === 'leaderboard' && (
         <Suspense fallback={<LoadingCard />}>
-          <LeaderboardPage />
+          <LeaderboardPage onBack={() => setCurrentPage('dex-status')} />
         </Suspense>
       )}
 
@@ -847,6 +888,22 @@ export default function Dashboard() {
         <Suspense fallback={<LoadingCard />}>
           <div className="p-4 md:p-6">
             <DistributionAnalyzerPage onBack={() => setCurrentPage('dex-status')} />
+          </div>
+        </Suspense>
+      )}
+
+      {currentPage === 'about' && (
+        <Suspense fallback={<LoadingCard />}>
+          <div className="p-4 md:p-6 overflow-y-auto w-full">
+            <AboutSodex />
+          </div>
+        </Suspense>
+      )}
+
+      {currentPage === 'whale-tracker' && (
+        <Suspense fallback={<LoadingCard />}>
+          <div className="p-4 md:p-6 overflow-y-auto w-full">
+            <WhaleTracker />
           </div>
         </Suspense>
       )}

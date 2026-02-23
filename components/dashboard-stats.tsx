@@ -81,13 +81,12 @@ export function DashboardStats({ variant = 'default' }: DashboardStatsProps) {
       <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm overflow-hidden group">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Volume Split</h3>
-          <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold ">Live Flow</div>
         </div>
 
         <div className="relative w-full h-40 flex items-center justify-center">
           <div className="absolute inset-0 bg-orange-500/5 blur-3xl rounded-full scale-50 opacity-50" />
           <ResponsiveContainer width="100%" height="100%">
-            <PieChart className="transition-transform duration-700 group-hover:scale-105">
+            <PieChart className="animate-[spin_40s_linear_infinite] hover:scale-105 transition-transform duration-700">
               <defs>
                 <filter id="glow">
                   <feGaussianBlur stdDeviation="2" result="coloredBlur" />

@@ -15,6 +15,7 @@ interface TokenFlow {
 export function OverallDepositsCard() {
     const [data, setData] = useState<TokenFlow[]>([])
     const [isLoading, setIsLoading] = useState(true)
+    const [showAll, setShowAll] = useState(false)
 
     useEffect(() => {
         async function fetchData() {
@@ -58,6 +59,8 @@ export function OverallDepositsCard() {
         )
     }
 
+    const displayData = showAll ? data : data.slice(0, 10);
+
     return (
         <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm group">
             <div className="flex items-center justify-between mb-4">
@@ -65,7 +68,7 @@ export function OverallDepositsCard() {
                 <Wallet className="w-3.5 h-3.5 text-orange-400/40" />
             </div>
             <div className="space-y-2">
-                {data.map((item) => (
+                {displayData.map((item) => (
                     <div key={item.token} className="flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-orange-500/5 transition-all duration-300">
                         <span className="text-[11px] font-bold text-foreground/80 w-16 truncate">{item.token}</span>
                         <div className="flex items-center gap-4">
@@ -87,6 +90,14 @@ export function OverallDepositsCard() {
                     </div>
                 ))}
             </div>
+            {data.length > 10 && (
+                <button
+                    onClick={() => setShowAll(!showAll)}
+                    className="w-full mt-4 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                    {showAll ? 'See less' : 'See more'}
+                </button>
+            )}
         </Card>
     )
 }
@@ -94,6 +105,7 @@ export function OverallDepositsCard() {
 export function NetRemainingCard() {
     const [data, setData] = useState<TokenFlow[]>([])
     const [isLoading, setIsLoading] = useState(true)
+    const [showAll, setShowAll] = useState(false)
 
     useEffect(() => {
         async function fetchData() {
@@ -151,6 +163,8 @@ export function NetRemainingCard() {
         )
     }
 
+    const displayData = showAll ? data : data.slice(0, 10);
+
     return (
         <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm flex-1 group">
             <div className="flex items-center justify-between mb-4">
@@ -158,7 +172,7 @@ export function NetRemainingCard() {
                 <Wallet className="w-3.5 h-3.5 text-green-500/40" />
             </div>
             <div className="space-y-2">
-                {data.map((item) => (
+                {displayData.map((item) => (
                     <div key={item.token} className="flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-green-500/5 transition-all duration-300">
                         <span className="text-[11px] font-bold text-foreground/80">{item.token}</span>
                         <div className="flex flex-col items-end">
@@ -168,7 +182,16 @@ export function NetRemainingCard() {
                     </div>
                 ))}
             </div>
+            {data.length > 10 && (
+                <button
+                    onClick={() => setShowAll(!showAll)}
+                    className="w-full mt-4 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                    {showAll ? 'See less' : 'See more'}
+                </button>
+            )}
         </Card>
     )
 }
+
 

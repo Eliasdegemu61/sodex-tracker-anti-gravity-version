@@ -206,52 +206,51 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
   // Render search UI when no wallet is selected
   if (!walletAddress) {
     return (
-      <div className="flex items-center justify-center min-h-96">
-        <Card className="p-8 bg-card border border-border max-w-md w-full">
-          <h2 className="text-2xl font-bold text-foreground mb-3">Wallet Tracker</h2>
-          <p className="text-muted-foreground mb-6 text-sm">Enter a wallet address to track trading positions and performance</p>
+      <div className="flex items-center justify-center min-h-[600px] px-4">
+        <div className="p-8 sm:p-10 bg-[#141414]/90 backdrop-blur-2xl border border-white/5 rounded-[2rem] shadow-2xl max-w-md w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <h2 className="text-2xl font-bold text-white mb-3 tracking-tight">Wallet Tracker</h2>
+          <p className="text-muted-foreground/80 mb-8 text-sm leading-relaxed">Enter a wallet address to track trading positions and performance</p>
 
-          <div className="space-y-3">
-            <div className="relative">
+          <div className="space-y-4">
+            <div className="relative group">
               <input
                 type="text"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Enter wallet address"
-                className="w-full px-4 py-2 bg-secondary border border-border rounded-lg text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-5 py-4 bg-[#1f1f1f] border-none rounded-2xl text-sm font-medium text-white placeholder-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-zinc-700 transition-all duration-300"
               />
             </div>
 
             {error && (
-              <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30">
-                <p className="text-red-400 text-sm">{error}</p>
+              <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20">
+                <p className="text-red-400 text-xs font-medium">{error}</p>
               </div>
             )}
 
-            <Button
+            <button
               onClick={() => handleSearch(searchInput)}
               disabled={isLoading || !searchInput.trim()}
-              className="w-full gap-2"
+              className="w-full flex items-center justify-center gap-2 py-4 bg-zinc-400 hover:bg-zinc-300 disabled:opacity-50 disabled:cursor-not-allowed text-zinc-900 rounded-2xl font-semibold transition-all duration-300 active:scale-[0.98]"
             >
               <Search className="w-4 h-4" />
               {isLoading ? 'Searching...' : 'Search Wallet'}
-            </Button>
+            </button>
 
-            <div className="relative flex items-center gap-2 my-2">
-              <div className="flex-grow border-t border-border"></div>
-              <span className="text-[10px] text-muted-foreground uppercase font-semibold">Or</span>
-              <div className="flex-grow border-t border-border"></div>
+            <div className="relative flex items-center gap-4 my-6 py-2">
+              <div className="flex-grow border-t border-white/5"></div>
+              <span className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest">Or</span>
+              <div className="flex-grow border-t border-white/5"></div>
             </div>
 
-            <Button
-              variant="outline"
+            <button
               disabled={isLoading}
               onClick={async () => {
                 setSearchInput(DEMO_DISPLAY_ADDRESS);
                 handleSearch(DEMO_DISPLAY_ADDRESS);
               }}
-              className="w-full border-primary/30 text-primary hover:bg-primary/10 gap-2"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-transparent text-white hover:text-orange-400 hover:bg-orange-500/5 rounded-2xl font-bold transition-all duration-300"
             >
               {isLoading && searchInput === DEMO_DISPLAY_ADDRESS ? (
                 <>
@@ -261,9 +260,9 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
               ) : (
                 'Try Demo Account'
               )}
-            </Button>
+            </button>
           </div>
-        </Card>
+        </div>
       </div>
     );
   }

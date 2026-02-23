@@ -284,7 +284,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
       <div className="p-4 md:p-6 space-y-6">
         {activeTab === 'distribution' && (
           <>
-            <Card className="p-4 bg-card border border-border">
+            <Card className="p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
               <h2 className="text-sm md:text-lg font-bold mb-4">Distribution Analyzer</h2>
               <div className="space-y-3">
                 {brackets.map((bracket, idx) => (
@@ -358,7 +358,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
             {distributionResults && Array.isArray(distributionResults) && (
               <div className="space-y-4">
                 {distributionResults.map((bracketResult, idx) => (
-                  <Card key={bracketResult.bracketId} className="p-4 bg-card border border-border">
+                  <Card key={bracketResult.bracketId} className="p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm hover:border-accent/10 transition-all">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {/* Left: Stats */}
                       <div>
@@ -501,7 +501,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
         )}
 
         {activeTab === 'reverse' && (
-          <Card className="p-6 bg-card border border-border">
+          <Card className="p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
             <h2 className="text-sm md:text-xl font-bold mb-6">Reverse Search</h2>
             <div className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

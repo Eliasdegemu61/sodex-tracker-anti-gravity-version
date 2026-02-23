@@ -207,9 +207,9 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
   if (!walletAddress) {
     return (
       <div className="flex items-center justify-center min-h-[600px] px-4">
-        <div className="p-8 sm:p-10 bg-[#141414]/90 backdrop-blur-2xl border border-white/5 rounded-[2rem] shadow-2xl max-w-md w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <h2 className="text-2xl font-bold text-white mb-3 tracking-tight">Wallet Tracker</h2>
-          <p className="text-muted-foreground/80 mb-8 text-sm leading-relaxed">Enter a wallet address to track trading positions and performance</p>
+        <div className="p-8 sm:p-10 bg-card/40 dark:bg-[#141414]/90 backdrop-blur-2xl border border-border/20 dark:border-white/5 rounded-[2rem] shadow-2xl max-w-md w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <h2 className="text-2xl font-bold text-foreground dark:text-white mb-3 tracking-tight">Wallet Tracker</h2>
+          <p className="text-muted-foreground/80 dark:text-muted-foreground/80 mb-8 text-sm leading-relaxed">Enter a wallet address to track trading positions and performance</p>
 
           <div className="space-y-4">
             <div className="relative group">
@@ -219,7 +219,7 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
                 onChange={(e) => setSearchInput(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Enter wallet address"
-                className="w-full px-5 py-4 bg-[#1f1f1f] border-none rounded-2xl text-sm font-medium text-white placeholder-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-zinc-700 transition-all duration-300"
+                className="w-full px-5 py-4 bg-secondary/50 dark:bg-[#1f1f1f] border border-border/20 dark:border-none rounded-2xl text-sm font-medium text-foreground dark:text-white placeholder-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-border/50 dark:focus:ring-zinc-700 transition-all duration-300"
               />
             </div>
 
@@ -239,9 +239,9 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
             </button>
 
             <div className="relative flex items-center gap-4 my-6 py-2">
-              <div className="flex-grow border-t border-white/5"></div>
+              <div className="flex-grow border-t border-border/20 dark:border-white/5"></div>
               <span className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest">Or</span>
-              <div className="flex-grow border-t border-white/5"></div>
+              <div className="flex-grow border-t border-border/20 dark:border-white/5"></div>
             </div>
 
             <button
@@ -250,7 +250,7 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
                 setSearchInput(DEMO_DISPLAY_ADDRESS);
                 handleSearch(DEMO_DISPLAY_ADDRESS);
               }}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-transparent text-white hover:text-orange-400 hover:bg-orange-500/5 rounded-2xl font-bold transition-all duration-300"
+              className="w-full flex items-center justify-center gap-2 py-3 bg-transparent text-foreground dark:text-white hover:text-orange-500 hover:bg-orange-500/5 rounded-2xl font-bold transition-all duration-300"
             >
               {isLoading && searchInput === DEMO_DISPLAY_ADDRESS ? (
                 <>

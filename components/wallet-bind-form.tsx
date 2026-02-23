@@ -70,46 +70,54 @@ export function WalletBindForm() {
   };
 
   return (
-    <Card className="p-8 bg-card border border-border max-w-2xl mx-auto">
-      <h2 className="text-2xl font-bold text-foreground mb-2">Bind Your Trading Account</h2>
-      <p className="text-muted-foreground mb-6">Enter your wallet address to load your position history and trading data</p>
+    <div className="flex items-center justify-center min-h-[600px] px-4">
+      <div className="p-8 sm:p-10 bg-card/40 dark:bg-[#141414]/90 backdrop-blur-2xl border border-border/20 dark:border-white/5 rounded-[2rem] shadow-2xl max-w-2xl w-full mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <h2 className="text-2xl font-bold text-foreground dark:text-white mb-3 tracking-tight">Bind Your Trading Account</h2>
+        <p className="text-muted-foreground/80 dark:text-muted-foreground/80 mb-8 text-sm leading-relaxed">Enter your wallet address to load your position history and trading data</p>
 
-      <div className="space-y-4">
-        <Input
-          placeholder="Enter wallet address (0x...)"
-          value={address}
-          onChange={(e) => {
-            setAddress(e.target.value);
-            setError(null);
-          }}
-          onKeyDown={handleKeyDown}
-          disabled={isLoading}
-          className="bg-input border-border"
-        />
+        <div className="space-y-4">
+          <div className="relative group">
+            <input
+              type="text"
+              placeholder="Enter wallet address (0x...)"
+              value={address}
+              onChange={(e) => {
+                setAddress(e.target.value);
+                setError(null);
+              }}
+              onKeyDown={handleKeyDown as any}
+              disabled={isLoading}
+              className="w-full px-5 py-4 bg-secondary/50 dark:bg-[#1f1f1f] border border-border/20 dark:border-none rounded-2xl text-sm font-medium text-foreground dark:text-white placeholder-muted-foreground/50 focus:outline-none focus:ring-1 focus:ring-border/50 dark:focus:ring-zinc-700 transition-all duration-300"
+            />
+          </div>
 
-        {status && <p className="text-sm text-blue-400 font-medium">{status}</p>}
-        {error && <p className="text-sm text-red-500 font-medium">{error}</p>}
+          {status && <p className="text-sm px-2 text-blue-400 font-medium">{status}</p>}
+          {error && (
+            <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20">
+              <p className="text-red-400 text-xs font-medium">{error}</p>
+            </div>
+          )}
 
-        <div className="flex flex-col sm:flex-row gap-2 pt-2">
-          <Button
-            onClick={handleBind}
-            disabled={isLoading || !address.trim()}
-            className="bg-primary text-primary-foreground hover:bg-primary/90 flex-1"
-          >
-            {isLoading ? 'Loading...' : 'Bind Account'}
-          </Button>
-          <Button
-            variant="outline"
-            onClick={async () => {
-              await enterDemoMode();
-            }}
-            className="border-primary/50 text-primary hover:bg-primary/10 flex-1"
-          >
-            View Demo Account
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-4 pt-2 items-center">
+            <button
+              onClick={handleBind}
+              disabled={isLoading || !address.trim()}
+              className="flex-1 w-full sm:w-auto flex items-center justify-center gap-2 py-4 bg-zinc-400 hover:bg-zinc-300 disabled:opacity-50 disabled:cursor-not-allowed text-zinc-900 rounded-2xl font-semibold transition-all duration-300 active:scale-[0.98]"
+            >
+              {isLoading ? 'Loading...' : 'Bind Account'}
+            </button>
+            <button
+              onClick={async () => {
+                await enterDemoMode();
+              }}
+              className="flex-1 w-full sm:w-auto flex items-center justify-center gap-2 py-4 bg-transparent text-foreground dark:text-white hover:text-orange-500 hover:bg-orange-500/5 rounded-2xl font-bold transition-all duration-300"
+            >
+              View Demo Account
+            </button>
+          </div>
         </div>
       </div>
-    </Card>
+    </div>
   );
 }
 

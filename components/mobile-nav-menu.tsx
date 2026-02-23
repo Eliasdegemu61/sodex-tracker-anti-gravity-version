@@ -72,7 +72,7 @@ export function MobileNavMenu({ currentPage, onNavigate }: MobileNavMenuProps) {
       {/* Mobile Menu */}
       <div
         ref={menuRef}
-        className={`fixed top-16 right-4 w-[240px] bg-card/95 backdrop-blur-2xl border border-border/20 rounded-3xl shadow-2xl transition-all duration-300 z-50 xl:hidden ${isOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-95 pointer-events-none'
+        className={`fixed top-[90px] right-4 w-[240px] bg-card/95 backdrop-blur-2xl border border-border/20 rounded-3xl shadow-2xl transition-all duration-300 z-[60] xl:hidden ${isOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-95 pointer-events-none'
           }`}
       >
         <div className="p-3 flex flex-col gap-1 max-h-[80vh] overflow-y-auto scrollbar-hide">

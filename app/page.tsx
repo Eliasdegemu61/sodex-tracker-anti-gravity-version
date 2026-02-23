@@ -278,73 +278,73 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
       <div className="p-4 md:p-6 space-y-6">
         {activeTab === 'distribution' && (
           <>
-            <Card className="p-4 bg-card border border-border">
-              <h2 className="text-sm md:text-lg font-bold mb-4">Distribution Analyzer</h2>
-              <div className="space-y-3">
+            <Card className="p-8 md:p-10 bg-card/20 dark:bg-[#141414]/90 backdrop-blur-2xl border border-border/20 dark:border-white/5 rounded-[2rem] shadow-2xl">
+              <h2 className="text-xl md:text-2xl font-bold text-foreground dark:text-white mb-8 tracking-tight">Distribution Analyzer</h2>
+              <div className="space-y-4">
                 {brackets.map((bracket, idx) => (
-                  <div key={bracket.id} className="p-3 bg-secondary/30 rounded-lg border border-border">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-xs font-semibold">Bracket {idx + 1}</span>
+                  <div key={bracket.id} className="p-6 bg-secondary/10 dark:bg-[#1a1a1a] rounded-2xl border border-transparent dark:border-white/5">
+                    <div className="flex justify-between items-center mb-6">
+                      <span className="text-xs font-bold text-foreground/80 dark:text-white/80">Bracket {idx + 1}</span>
                       {brackets.length > 1 && (
                         <button
                           onClick={() => removeBracket(bracket.id)}
-                          className="text-xs text-red-400 hover:text-red-300 transition-colors"
+                          className="text-xs text-red-500/80 hover:text-red-400 transition-colors bg-red-500/10 px-2.5 py-1 rounded-md font-medium"
                         >
-                          ✕
+                          Remove
                         </button>
                       )}
                     </div>
-                    <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
-                      <div>
-                        <label className="text-xs text-muted-foreground mb-1 block">Vol Min</label>
-                        <Input
+                    <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-semibold text-muted-foreground/60 dark:text-white/40 uppercase tracking-wider block">Vol Min</label>
+                        <input
                           type="number"
                           placeholder="0"
                           value={bracket.volMin}
                           onChange={(e) => updateBracket(bracket.id, 'volMin', e.target.value)}
-                          className="h-7 text-xs"
+                          className="w-full bg-transparent border-none text-sm font-medium text-foreground dark:text-white placeholder:text-muted-foreground/30 focus:outline-none focus:ring-0 p-0"
                         />
                       </div>
-                      <div>
-                        <label className="text-xs text-muted-foreground mb-1 block">Vol Max</label>
-                        <Input
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-semibold text-muted-foreground/60 dark:text-white/40 uppercase tracking-wider block">Vol Max</label>
+                        <input
                           type="number"
                           placeholder="∞"
                           value={bracket.volMax}
                           onChange={(e) => updateBracket(bracket.id, 'volMax', e.target.value)}
-                          className="h-7 text-xs"
+                          className="w-full bg-transparent border-none text-sm font-medium text-foreground dark:text-white placeholder:text-muted-foreground/30 focus:outline-none focus:ring-0 p-0"
                         />
                       </div>
-                      <div>
-                        <label className="text-xs text-muted-foreground mb-1 block">PnL Min</label>
-                        <Input
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-semibold text-muted-foreground/60 dark:text-white/40 uppercase tracking-wider block">PnL Min</label>
+                        <input
                           type="number"
                           placeholder="-∞"
                           value={bracket.pnlMin}
                           onChange={(e) => updateBracket(bracket.id, 'pnlMin', e.target.value)}
-                          className="h-7 text-xs"
+                          className="w-full bg-transparent border-none text-sm font-medium text-foreground dark:text-white placeholder:text-muted-foreground/30 focus:outline-none focus:ring-0 p-0"
                         />
                       </div>
-                      <div>
-                        <label className="text-xs text-muted-foreground mb-1 block">PnL Max</label>
-                        <Input
+                      <div className="space-y-2">
+                        <label className="text-[10px] font-semibold text-muted-foreground/60 dark:text-white/40 uppercase tracking-wider block">PnL Max</label>
+                        <input
                           type="number"
                           placeholder="∞"
                           value={bracket.pnlMax}
                           onChange={(e) => updateBracket(bracket.id, 'pnlMax', e.target.value)}
-                          className="h-7 text-xs"
+                          className="w-full bg-transparent border-none text-sm font-medium text-foreground dark:text-white placeholder:text-muted-foreground/30 focus:outline-none focus:ring-0 p-0"
                         />
                       </div>
                     </div>
                   </div>
                 ))}
-                <div className="flex gap-2 mt-4">
-                  <Button onClick={addBracket} variant="outline" className="text-xs h-8 bg-transparent flex-1 md:flex-none">
+                <div className="flex items-center gap-6 mt-6 pt-2">
+                  <button onClick={addBracket} className="text-xs font-bold text-foreground/80 dark:text-white/80 hover:text-foreground dark:hover:text-white transition-colors">
                     + Add Bracket
-                  </Button>
-                  <Button onClick={handleApply} disabled={isLoadingDistribution} className="text-xs h-8 flex-1 md:flex-none">
+                  </button>
+                  <button onClick={handleApply} disabled={isLoadingDistribution} className="px-6 py-2 bg-foreground text-background dark:bg-white dark:text-black rounded-xl text-xs font-bold hover:opacity-90 disabled:opacity-50 transition-opacity">
                     {isLoadingDistribution ? 'Applying...' : 'Apply'}
-                  </Button>
+                  </button>
                 </div>
               </div>
             </Card>
@@ -352,7 +352,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
             {distributionResults && Array.isArray(distributionResults) && (
               <div className="space-y-4">
                 {distributionResults.map((bracketResult, idx) => (
-                  <Card key={bracketResult.bracketId} className="p-4 bg-card border border-border">
+                  <Card key={bracketResult.bracketId} className="p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm hover:border-accent/10 transition-all">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {/* Left: Stats */}
                       <div>
@@ -495,34 +495,34 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
         )}
 
         {activeTab === 'reverse' && (
-          <Card className="p-6 bg-card border border-border">
-            <h2 className="text-sm md:text-xl font-bold mb-6">Reverse Search</h2>
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="text-sm font-medium mb-2 block">First 4 Characters</label>
-                  <Input
+          <Card className="p-8 md:p-10 bg-card/20 dark:bg-[#141414]/90 backdrop-blur-2xl border border-border/20 dark:border-white/5 rounded-[2rem] shadow-2xl">
+            <h2 className="text-xl md:text-2xl font-bold text-foreground dark:text-white mb-8 tracking-tight">Reverse Search</h2>
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-foreground/80 dark:text-white/80 block mb-2">First 4 Characters</label>
+                  <input
                     placeholder="e.g., 0x1a"
                     maxLength={4}
                     value={reversePrefix}
                     onChange={(e) => setReversePrefix(e.target.value.toUpperCase())}
-                    className="font-mono"
+                    className="w-full bg-transparent border-none text-sm font-mono text-muted-foreground dark:text-white/60 placeholder:text-muted-foreground/30 focus:outline-none focus:ring-0 p-0"
                   />
                 </div>
-                <div>
-                  <label className="text-sm font-medium mb-2 block">Last 4 Characters</label>
-                  <Input
+                <div className="space-y-2">
+                  <label className="text-xs font-semibold text-foreground/80 dark:text-white/80 block mb-2">Last 4 Characters</label>
+                  <input
                     placeholder="e.g., a2f4"
                     maxLength={4}
                     value={reverseSuffix}
                     onChange={(e) => setReverseSuffix(e.target.value.toUpperCase())}
-                    className="font-mono"
+                    className="w-full bg-transparent border-none text-sm font-mono text-muted-foreground dark:text-white/60 placeholder:text-muted-foreground/30 focus:outline-none focus:ring-0 p-0"
                   />
                 </div>
               </div>
-              <Button onClick={handleReverseSearch} disabled={isLoadingReverse} className="w-full md:w-auto">
+              <button onClick={handleReverseSearch} disabled={isLoadingReverse} className="w-full md:w-auto px-8 py-2.5 bg-foreground text-background dark:bg-white dark:text-black rounded-xl text-sm font-bold hover:opacity-90 disabled:opacity-50 transition-opacity">
                 {isLoadingReverse ? 'Searching...' : 'Search'}
-              </Button>
+              </button>
 
               {reverseResults.length > 0 && (
                 <div className="mt-8 space-y-3">

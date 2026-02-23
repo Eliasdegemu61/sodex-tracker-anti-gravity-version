@@ -4,6 +4,7 @@ import { useEffect, useState, useMemo } from 'react'
 import { Card } from '@/components/ui/card'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Button } from '@/components/ui/button'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { formatNumber } from '@/lib/format-number'
 
@@ -20,7 +21,7 @@ export function FundFlowChart() {
     const [selectedToken, setSelectedToken] = useState<string>('USDC')
     const [isLoading, setIsLoading] = useState(true)
     const [showNetRemaining, setShowNetRemaining] = useState(false)
-
+    const [timeRange, setTimeRange] = useState<'1w' | '1m' | '3m' | '6m' | '1y'>('1m')
     useEffect(() => {
         async function fetchData() {
             try {
@@ -66,16 +67,37 @@ export function FundFlowChart() {
             .filter((d) => d.token === selectedToken)
             .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
+        // Apply time range filter
+        const now = new Date()
+        let cutoff = new Date()
+        switch (timeRange) {
+            case '1w':
+                cutoff.setDate(now.getDate() - 7)
+                break
+            case '1m':
+                cutoff.setMonth(now.getMonth() - 1)
+                break
+            case '3m':
+                cutoff.setMonth(now.getMonth() - 3)
+                break
+            case '6m':
+                cutoff.setMonth(now.getMonth() - 6)
+                break
+            case '1y':
+                cutoff.setFullYear(now.getFullYear() - 1)
+                break
+        }
+        const filtered = tokenData.filter((d) => new Date(d.date) >= cutoff)
+
         let cumulative = 0;
-        return tokenData.map((d) => {
+        return filtered.map((d) => {
             cumulative += (d.total_depo - d.total_with);
             return {
                 ...d,
                 net_remaining: cumulative
             }
         })
-    }, [data, selectedToken])
-
+    }, [data, selectedToken, timeRange])
     if (isLoading) {
         return (
             <Card className="p-4 bg-card/50 border-border h-64 flex items-center justify-center mt-4">
@@ -91,9 +113,9 @@ export function FundFlowChart() {
                     <h3 className="text-xs md:text-sm font-semibold text-foreground">Fund Flows</h3>
                     <p className="text-xs text-muted-foreground">Daily Deposits and Withdrawals</p>
                 </div>
-                <div className="w-[120px]">
+                <div className="flex gap-2 items-center">
                     <Select value={selectedToken} onValueChange={setSelectedToken}>
-                        <SelectTrigger>
+                        <SelectTrigger className="w-[120px]">
                             <SelectValue placeholder="Select Token" />
                         </SelectTrigger>
                         <SelectContent>
@@ -102,6 +124,19 @@ export function FundFlowChart() {
                             ))}
                         </SelectContent>
                     </Select>
+                    <div className="flex gap-1 md:gap-2 flex-wrap justify-end">
+                        {(['1w', '1m', '3m', '6m', '1y'] as const).map((range) => (
+                            <Button
+                                key={range}
+                                variant={timeRange === range ? 'default' : 'outline'}
+                                size="sm"
+                                onClick={() => setTimeRange(range)}
+                                className="text-xs px-2 md:px-3 h-7 md:h-8"
+                            >
+                                {range.toUpperCase()}
+                            </Button>
+                        ))}
+                    </div>
                 </div>
             </div>
 
@@ -146,16 +181,25 @@ export function FundFlowChart() {
                                 className="text-muted-foreground"
                             />
                             <Tooltip
-                                contentStyle={{
-                                    backgroundColor: 'hsl(var(--popover))',
-                                    border: '1px solid hsl(var(--border))',
-                                    borderRadius: 'var(--radius)',
-                                    color: 'hsl(var(--popover-foreground))',
-                                    fontSize: '12px'
+                                content={({ active, payload, label }) => {
+                                    if (active && payload && payload.length) {
+                                        const labelStr = label?.toString() || '';
+                                        const d = new Date(labelStr);
+                                        const dateStr = !isNaN(d.getTime()) ? `${d.getMonth() + 1}/${d.getDate()}` : labelStr;
+                                        return (
+                                            <div className="bg-white/90 dark:bg-black/80 border border-border p-2 rounded-md shadow-md text-xs">
+                                                <p className="text-muted-foreground mb-1">{dateStr}</p>
+                                                {payload.map((entry: any, index: number) => (
+                                                    <div key={index} className="flex items-center gap-2">
+                                                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
+                                                        <span className="text-foreground">{entry.name}: {formatNumber(entry.value)}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )
+                                    }
+                                    return null
                                 }}
-                                itemStyle={{ color: 'hsl(var(--foreground))' }}
-                                labelStyle={{ color: 'hsl(var(--muted-foreground))', marginBottom: '4px' }}
-                                formatter={(value: any) => formatNumber(value as number)}
                             />
                             <Area
                                 type="monotone"

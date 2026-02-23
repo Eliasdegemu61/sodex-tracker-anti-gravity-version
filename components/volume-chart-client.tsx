@@ -101,14 +101,23 @@ export function VolumeChartClient({ data, chartData }: VolumeChartClientProps) {
             label={{ value: 'Volume (M)', angle: -90, position: 'insideLeft' }}
           />
           <Tooltip
-            contentStyle={{
-              backgroundColor: 'var(--color-card)',
-              border: '1px solid var(--color-border)',
-              borderRadius: '8px',
-            }}
             cursor={false}
-            formatter={(value) => `$${Number(value).toFixed(2)}M`}
-            labelFormatter={(label) => `Date: ${label}`}
+            content={({ active, payload, label }) => {
+              if (active && payload && payload.length) {
+                return (
+                  <div className="bg-white/90 dark:bg-black/80 border border-border p-1.5 rounded text-[10px] shadow-sm">
+                    <p className="text-muted-foreground mb-1">Date: {label}</p>
+                    {payload.map((entry: any, index: number) => (
+                      <div key={index} className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: entry.color }} />
+                        <span className="text-foreground">{entry.name}: ${Number(entry.value).toFixed(2)}M</span>
+                      </div>
+                    ))}
+                  </div>
+                )
+              }
+              return null
+            }}
           />
           <Area
             type="monotone"

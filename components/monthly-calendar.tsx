@@ -66,14 +66,33 @@ export function MonthlyCalendar() {
     const daysInMonth = lastDay.getDate();
     const startingDayOfWeek = firstDay.getDay();
 
-    const days: (Date | null)[] = [];
+    const days: { date: Date; isCurrentMonth: boolean }[] = [];
 
+    // Previous month days
+    const prevMonthLastDay = new Date(year, month, 0).getDate();
     for (let i = 0; i < startingDayOfWeek; i++) {
-      days.push(null);
+      days.unshift({
+        date: new Date(year, month - 1, prevMonthLastDay - i),
+        isCurrentMonth: false
+      });
     }
 
+    // Current month days
     for (let i = 1; i <= daysInMonth; i++) {
-      days.push(new Date(year, month, i));
+      days.push({
+        date: new Date(year, month, i),
+        isCurrentMonth: true
+      });
+    }
+
+    // Next month days to fill grid
+    const totalSlots = days.length > 35 ? 42 : 35;
+    let nextMonthDay = 1;
+    while (days.length < totalSlots) {
+      days.push({
+        date: new Date(year, month + 1, nextMonthDay++),
+        isCurrentMonth: false
+      });
     }
 
     return days;
@@ -155,24 +174,34 @@ export function MonthlyCalendar() {
       {/* Calendar Card - Compact Layout */}
       <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
         {/* Header with Month/Year and Navigation */}
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xs font-semibold text-muted-foreground/60">{monthYear}</h3>
-          <div className="flex gap-2">
-            <Button
-              onClick={previousMonth}
-              variant="outline"
-              className="h-7 w-7 p-0 bg-secondary/10 border-border/10 rounded-lg hover:bg-accent/10 hover:text-accent transition-all"
-            >
-              <ChevronLeft className="w-3 h-3" />
-            </Button>
-            <Button
-              onClick={nextMonth}
-              variant="outline"
-              className="h-7 w-7 p-0 bg-secondary/10 border-border/10 rounded-lg hover:bg-accent/10 hover:text-accent transition-all"
-            >
-              <ChevronRight className="w-3 h-3" />
-            </Button>
-          </div>
+        <div className="flex items-center justify-center mb-8 gap-6">
+          <button
+            onClick={() => {
+              setCurrentDate(new Date(currentDate.getFullYear() - 1, currentDate.getMonth()));
+              setSelectedDate(null);
+              setIsModalOpen(false);
+            }}
+            className="text-muted-foreground/40 hover:text-foreground transition-colors font-bold text-xs"
+          >
+            {'<<'}
+          </button>
+          <button onClick={previousMonth} className="text-muted-foreground/40 hover:text-foreground transition-colors font-bold text-xs">
+            {'<'}
+          </button>
+          <h3 className="text-sm font-bold text-foreground mx-4 tracking-wide">{monthYear}</h3>
+          <button onClick={nextMonth} className="text-muted-foreground/40 hover:text-foreground transition-colors font-bold text-xs">
+            {'>'}
+          </button>
+          <button
+            onClick={() => {
+              setCurrentDate(new Date(currentDate.getFullYear() + 1, currentDate.getMonth()));
+              setSelectedDate(null);
+              setIsModalOpen(false);
+            }}
+            className="text-muted-foreground/40 hover:text-foreground transition-colors font-bold text-xs"
+          >
+            {'>>'}
+          </button>
         </div>
 
         {/* Month Stats */}
@@ -198,46 +227,62 @@ export function MonthlyCalendar() {
         </div>
 
         {/* Weekday headers */}
-        <div className="grid grid-cols-7 gap-1.5 mb-3">
+        <div className="grid grid-cols-7 gap-2 mb-2">
           {weekDaysFull.map((day) => (
             <div
               key={day}
-              className="text-center text-[8px] font-bold text-muted-foreground/20 tracking-widest uppercase "
+              className="text-center text-[9px] font-bold text-muted-foreground/60 tracking-widest uppercase bg-[#141414] dark:bg-black/40 rounded-xl py-2.5"
             >
-              {day[0]}
+              {day}
             </div>
           ))}
         </div>
 
         {/* Calendar days */}
-        <div className="grid grid-cols-7 gap-1.5">
-          {calendarDays.map((date, idx) => {
+        <div className="grid grid-cols-7 gap-2">
+          {calendarDays.map((dayObj, idx) => {
+            const date = dayObj.date;
+            const isCurrentMonth = dayObj.isCurrentMonth;
             const dayTrades = getDayPnL(date);
             const hasActivity = dayTrades && dayTrades.pnl !== 0;
+            const isPositive = hasActivity && dayTrades.pnl > 0;
+
+            let bgClass = 'bg-[#181818] border-transparent';
+            let dateColor = 'text-white/40';
+
+            if (!isCurrentMonth) {
+              bgClass = 'bg-[#121212] border-transparent opacity-50';
+              dateColor = 'text-white/20';
+            } else if (hasActivity) {
+              bgClass = isPositive
+                ? 'bg-green-900/30 border-green-500/40 hover:bg-green-900/40 hover:border-green-500/60 shadow-[inset_0_0_20px_rgba(34,197,94,0.05)]'
+                : 'bg-red-900/20 border-red-500/30 hover:bg-red-900/30 hover:border-red-500/50 shadow-[inset_0_0_20px_rgba(239,68,68,0.05)]';
+              dateColor = 'text-white/80';
+            } else {
+              bgClass = 'bg-[#1c1c1c] border-white/5 hover:bg-[#222] hover:border-white/10';
+            }
 
             return (
               <button
                 key={idx}
-                onClick={() => date && handleDayClick(date)}
-                disabled={!date}
+                onClick={() => isCurrentMonth && handleDayClick(date)}
+                disabled={!isCurrentMonth}
                 className={`
-                  relative aspect-square rounded-lg transition-all duration-300 flex flex-col items-center justify-center border
-                  ${!date ? 'bg-transparent border-transparent' :
-                    hasActivity
-                      ? `${dayTrades.pnl > 0 ? 'bg-green-500/10 border-green-500/10 hover:bg-green-500/20' : 'bg-red-500/10 border-red-500/10 hover:bg-red-500/20'} cursor-pointer`
-                      : 'bg-secondary/5 border-border/5 hover:border-border/10 cursor-pointer'}
+                  relative aspect-[4/3] rounded-2xl transition-all duration-300 flex flex-col items-start justify-start p-2.5 sm:p-3 border
+                  ${bgClass} ${isCurrentMonth ? 'cursor-pointer' : 'cursor-default'}
                 `}
               >
-                {date && (
-                  <div className="flex items-center gap-1.5">
-                    <div className={`text-[11px] font-bold leading-none ${hasActivity ? (dayTrades.pnl > 0 ? 'text-green-400' : 'text-red-400') : 'text-muted-foreground/40'}`}>
-                      {date.getDate()}
-                    </div>
-                    {hasActivity && (
-                      <div className={`text-[9px] font-extrabold tracking-tight ${dayTrades.pnl > 0 ? 'text-green-500/90' : 'text-red-500/90'}`}>
-                        {dayTrades.pnl > 0 ? '+' : '-'}${Math.abs(dayTrades.pnl).toFixed(0)}
-                      </div>
-                    )}
+                <div className={`text-[10px] sm:text-[11px] font-bold leading-none ${dateColor}`}>
+                  {date.getDate()}
+                </div>
+                {hasActivity && isCurrentMonth && (
+                  <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 text-right flex flex-col items-end">
+                    <span className={`text-[8px] sm:text-[9px] font-bold tracking-tight ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
+                      {isPositive ? '' : '-'}${Math.abs(dayTrades.pnl).toFixed(2)} P&L
+                    </span>
+                    <span className="text-[7px] sm:text-[8px] text-foreground/40 font-semibold mt-0.5">
+                      {dayTrades.trades.length} Trades
+                    </span>
                   </div>
                 )}
               </button>

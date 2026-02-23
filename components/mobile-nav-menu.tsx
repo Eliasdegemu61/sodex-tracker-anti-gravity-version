@@ -72,10 +72,10 @@ export function MobileNavMenu({ currentPage, onNavigate }: MobileNavMenuProps) {
       {/* Mobile Menu */}
       <div
         ref={menuRef}
-        className={`fixed top-20 right-6 left-6 bg-card/90 backdrop-blur-2xl border border-border/20 rounded-[2.5rem] shadow-2xl transition-all duration-300 z-40 xl:hidden ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 invisible'
+        className={`fixed top-16 right-4 w-[240px] bg-card/95 backdrop-blur-2xl border border-border/20 rounded-3xl shadow-2xl transition-all duration-300 z-50 md:hidden ${isOpen ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-95 pointer-events-none'
           }`}
       >
-        <div className="p-6 grid grid-cols-1 gap-2">
+        <div className="p-3 flex flex-col gap-1">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentPage === item.id;
@@ -84,27 +84,19 @@ export function MobileNavMenu({ currentPage, onNavigate }: MobileNavMenuProps) {
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 ${isActive
-                  ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
+                className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-300 ${isActive
+                  ? 'bg-orange-500 text-white shadow-md shadow-orange-500/20'
                   : 'text-muted-foreground/60 hover:text-foreground hover:bg-secondary/10 border border-transparent'
                   }`}
               >
-                <div className="flex items-center gap-4">
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-orange-400/60'}`} />
-                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] ">{item.label}</span>
+                <div className="flex items-center gap-3">
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-orange-400/60'}`} />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.1em]">{item.label}</span>
                 </div>
                 {isActive && <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />}
               </button>
             );
           })}
-
-          <div className="mt-4 pt-4 border-t border-border/10">
-            <a href="https://sodex.com/join/TRADING" target="_blank" rel="noopener noreferrer">
-              <Button className="w-full h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl text-[10px] font-bold   shadow-lg shadow-orange-500/20">
-                Execute Trade
-              </Button>
-            </a>
-          </div>
         </div>
       </div>
     </>

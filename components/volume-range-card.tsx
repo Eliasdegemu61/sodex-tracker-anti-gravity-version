@@ -43,8 +43,7 @@ export function VolumeRangeCard() {
     <TooltipProvider>
       <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col">
         <div className="flex items-center justify-between mb-8">
-          <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">PnL by Intensity</h3>
-          <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold ">Cohort Study</div>
+          <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Avg PNL by Volume range</h3>
         </div>
 
         <div className="space-y-2">

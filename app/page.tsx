@@ -12,6 +12,7 @@ import { useTheme } from '@/app/providers'
 import { useSessionCache } from '@/context/session-cache-context'
 import { DashboardStats } from '@/components/dashboard-stats'
 import { VolumeChart } from '@/components/volume-chart'
+import { FundFlowChart } from '@/components/fund-flow-chart'
 import { TopPairsWidget } from '@/components/top-pairs-widget'
 import { TodayTopPairs } from '@/components/today-top-pairs'
 import { TopTradersCard } from '@/components/top-traders-card'
@@ -741,6 +742,7 @@ export default function Dashboard() {
             <div className="flex-1 lg:border-r border-border p-2 md:p-6 space-y-2 md:space-y-4 lg:flex-shrink-0 order-1 lg:order-2">
               {/* Chart Area */}
               <VolumeChart />
+              <FundFlowChart />
 
               {/* Volume Range Analysis */}
               <VolumeRangeCard />

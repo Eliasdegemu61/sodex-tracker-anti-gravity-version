@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button'
 import { useTheme } from '@/app/providers'
 import { DashboardStats } from '@/components/dashboard-stats'
 import { VolumeChart } from '@/components/volume-chart'
+import { FundFlowChart } from '@/components/fund-flow-chart'
 import { TopPairsWidget } from '@/components/top-pairs-widget'
 import { TodayTopPairs } from '@/components/today-top-pairs'
 import { TopTradersCard } from '@/components/top-traders-card'
@@ -77,10 +78,10 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
       // Parse CSV
       const lines = csvText.trim().split('\n')
       if (lines.length < 2) throw new Error('Empty CSV data')
-      
+
       const headers = lines[0].split(',').map(h => h.trim())
       const traders: any[] = []
-      
+
       for (let i = 1; i < lines.length; i++) {
         const values = lines[i].split(',').map(v => v.trim())
         const obj: any = {}
@@ -94,7 +95,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
           vol: obj.vol || '0',
         })
       }
-      
+
       setAllTraders(traders)
 
       // Calculate stats FOR EACH BRACKET separately
@@ -102,7 +103,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
         const filtered = traders.filter(trader => {
           const vol = typeof trader.vol === 'string' ? parseFloat(trader.vol) : trader.vol || 0
           const pnl = typeof trader.pnl === 'string' ? parseFloat(trader.pnl) : trader.pnl || 0
-          
+
           const volMin = bracket.volMin ? parseFloat(bracket.volMin) : -Infinity
           const volMax = bracket.volMax ? parseFloat(bracket.volMax) : Infinity
           const pnlMin = bracket.pnlMin ? parseFloat(bracket.pnlMin) : -Infinity
@@ -156,10 +157,10 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
         // Parse CSV
         const lines = csvText.trim().split('\n')
         if (lines.length < 2) throw new Error('Empty CSV data')
-        
+
         const headers = lines[0].split(',').map(h => h.trim())
         const traders: any[] = []
-        
+
         for (let i = 1; i < lines.length; i++) {
           const values = lines[i].split(',').map(v => v.trim())
           const obj: any = {}
@@ -173,7 +174,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
             vol: obj.vol || '0',
           })
         }
-        
+
         setAllTraders(traders)
       }
 
@@ -240,41 +241,37 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
         <div className="px-3 md:px-6 flex gap-4">
           <button
             onClick={() => setActiveTab('distribution')}
-            className={`px-4 py-3 font-medium text-sm transition-colors border-b-2 ${
-              activeTab === 'distribution'
-                ? 'text-accent border-accent'
-                : 'text-muted-foreground border-transparent hover:text-foreground'
-            }`}
+            className={`px-4 py-3 font-medium text-sm transition-colors border-b-2 ${activeTab === 'distribution'
+              ? 'text-accent border-accent'
+              : 'text-muted-foreground border-transparent hover:text-foreground'
+              }`}
           >
             Distribution Analyzer
           </button>
           <button
             onClick={() => setActiveTab('reverse')}
-            className={`px-4 py-3 font-medium text-sm transition-colors border-b-2 ${
-              activeTab === 'reverse'
-                ? 'text-accent border-accent'
-                : 'text-muted-foreground border-transparent hover:text-foreground'
-            }`}
+            className={`px-4 py-3 font-medium text-sm transition-colors border-b-2 ${activeTab === 'reverse'
+              ? 'text-accent border-accent'
+              : 'text-muted-foreground border-transparent hover:text-foreground'
+              }`}
           >
             Reverse Search address
           </button>
           <button
             onClick={() => setActiveTab('sopoints')}
-            className={`px-4 py-3 font-medium text-sm transition-colors border-b-2 ${
-              activeTab === 'sopoints'
-                ? 'text-accent border-accent'
-                : 'text-muted-foreground border-transparent hover:text-foreground'
-            }`}
+            className={`px-4 py-3 font-medium text-sm transition-colors border-b-2 ${activeTab === 'sopoints'
+              ? 'text-accent border-accent'
+              : 'text-muted-foreground border-transparent hover:text-foreground'
+              }`}
           >
             Sopoints
           </button>
           <button
             onClick={() => setActiveTab('new-traders')}
-            className={`px-4 py-3 font-medium text-sm transition-colors border-b-2 ${
-              activeTab === 'new-traders'
-                ? 'text-accent border-accent'
-                : 'text-muted-foreground border-transparent hover:text-foreground'
-            }`}
+            className={`px-4 py-3 font-medium text-sm transition-colors border-b-2 ${activeTab === 'new-traders'
+              ? 'text-accent border-accent'
+              : 'text-muted-foreground border-transparent hover:text-foreground'
+              }`}
           >
             Active Traders
           </button>
@@ -423,8 +420,8 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
                               stroke="none"
                             >
                               {bracketResult.donutData.map((entry, index) => (
-                                <Cell 
-                                  key={`cell-${index}`} 
+                                <Cell
+                                  key={`cell-${index}`}
                                   fill={entry.color}
                                   className="donut-segment"
                                   style={{
@@ -433,9 +430,9 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
                                 />
                               ))}
                             </Pie>
-                            <Tooltip 
-                              contentStyle={{ 
-                                backgroundColor: '#1a1a1a', 
+                            <Tooltip
+                              contentStyle={{
+                                backgroundColor: '#1a1a1a',
                                 border: '1px solid #333',
                                 color: '#ffffff'
                               }}
@@ -456,8 +453,8 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
                           className="h-8 text-xs"
                           onKeyDown={(e) => e.key === 'Enter' && handleSearchAddress(bracketResult.bracketId)}
                         />
-                        <Button 
-                          onClick={() => handleSearchAddress(bracketResult.bracketId)} 
+                        <Button
+                          onClick={() => handleSearchAddress(bracketResult.bracketId)}
                           disabled={isSearchingAddress}
                           size="sm"
                           className="w-full h-8 text-xs"
@@ -591,12 +588,12 @@ export default function Dashboard() {
     const searchParams = new URLSearchParams(window.location.search);
     const tabParam = searchParams.get('tab') as 'dex-status' | 'tracker' | 'portfolio' | 'leaderboard' | 'analyzer' | null;
     const addressParam = searchParams.get('address');
-    
+
     // Set tracker search address if provided
     if (addressParam) {
       setTrackerSearchAddress(decodeURIComponent(addressParam));
     }
-    
+
     if (tabParam && ['dex-status', 'tracker', 'portfolio', 'leaderboard', 'analyzer'].includes(tabParam)) {
       setCurrentPage(tabParam);
     } else {
@@ -612,7 +609,7 @@ export default function Dashboard() {
       setSearchAddressInput('')
     }
   }
-  
+
   return (
     <div>
       {/* Header */}
@@ -645,51 +642,46 @@ export default function Dashboard() {
           <div className="hidden md:flex items-center gap-8">
             <button
               onClick={() => setCurrentPage('dex-status')}
-              className={`text-xs md:text-sm border-b-2 transition-all pb-1 font-semibold ${
-                currentPage === 'dex-status'
-                  ? 'text-foreground border-b-orange-400'
-                  : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
-              }`}
+              className={`text-xs md:text-sm border-b-2 transition-all pb-1 font-semibold ${currentPage === 'dex-status'
+                ? 'text-foreground border-b-orange-400'
+                : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
+                }`}
             >
               Dex Status
             </button>
             <button
               onClick={() => setCurrentPage('tracker')}
-              className={`text-xs md:text-sm border-b-2 transition-all pb-1 ${
-                currentPage === 'tracker'
-                  ? 'text-foreground border-b-orange-400'
-                  : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
-              }`}
+              className={`text-xs md:text-sm border-b-2 transition-all pb-1 ${currentPage === 'tracker'
+                ? 'text-foreground border-b-orange-400'
+                : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
+                }`}
             >
               Tracker
             </button>
             <button
               onClick={() => setCurrentPage('portfolio')}
-              className={`text-xs md:text-sm border-b-2 transition-all pb-1 ${
-                currentPage === 'portfolio'
-                  ? 'text-foreground border-b-orange-400'
-                  : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
-              }`}
+              className={`text-xs md:text-sm border-b-2 transition-all pb-1 ${currentPage === 'portfolio'
+                ? 'text-foreground border-b-orange-400'
+                : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
+                }`}
             >
               Portfolio
             </button>
             <button
               onClick={() => setCurrentPage('leaderboard')}
-              className={`text-xs md:text-sm border-b-2 transition-all pb-1 ${
-                currentPage === 'leaderboard'
-                  ? 'text-foreground border-b-orange-400'
-                  : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
-              }`}
+              className={`text-xs md:text-sm border-b-2 transition-all pb-1 ${currentPage === 'leaderboard'
+                ? 'text-foreground border-b-orange-400'
+                : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
+                }`}
             >
               Leaderboard
             </button>
             <button
               onClick={() => setCurrentPage('analyzer')}
-              className={`text-xs md:text-sm border-b-2 transition-all pb-1 ${
-                currentPage === 'analyzer'
-                  ? 'text-foreground border-b-orange-400'
-                  : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
-              }`}
+              className={`text-xs md:text-sm border-b-2 transition-all pb-1 ${currentPage === 'analyzer'
+                ? 'text-foreground border-b-orange-400'
+                : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
+                }`}
             >
               Analyzer
             </button>
@@ -714,9 +706,9 @@ export default function Dashboard() {
             )}
             <a href="https://sodex.com/join/TRADING" target="_blank" rel="noopener noreferrer">
               <Button variant="ghost" className="hidden md:flex items-center gap-2 text-foreground hover:bg-secondary px-3 h-9">
-                <img 
-                  src="https://ssi.sosovalue.com/_next/image?url=%2Fimages%2Fwhat-is-soso%2F%24soso.png&w=256&q=75" 
-                  alt="SOSO" 
+                <img
+                  src="https://ssi.sosovalue.com/_next/image?url=%2Fimages%2Fwhat-is-soso%2F%24soso.png&w=256&q=75"
+                  alt="SOSO"
                   className="w-5 h-5"
                 />
                 <span className="text-sm font-semibold text-accent">Trade</span>
@@ -764,6 +756,7 @@ export default function Dashboard() {
             <div className="flex-1 lg:border-r border-border p-2 md:p-6 space-y-2 md:space-y-4 lg:flex-shrink-0 order-1 lg:order-2">
               {/* Chart Area */}
               <VolumeChart />
+              <FundFlowChart />
 
               {/* Volume Range Analysis */}
               <VolumeRangeCard />
@@ -784,39 +777,39 @@ export default function Dashboard() {
               <TopLosersCard />
 
               {/* SoDex Promo Card - order-last on mobile, normal on lg */}
-            <div className="relative overflow-hidden rounded-lg border border-border hover:border-accent/50 transition-all duration-300 group order-last lg:order-none">
-              {/* Background Image */}
-              <img
-                src="https://sodex.com/_next/image?url=%2Fimg%2Fhome%2Fcontent1-inner.webp&w=1920&q=75"
-                alt="Trade on SoDex"
-                className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-              
-              {/* Content */}
-              <div className="absolute inset-0 flex flex-col items-center justify-end p-4">
-                <a
-                  href="https://sodex.com/join/TRADING"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full"
-                >
-                  <button
-                    type="button"
-                    className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 font-sans"
-                  >
-                    Trade on SoDex
-                  </button>
-                </a>
-              </div>
-            </div>
+              <div className="relative overflow-hidden rounded-lg border border-border hover:border-accent/50 transition-all duration-300 group order-last lg:order-none">
+                {/* Background Image */}
+                <img
+                  src="https://sodex.com/_next/image?url=%2Fimg%2Fhome%2Fcontent1-inner.webp&w=1920&q=75"
+                  alt="Trade on SoDex"
+                  className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                />
 
-            {/* Top Traders Spot */}
-            <TopSpotTradersCard />
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+
+                {/* Content */}
+                <div className="absolute inset-0 flex flex-col items-center justify-end p-4">
+                  <a
+                    href="https://sodex.com/join/TRADING"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full"
+                  >
+                    <button
+                      type="button"
+                      className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 font-sans"
+                    >
+                      Trade on SoDex
+                    </button>
+                  </a>
+                </div>
+              </div>
+
+              {/* Top Traders Spot */}
+              <TopSpotTradersCard />
+            </div>
           </div>
-        </div>
         </Suspense>
       )}
 
@@ -853,7 +846,7 @@ export default function Dashboard() {
 
       {/* Announcement Side Panel */}
       <AnnouncementSidePanel />
-      
+
       {/* Footer */}
       <Footer />
     </div>

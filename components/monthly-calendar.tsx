@@ -229,11 +229,16 @@ export function MonthlyCalendar() {
                 `}
               >
                 {date && (
-                  <>
-                    <div className={`text-[10px] font-bold leading-none ${hasActivity ? (dayTrades.pnl > 0 ? 'text-green-400' : 'text-red-400') : 'text-muted-foreground/40'}`}>
+                  <div className="flex items-center gap-1.5">
+                    <div className={`text-[11px] font-bold leading-none ${hasActivity ? (dayTrades.pnl > 0 ? 'text-green-400' : 'text-red-400') : 'text-muted-foreground/40'}`}>
                       {date.getDate()}
                     </div>
-                  </>
+                    {hasActivity && (
+                      <div className={`text-[9px] font-extrabold tracking-tight ${dayTrades.pnl > 0 ? 'text-green-500/90' : 'text-red-500/90'}`}>
+                        {dayTrades.pnl > 0 ? '+' : '-'}${Math.abs(dayTrades.pnl).toFixed(0)}
+                      </div>
+                    )}
+                  </div>
                 )}
               </button>
             );

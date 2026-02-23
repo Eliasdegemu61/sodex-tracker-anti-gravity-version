@@ -89,65 +89,59 @@ export function PositionsTable() {
   }
 
   return (
-    <Card className="p-3 md:p-6 bg-card border border-border">
-      <h3 className="text-base md:text-lg font-bold text-foreground mb-4">Position History</h3>
+    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">
+          position history
+        </h3>
+      </div>
 
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full text-[11px] border-separate border-spacing-y-1.5">
           <thead>
-            <tr className="border-b border-border">
-              <th className="text-left py-3 px-2 text-muted-foreground font-medium">Pair</th>
-              <th className="text-left py-3 px-2 text-muted-foreground font-medium">Side</th>
-              <th className="text-left py-3 px-2 text-muted-foreground font-medium">Mode</th>
-              <th className="text-right py-3 px-2 text-muted-foreground font-medium">Entry</th>
-              <th className="text-right py-3 px-2 text-muted-foreground font-medium">Close</th>
-              <th className="text-right py-3 px-2 text-muted-foreground font-medium">Size</th>
-              <th className="text-right py-3 px-2 text-muted-foreground font-medium">Leverage</th>
-              <th className="text-right py-3 px-2 text-muted-foreground font-medium">Fee</th>
-              <th className="text-right py-3 px-2 text-muted-foreground font-medium">PnL</th>
-              <th className="text-right py-3 px-2 text-muted-foreground font-medium">%</th>
-              <th className="text-left py-3 px-2 text-muted-foreground font-medium">Date</th>
+            <tr className="text-muted-foreground/40 font-bold uppercase tracking-widest italic">
+              <th className="text-left py-2 px-3">Pair</th>
+              <th className="text-left py-2 px-3">Side</th>
+              <th className="text-left py-2 px-3">Mode</th>
+              <th className="text-right py-2 px-3">Entry</th>
+              <th className="text-right py-2 px-3">Close</th>
+              <th className="text-right py-2 px-3">Size</th>
+              <th className="text-right py-2 px-3">Leverage</th>
+              <th className="text-right py-2 px-3">Fee</th>
+              <th className="text-right py-2 px-3">PnL</th>
+              <th className="text-right py-2 px-3">%</th>
+              <th className="text-left py-2 px-3">Date</th>
             </tr>
           </thead>
           <tbody>
             {paginatedPositions.map((position) => (
-              <tr key={position.id} className="border-b border-border hover:bg-secondary/30 transition-colors">
-                <td className="py-3 px-2 font-semibold text-foreground text-sm">{position.pair}</td>
-                <td className="py-3 px-2">
-                  <Badge
-                    variant={position.type === 'long' ? 'default' : 'secondary'}
-                    className={position.type === 'long' ? 'bg-emerald-900/50 text-emerald-300' : 'bg-red-900/50 text-red-300'}
-                  >
+              <tr key={position.id} className="group relative bg-secondary/10 hover:bg-secondary/20 transition-all rounded-xl">
+                <td className="py-3 px-3 first:rounded-l-xl last:rounded-r-xl font-bold font-mono text-foreground/80">{position.pair}</td>
+                <td className="py-3 px-3">
+                  <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold tracking-tighter ${position.type === 'long' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
                     {position.type.toUpperCase()}
-                  </Badge>
+                  </span>
                 </td>
-                <td className="py-3 px-2 text-sm">
-                  <Badge variant="outline" className="text-xs">
+                <td className="py-3 px-3">
+                  <span className="text-[9px] font-bold text-muted-foreground/50 uppercase tracking-tight bg-muted/20 px-1.5 py-0.5 rounded">
                     {position.marginMode}
-                  </Badge>
+                  </span>
                 </td>
-                <td className="py-3 px-2 text-right text-muted-foreground text-xs">${position.entry.toFixed(6)}</td>
-                <td className="py-3 px-2 text-right text-foreground font-medium text-xs">${position.close.toFixed(6)}</td>
-                <td className="py-3 px-2 text-right text-muted-foreground text-xs">{position.size.toFixed(4)}</td>
-                <td className="py-3 px-2 text-right text-foreground font-medium text-sm">{position.leverage}</td>
-                <td className="py-3 px-2 text-right text-muted-foreground text-xs">${position.fee.toFixed(4)}</td>
-                <td className={`py-3 px-2 text-right font-bold text-xs ${position.pnl >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                  {position.pnl >= 0 ? '+' : ''} ${position.pnl.toFixed(4)}
+                <td className="py-3 px-3 text-right font-mono text-muted-foreground/60">${position.entry.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</td>
+                <td className="py-3 px-3 text-right font-mono font-bold text-foreground/80">${position.close.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</td>
+                <td className="py-3 px-3 text-right font-mono text-muted-foreground/60">{position.size.toLocaleString(undefined, { maximumFractionDigits: 4 })}</td>
+                <td className="py-3 px-3 text-right font-mono font-bold text-foreground/80">{position.leverage}</td>
+                <td className="py-3 px-3 text-right font-mono text-muted-foreground/60">${position.fee.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}</td>
+                <td className={`py-3 px-3 text-right font-bold font-mono ${position.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {position.pnl >= 0 ? '+' : ''}${Math.abs(position.pnl).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}
                 </td>
-                <td className="py-3 px-2 text-right">
-                  <div className="flex items-center justify-end gap-1">
-                    {position.pnlPercent >= 0 ? (
-                      <ArrowUpRight className="w-4 h-4 text-emerald-400" />
-                    ) : (
-                      <ArrowDownLeft className="w-4 h-4 text-red-400" />
-                    )}
-                    <span className={`font-semibold text-xs ${position.pnlPercent >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                      {position.pnlPercent >= 0 ? '+' : ''} {position.pnlPercent.toFixed(2)}%
-                    </span>
+                <td className="py-3 px-3 text-right">
+                  <div className={`flex items-center justify-end gap-1 font-bold font-mono ${position.pnlPercent >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {position.pnlPercent >= 0 ? '+' : ''}{position.pnlPercent.toFixed(2)}%
                   </div>
                 </td>
-                <td className="py-3 px-2 text-left text-muted-foreground text-xs">{position.createdAt}</td>
+                <td className="py-3 px-3 first:rounded-l-xl last:rounded-r-xl text-left text-muted-foreground/40 font-mono text-[9px]">{position.createdAt}</td>
               </tr>
             ))}
           </tbody>
@@ -155,70 +149,71 @@ export function PositionsTable() {
       </div>
 
       {/* Mobile Expandable List */}
-      <div className="md:hidden space-y-2">
+      <div className="md:hidden space-y-3">
         {paginatedPositions.map((position) => (
-          <div key={position.id} className="border border-border rounded-lg overflow-hidden">
+          <div key={position.id} className="bg-secondary/10 border border-border/10 rounded-2xl overflow-hidden transition-all hover:border-accent/10">
             {/* Expandable Row Summary */}
             <button
               onClick={() => toggleExpand(position.id)}
-              className="w-full p-3 flex items-center justify-between bg-card/50 hover:bg-secondary/30 transition-colors text-left"
+              className="w-full p-4 flex items-center justify-between hover:bg-secondary/10 transition-colors text-left"
             >
               <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-semibold text-foreground">{position.pair}</span>
-                  <Badge
-                    variant={position.type === 'long' ? 'default' : 'secondary'}
-                    className={`text-xs ${position.type === 'long' ? 'bg-emerald-900/50 text-emerald-300' : 'bg-red-900/50 text-red-300'}`}
-                  >
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="font-bold font-mono text-foreground/80">{position.pair}</span>
+                  <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold tracking-wider ${position.type === 'long' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
                     {position.type.toUpperCase()}
-                  </Badge>
-                </div>
-                <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                  <span>Entry: ${position.entry.toFixed(4)}</span>
-                  <span className={position.pnl >= 0 ? 'text-emerald-400 font-semibold' : 'text-red-400 font-semibold'}>
-                    {position.pnl >= 0 ? '+' : ''} ${position.pnl.toFixed(4)}
                   </span>
+                </div>
+                <div className="flex items-center gap-4 text-[10px] font-mono">
+                  <div className="flex flex-col">
+                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-0.5 italic">Entry</span>
+                    <span className="text-muted-foreground/60">${position.entry.toFixed(2)}</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-0.5 italic">Realized</span>
+                    <span className={position.pnl >= 0 ? 'text-green-400 font-bold' : 'text-red-400 font-bold'}>
+                      {position.pnl >= 0 ? '+' : ''}${Math.abs(position.pnl).toFixed(2)}
+                    </span>
+                  </div>
                 </div>
               </div>
               <ChevronDown
-                className={`w-5 h-5 text-muted-foreground transition-transform ${expandedRows.has(position.id) ? 'rotate-180' : ''}`}
+                className={`w-4 h-4 text-muted-foreground/40 transition-transform duration-300 ${expandedRows.has(position.id) ? 'rotate-180' : ''}`}
               />
             </button>
 
             {/* Expandable Details */}
             {expandedRows.has(position.id) && (
-              <div className="p-3 border-t border-border bg-card/30 space-y-2 text-xs">
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <span className="text-muted-foreground">Close Price</span>
-                    <p className="font-semibold text-foreground">${position.close.toFixed(6)}</p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Size</span>
-                    <p className="font-semibold text-foreground">{position.size.toFixed(4)}</p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Leverage</span>
-                    <p className="font-semibold text-foreground">{position.leverage}</p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Mode</span>
-                    <p className="font-semibold text-foreground">{position.marginMode}</p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Fee</span>
-                    <p className="font-semibold text-foreground">${position.fee.toFixed(4)}</p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Return %</span>
-                    <p className={`font-semibold ${position.pnlPercent >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                      {position.pnlPercent >= 0 ? '+' : ''} {position.pnlPercent.toFixed(2)}%
-                    </p>
-                  </div>
-                  <div className="col-span-2">
-                    <span className="text-muted-foreground">Date Closed</span>
-                    <p className="font-semibold text-foreground">{position.createdAt}</p>
-                  </div>
+              <div className="p-4 border-t border-border/5 bg-secondary/[0.02] grid grid-cols-2 gap-y-4 gap-x-6">
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Close Price</span>
+                  <p className="font-bold font-mono text-[11px] text-foreground/80">${position.close.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</p>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Size</span>
+                  <p className="font-bold font-mono text-[11px] text-foreground/80">{position.size.toFixed(4)}</p>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Leverage</span>
+                  <p className="font-bold font-mono text-[11px] text-foreground/80">{position.leverage}</p>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Mode</span>
+                  <p className="font-bold font-mono text-[11px] text-foreground/80 uppercase tracking-tighter">{position.marginMode}</p>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Fee</span>
+                  <p className="font-bold font-mono text-[11px] text-muted-foreground/60">${position.fee.toFixed(4)}</p>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Return %</span>
+                  <p className={`font-bold font-mono text-[11px] ${position.pnlPercent >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {position.pnlPercent >= 0 ? '+' : ''}{position.pnlPercent.toFixed(2)}%
+                  </p>
+                </div>
+                <div className="col-span-2 flex flex-col pt-2 border-t border-border/5">
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Date Closed</span>
+                  <p className="font-mono text-[11px] text-muted-foreground/60">{position.createdAt}</p>
                 </div>
               </div>
             )}
@@ -227,19 +222,18 @@ export function PositionsTable() {
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mt-4 md:mt-6 pt-4 md:pt-6 border-t border-border gap-4">
-        <div className="flex items-center gap-2 md:gap-3">
-          <span className="text-xs md:text-sm text-muted-foreground font-medium">Rows:</span>
-          <div className="flex gap-1 p-1 bg-secondary/30 rounded-lg border border-border/50">
+      <div className="flex flex-col md:flex-row items-center justify-between mt-8 pt-6 border-t border-border/5 gap-6">
+        <div className="flex items-center gap-4">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/30 italic">Show Rows</span>
+          <div className="flex gap-1 p-1 bg-secondary/10 rounded-xl border border-border/5">
             {[5, 10, 20, 50].map((value) => (
               <button
                 key={value}
                 onClick={() => handleRowsPerPageChange(value)}
-                className={`px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm font-medium rounded-md transition-all ${
-                  rowsPerPage === value
-                    ? 'bg-primary text-primary-foreground shadow-lg'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
-                }`}
+                className={`w-8 h-8 flex items-center justify-center text-[10px] font-bold font-mono rounded-lg transition-all ${rowsPerPage === value
+                    ? 'bg-accent text-accent-foreground shadow-lg'
+                    : 'text-muted-foreground/50 hover:text-foreground hover:bg-secondary/20'
+                  }`}
               >
                 {value}
               </button>
@@ -247,38 +241,34 @@ export function PositionsTable() {
           </div>
         </div>
 
-        <div className="text-xs md:text-sm text-muted-foreground order-3 md:order-2 w-full md:w-auto text-center md:text-left">
-          {startIndex + 1}-{Math.min(endIndex, displayPositions.length)} of {displayPositions.length}
-        </div>
-
-        <div className="flex items-center gap-1 md:gap-2 order-2 md:order-3">
-          <Button
-            onClick={handlePrevPage}
-            disabled={currentPage === 1}
-            variant="outline"
-            size="sm"
-            className="gap-1 bg-transparent px-2 md:px-3 h-8 md:h-9 text-xs md:text-sm"
-          >
-            <ChevronLeft className="w-3 h-3 md:w-4 md:h-4" />
-            <span className="hidden md:inline">Prev</span>
-          </Button>
-
-          <div className="flex items-center gap-1 px-2">
-            <span className="text-xs text-muted-foreground">
-              {currentPage}/{totalPages}
-            </span>
+        <div className="flex items-center gap-4">
+          <div className="text-[10px] font-mono text-muted-foreground/40 font-bold uppercase tracking-tighter">
+            {startIndex + 1}—{Math.min(endIndex, displayPositions.length)} <span className="text-muted-foreground/20 italic mx-1">of</span> {displayPositions.length}
           </div>
 
-          <Button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            variant="outline"
-            size="sm"
-            className="gap-1 bg-transparent px-2 md:px-3 h-8 md:h-9 text-xs md:text-sm"
-          >
-            <span className="hidden md:inline">Next</span>
-            <ChevronRight className="w-3 h-3 md:w-4 md:h-4" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={handlePrevPage}
+              disabled={currentPage === 1}
+              variant="outline"
+              className="w-8 h-8 p-0 rounded-lg bg-secondary/10 border-border/10 hover:bg-accent/10 hover:text-accent transition-all disabled:opacity-20"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </Button>
+
+            <span className="text-[10px] font-mono font-bold text-muted-foreground/30">
+              {currentPage} / {totalPages}
+            </span>
+
+            <Button
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+              variant="outline"
+              className="w-8 h-8 p-0 rounded-lg bg-secondary/10 border-border/10 hover:bg-accent/10 hover:text-accent transition-all disabled:opacity-20"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </Button>
+          </div>
         </div>
       </div>
     </Card>

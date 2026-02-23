@@ -34,7 +34,7 @@ export function RankingCard({ walletAddress }: RankingCardProps) {
       try {
         console.log('[v0] RankingCard fetching data for:', walletAddress);
         setRankData(prev => ({ ...prev, isLoading: true }));
-        
+
         // Fetch both leaderboards
         const [perpsData, spotData] = await Promise.all([
           fetchLeaderboardData(),
@@ -110,25 +110,30 @@ export function RankingCard({ walletAddress }: RankingCardProps) {
   };
 
   const RankBadge = ({ label, rank }: { label: string; rank: number | null }) => (
-    <div className="flex flex-col items-center p-3 rounded-lg bg-secondary/30 border border-border/50 hover:border-border transition-colors">
-      <p className="text-xs text-muted-foreground font-medium mb-2 text-center">{label}</p>
+    <div className="flex flex-col items-center p-4 rounded-2xl bg-secondary/10 border border-border/5 hover:border-accent/10 transition-all group">
+      <p className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-[0.2em] mb-3 text-center italic group-hover:text-muted-foreground/50 transition-colors">{label}</p>
       {rankData.isLoading ? (
-        <div className="h-6 w-12 bg-secondary/50 rounded animate-pulse" />
+        <div className="h-8 w-12 bg-secondary/20 rounded-lg animate-pulse" />
       ) : rank !== null ? (
-        <p className={`text-2xl font-bold ${getRankColor(rank)}`}>#{rank}</p>
+        <div className="relative">
+          <div className={`absolute inset-0 blur-lg opacity-20 ${getRankColor(rank).replace('text-', 'bg-')}`} />
+          <p className={`relative text-2xl font-bold font-mono tracking-tighter ${getRankColor(rank)}`}>
+            <span className="text-sm opacity-30 mr-0.5">#</span>{rank}
+          </p>
+        </div>
       ) : (
-        <p className="text-sm text-muted-foreground">N/A</p>
+        <p className="text-[10px] text-muted-foreground/20 font-bold uppercase tracking-widest italic">unranked</p>
       )}
     </div>
   );
 
   return (
-    <Card className="p-4 bg-card border border-border">
-      <h3 className="text-sm font-bold text-foreground mb-4">Rankings</h3>
-      <div className="grid grid-cols-3 gap-2">
-        <RankBadge label="Perps Volume" rank={rankData.perpsVolumeRank} />
-        <RankBadge label="Spot Volume" rank={rankData.spotVolumeRank} />
-        <RankBadge label="PnL" rank={rankData.pnlRank} />
+    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
+      <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-6">World Rankings</h3>
+      <div className="grid grid-cols-3 gap-3">
+        <RankBadge label="Perps Vol" rank={rankData.perpsVolumeRank} />
+        <RankBadge label="Spot Vol" rank={rankData.spotVolumeRank} />
+        <RankBadge label="Yield pnl" rank={rankData.pnlRank} />
       </div>
     </Card>
   );

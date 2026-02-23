@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useMemo, useState, useEffect } from "react"
-import { fetchAccountDetails } from '@/lib/account-api'; // Import fetchAccountDetails
+
 
 import { Card } from '@/components/ui/card';
 import { TrendingUp, TrendingDown, DollarSign, Activity, Target, AlertCircle, BarChart3, Zap } from 'lucide-react';
 import { usePortfolio } from '@/context/portfolio-context';
-import { calculateTotalBalance, fetchPnLOverview, getVolumeFromPnLOverview, fetchDetailedBalance } from '@/lib/sodex-api';
+import { fetchPnLOverview, getVolumeFromPnLOverview, fetchDetailedBalance } from '@/lib/sodex-api';
 import { fetchSpotTradesData } from '@/lib/spot-api';
 
 // Cool loading animation component with gradient shimmer effect
@@ -81,7 +81,7 @@ export function PortfolioOverview() {
   const [futuresFees, setFuturesFees] = useState<number>(0);
   const [spotFees, setSpotFees] = useState<number>(0);
   const [hasUnpriced, setHasUnpriced] = useState(false);
-  
+
   // Individual card loading states for independent loading
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const [isLoadingPnL, setIsLoadingPnL] = useState(false);
@@ -100,10 +100,10 @@ export function PortfolioOverview() {
         setFuturesBalance(balanceData.futuresBalance);
         setWalletBalance(balanceData.futuresBalance);
         setTotalBalance(balanceData.totalUsdValue);
-        
+
         // Use the hasUnpricedAssets flag from balance data
         setHasUnpriced(balanceData.hasUnpricedAssets || false);
-        
+
         console.log('[v0] Portfolio balance updated:', {
           totalBalance: balanceData.totalUsdValue,
           spotBalance: balanceData.spotBalance,
@@ -119,7 +119,7 @@ export function PortfolioOverview() {
     };
 
     fetchBalance();
-    
+
     // Refresh balance every 20 seconds
     const interval = setInterval(fetchBalance, 20000);
     return () => clearInterval(interval);
@@ -143,7 +143,7 @@ export function PortfolioOverview() {
     };
 
     fetchPnL();
-    
+
     // Refresh PnL every 30 seconds
     const pnlInterval = setInterval(fetchPnL, 30000);
     return () => clearInterval(pnlInterval);
@@ -161,9 +161,9 @@ export function PortfolioOverview() {
         const spotData = await fetchSpotTradesData(userId);
         setSpotVolume(spotData.totalVolume);
         setIsLoadingVolume(false);
-        
+
         // Calculate futures fees from positions
-        const calcFuturesFees = positions.reduce((sum, p) => sum + (parseFloat(p.cum_trading_fee || '0') || 0), 0);
+        const calcFuturesFees = positions.reduce((sum: number, p: any) => sum + (parseFloat(p.cum_trading_fee || '0') || 0), 0);
         setFuturesFees(calcFuturesFees);
         setSpotFees(spotData.totalFees);
         setIsLoadingFees(false);
@@ -182,7 +182,7 @@ export function PortfolioOverview() {
     };
 
     fetchVolumeAndFees();
-    
+
     // Refresh every 30 seconds
     const interval = setInterval(fetchVolumeAndFees, 30000);
     return () => clearInterval(interval);
@@ -202,7 +202,7 @@ export function PortfolioOverview() {
           label: 'Total Balance',
           value: combinedBalance < 1 ? '<$1' : `$${combinedBalance.toFixed(2)}`,
           subtitle: hasUnpriced ? '+ other assets' : undefined,
-          change: 0, 
+          change: 0,
           icon: <DollarSign className="w-5 h-5" />,
           breakdown: {
             futures: walletBalance,
@@ -213,17 +213,17 @@ export function PortfolioOverview() {
             vault_label: 'Vault',
           },
         },
-        { 
-          label: 'Realized PnL', 
-          value: '$0', 
-          change: 0, 
+        {
+          label: 'Realized PnL',
+          value: '$0',
+          change: 0,
           icon: <TrendingUp className="w-5 h-5" />,
           breakdown: null,
         },
-        { 
-          label: 'Volume', 
-          value: `$${totalVolume.toFixed(2)}`, 
-          change: 0, 
+        {
+          label: 'Volume',
+          value: `$${totalVolume.toFixed(2)}`,
+          change: 0,
           icon: <BarChart3 className="w-5 h-5" />,
           breakdown: {
             futures: futuresVolume,
@@ -232,10 +232,10 @@ export function PortfolioOverview() {
             spot_label: 'Spot',
           },
         },
-        { 
-          label: 'Total Fees Paid', 
-          value: `$${totalFees.toFixed(2)}`, 
-          change: 0, 
+        {
+          label: 'Total Fees Paid',
+          value: `$${totalFees.toFixed(2)}`,
+          change: 0,
           icon: <Zap className="w-5 h-5" />,
           breakdown: {
             futures: futuresFees,
@@ -248,12 +248,12 @@ export function PortfolioOverview() {
     }
 
     // Calculate Win Rate
-    const winningTrades = positions.filter(p => p.realizedPnlValue > 0).length;
+    const winningTrades = positions.filter((p: any) => p.realizedPnlValue > 0).length;
     const totalTrades = positions.length;
     const winRate = totalTrades > 0 ? (winningTrades / totalTrades) * 100 : 0;
 
     // Calculate Total PnL from positions
-    const totalPnL = positions.reduce((sum, p) => sum + p.realizedPnlValue, 0);
+    const totalPnL = positions.reduce((sum: number, p: any) => sum + p.realizedPnlValue, 0);
 
     return [
       {
@@ -320,57 +320,72 @@ export function PortfolioOverview() {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {stats.map((stat, idx) => {
         const isLoading = getCardLoadingState(idx);
-        
+
         return (
-          <Card key={idx} className="p-3 md:p-4 bg-card border border-border hover:border-accent/50 transition-colors">
-            <div className="flex items-start justify-between">
-              <div className="flex-1">
-                <p className="text-xs md:text-sm text-muted-foreground mb-1 md:mb-2">{stat.label}</p>
+          <Card key={idx} className="group relative overflow-hidden p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl transition-all hover:border-accent/30 shadow-sm">
+            <div className="flex items-start justify-between relative z-10">
+              <div className="flex-1 min-w-0">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-2">
+                  {stat.label}
+                </p>
+
                 {isLoading ? (
-                  <div className="min-h-8 w-full">
+                  <div className="min-h-[40px] flex items-center">
                     <LoadingAnimation />
                   </div>
                 ) : (
-                  <>
-                    <p className="text-lg md:text-2xl font-bold text-foreground mb-1">
-                      {stat.value}
-                    </p>
+                  <div className="space-y-1">
+                    <div className="flex items-baseline gap-2">
+                      <p className="text-2xl font-bold font-mono tracking-tight text-foreground truncate">
+                        {stat.value}
+                      </p>
+                    </div>
+
                     {stat.subtitle && (
-                      <p className="text-xs text-accent/80 font-medium">
+                      <p className="text-[9px] text-accent/50 font-bold uppercase tracking-widest italic">
                         {stat.subtitle}
                       </p>
                     )}
+
                     {stat.breakdown && (
-                      <div className="flex items-center gap-2 mt-2 flex-col items-start">
-                        <span className="text-xs text-muted-foreground">
-                          {stat.breakdown.futures_label}: ${stat.breakdown.futures?.toLocaleString('en-US', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) || '0.0'}
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                          {stat.breakdown.spot_label}: ${stat.breakdown.spot?.toLocaleString('en-US', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) || '0.0'}
-                        </span>
+                      <div className="flex flex-col gap-1 mt-3 pt-3 border-t border-border/5">
+                        <div className="flex items-center justify-between text-[10px]">
+                          <span className="text-muted-foreground/40 font-bold uppercase tracking-tight">{stat.breakdown.futures_label}</span>
+                          <span className="font-mono text-foreground/70">${stat.breakdown.futures?.toLocaleString('en-US', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) || '0.0'}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-[10px]">
+                          <span className="text-muted-foreground/40 font-bold uppercase tracking-tight">{stat.breakdown.spot_label}</span>
+                          <span className="font-mono text-foreground/70">${stat.breakdown.spot?.toLocaleString('en-US', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) || '0.0'}</span>
+                        </div>
                         {stat.breakdown.vault !== undefined && stat.breakdown.vault_label && (
-                          <span className="text-xs text-muted-foreground">
-                            {stat.breakdown.vault_label}: ${stat.breakdown.vault?.toLocaleString('en-US', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) || '0.0'}
-                          </span>
+                          <div className="flex items-center justify-between text-[10px]">
+                            <span className="text-muted-foreground/40 font-bold uppercase tracking-tight">{stat.breakdown.vault_label}</span>
+                            <span className="font-mono text-foreground/70">${stat.breakdown.vault?.toLocaleString('en-US', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) || '0.0'}</span>
+                          </div>
                         )}
                       </div>
                     )}
+
                     {stat.change !== undefined && (
-                      <div className="flex items-center gap-1 mt-1 md:mt-2">
+                      <div className="flex items-center gap-1.5 mt-2">
                         {stat.change >= 0 ? (
-                          <TrendingUp className="w-3 md:w-4 h-3 md:h-4 text-emerald-400" />
+                          <TrendingUp className="w-3 h-3 text-green-400" />
                         ) : (
-                          <TrendingDown className="w-3 md:w-4 h-3 md:h-4 text-red-400" />
+                          <TrendingDown className="w-3 h-3 text-red-400" />
                         )}
-                        <span className={`text-xs font-semibold ${stat.change >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                        <span className={`text-[10px] font-bold font-mono ${stat.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                           {stat.change >= 0 ? '+' : ''}{stat.change.toFixed(1)}%
                         </span>
                       </div>
                     )}
-                  </>
+                  </div>
                 )}
               </div>
-              <div className="text-accent/60 flex-shrink-0 w-4 md:w-5 h-4 md:h-5">{stat.icon}</div>
+              <div className="p-2 rounded-xl bg-secondary/10 text-accent/40 group-hover:text-accent/60 transition-colors">
+                <div className="w-4 h-4 flex items-center justify-center">
+                  {stat.icon}
+                </div>
+              </div>
             </div>
           </Card>
         );

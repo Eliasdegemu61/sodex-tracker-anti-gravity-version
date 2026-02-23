@@ -12,29 +12,27 @@ export function LeaderboardPage({ onBack }: { onBack: () => void }) {
   const [activeTab, setActiveTab] = useState<LeaderboardType>('perps')
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-background flex flex-col space-y-2">
       {/* Leaderboard Type Tabs */}
-      <div className="border-b border-border bg-card/50">
-        <div className="max-w-6xl mx-auto px-3 md:px-6 flex gap-4">
+      <div className="px-4 md:px-8 pt-6">
+        <div className="flex gap-2 p-1 bg-card/20 backdrop-blur-xl border border-border/20 rounded-2xl w-fit">
           <button
             onClick={() => setActiveTab('perps')}
-            className={`px-4 py-3 font-medium text-sm transition-colors border-b-2 ${
-              activeTab === 'perps'
-                ? 'text-accent border-accent'
-                : 'text-muted-foreground border-transparent hover:text-foreground'
-            }`}
+            className={`px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] italic rounded-xl transition-all ${activeTab === 'perps'
+                ? 'bg-orange-500/10 text-orange-400 shadow-sm'
+                : 'text-muted-foreground/40 hover:text-foreground'
+              }`}
           >
-            Perps Leaderboard
+            Futures Rankings
           </button>
           <button
             onClick={() => setActiveTab('spot')}
-            className={`px-4 py-3 font-medium text-sm transition-colors border-b-2 ${
-              activeTab === 'spot'
-                ? 'text-accent border-accent'
-                : 'text-muted-foreground border-transparent hover:text-foreground'
-            }`}
+            className={`px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] italic rounded-xl transition-all ${activeTab === 'spot'
+                ? 'bg-orange-500/10 text-orange-400 shadow-sm'
+                : 'text-muted-foreground/40 hover:text-foreground'
+              }`}
           >
-            Spot Leaderboard
+            Spot Rankings
           </button>
         </div>
       </div>

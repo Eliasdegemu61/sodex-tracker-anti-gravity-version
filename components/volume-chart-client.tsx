@@ -57,116 +57,122 @@ export function VolumeChartClient({ data, chartData }: VolumeChartClientProps) {
   const processedChartData = filterChartData(chartData, timeRange)
 
   return (
-    <Card className="p-2 md:p-4 bg-card/50 border-border">
-      <div className="flex items-center justify-between mb-4 gap-2">
-        <h3 className="text-xs md:text-sm font-semibold text-foreground">Volume Trend</h3>
-        <div className="flex gap-1 md:gap-2 flex-wrap justify-end">
+    <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col">
+      <div className="flex items-center justify-between mb-8">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Volume Dynamics</h3>
+        <div className="flex gap-1 bg-secondary/10 p-1 rounded-xl border border-border/5">
           {(['1w', '1m', '3m', '6m', '1y'] as TimeRange[]).map((range) => (
-            <Button
+            <button
               key={range}
-              variant={timeRange === range ? 'default' : 'outline'}
-              size="sm"
               onClick={() => setTimeRange(range)}
-              className="text-xs px-2 md:px-3 h-7 md:h-8"
+              className={`text-[9px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-lg transition-all ${timeRange === range
+                ? 'bg-orange-500 text-white shadow-lg'
+                : 'text-muted-foreground/40 hover:text-foreground hover:bg-secondary/20'
+                }`}
             >
-              {range.toUpperCase()}
-            </Button>
+              {range}
+            </button>
           ))}
         </div>
       </div>
 
-      <ResponsiveContainer width="100%" height={250}>
-        <AreaChart data={processedChartData} margin={{ top: 5, right: 10, left: -20, bottom: 5 }}>
-          <defs>
-            <linearGradient id="colorSpot" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#fb923c" stopOpacity={0.4} />
-              <stop offset="95%" stopColor="#fb923c" stopOpacity={0} />
-            </linearGradient>
-            <linearGradient id="colorFutures" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#ea580c" stopOpacity={0.4} />
-              <stop offset="95%" stopColor="#ea580c" stopOpacity={0} />
-            </linearGradient>
-          </defs>
-          <XAxis
-            dataKey="date"
-            stroke="currentColor"
-            fontSize={10}
-            tick={{ fill: 'currentColor' }}
-            interval={Math.floor(processedChartData.length / 6)}
-          />
-          <YAxis
-            stroke="currentColor"
-            fontSize={10}
-            tick={{ fill: 'currentColor' }}
-            label={{ value: 'Volume (M)', angle: -90, position: 'insideLeft' }}
-          />
-          <Tooltip
-            cursor={false}
-            content={({ active, payload, label }) => {
-              if (active && payload && payload.length) {
-                return (
-                  <div className="bg-white/90 dark:bg-black/80 border border-border p-1.5 rounded text-[10px] shadow-sm">
-                    <p className="text-muted-foreground mb-1">Date: {label}</p>
-                    {payload.map((entry: any, index: number) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: entry.color }} />
-                        <span className="text-foreground">{entry.name}: ${Number(entry.value).toFixed(2)}M</span>
+      <div className="h-[250px] w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={processedChartData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
+            <defs>
+              <linearGradient id="colorSpot" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#fb923c" stopOpacity={0.2} />
+                <stop offset="95%" stopColor="#fb923c" stopOpacity={0} />
+              </linearGradient>
+              <linearGradient id="colorFutures" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#ea580c" stopOpacity={0.2} />
+                <stop offset="95%" stopColor="#ea580c" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" opacity={0.05} />
+            <XAxis
+              dataKey="date"
+              stroke="currentColor"
+              fontSize={9}
+              tickLine={false}
+              axisLine={false}
+              tick={{ fill: 'currentColor', opacity: 0.2, fontWeight: 'bold' }}
+              interval={Math.floor(processedChartData.length / 6)}
+              dy={10}
+            />
+            <YAxis
+              stroke="currentColor"
+              fontSize={9}
+              tickLine={false}
+              axisLine={false}
+              tick={{ fill: 'currentColor', opacity: 0.2, fontWeight: 'bold' }}
+              tickFormatter={(value) => `${value}M`}
+              dx={-10}
+            />
+            <Tooltip
+              cursor={{ stroke: 'currentColor', strokeWidth: 1, strokeOpacity: 0.1 }}
+              content={({ active, payload, label }) => {
+                if (active && payload && payload.length) {
+                  return (
+                    <div className="bg-card/90 backdrop-blur-xl border border-border/20 p-4 rounded-2xl shadow-2xl min-w-[140px]">
+                      <p className="text-[9px] text-muted-foreground/40 font-bold uppercase tracking-widest italic mb-3">{label}</p>
+                      <div className="space-y-2">
+                        {payload.map((entry: any, index: number) => (
+                          <div key={index} className="flex items-center justify-between gap-4">
+                            <div className="flex items-center gap-2">
+                              <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: entry.color }} />
+                              <span className="text-[10px] text-foreground/60 font-medium">{entry.name}</span>
+                            </div>
+                            <span className="text-[11px] font-bold font-mono text-foreground/80">${entry.value}M</span>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                )
-              }
-              return null
-            }}
-          />
-          <Area
-            type="monotone"
-            dataKey="spot"
-            stroke="#fb923c"
-            fill="url(#colorSpot)"
-            fillOpacity={1}
-            strokeWidth={2}
-            isAnimationActive={true} animationDuration={600}
-            name="S"
-            dot={false}
-          />
-          <Area
-            type="monotone"
-            dataKey="futures"
-            stroke="#ea580c"
-            fill="url(#colorFutures)"
-            fillOpacity={1}
-            strokeWidth={2}
-            isAnimationActive={true} animationDuration={600}
-            name="F"
-            dot={false}
-          />
-          <Area
-            type="monotone"
-            dataKey="total"
-            stroke="#f59e0b"
-            fill="none"
-            strokeWidth={2.5}
-            isAnimationActive={true} animationDuration={600}
-            name="Total"
-            dot={false}
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+                    </div>
+                  )
+                }
+                return null
+              }}
+            />
+            <Area
+              type="monotone"
+              dataKey="spot"
+              stroke="#fb923c"
+              fill="url(#colorSpot)"
+              strokeWidth={2}
+              isAnimationActive={true}
+              animationDuration={1500}
+              name="Spot"
+              dot={false}
+              activeDot={{ r: 4, strokeWidth: 0, fill: '#fb923c' }}
+            />
+            <Area
+              type="monotone"
+              dataKey="futures"
+              stroke="#ea580c"
+              fill="url(#colorFutures)"
+              strokeWidth={2}
+              isAnimationActive={true}
+              animationDuration={1500}
+              name="Futures"
+              dot={false}
+              activeDot={{ r: 4, strokeWidth: 0, fill: '#ea580c' }}
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      </div>
 
-      <div className="mt-4 flex gap-4 text-xs">
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-orange-400 rounded" />
-          <span className="text-muted-foreground">S (Spot)</span>
+      <div className="mt-8 pt-6 border-t border-border/10 flex items-center justify-between">
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+            <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Spot Ledger</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full bg-orange-600" />
+            <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Futures Orderbook</span>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-orange-600 rounded" />
-          <span className="text-muted-foreground">F (Futures)</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 border-2 border-amber-400 rounded" />
-          <span className="text-muted-foreground">Total</span>
-        </div>
+        <span className="text-[8px] text-muted-foreground/10 font-mono italic">UNIT: MILLION_USD</span>
       </div>
     </Card>
   )

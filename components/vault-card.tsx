@@ -36,17 +36,17 @@ export function VaultCard({ walletAddress }: { walletAddress: string }) {
         const data = await vaultResponse.json();
         if (data.code === '0' && data.data) {
           const shares = data.data.shares || 0;
-          
+
           // Get MAG7.ssi price with caching and fallback
           const mag7Price = await getTokenPrice('MAG7.ssi');
           const sharesUsd = shares * mag7Price;
-          
+
           setVaultData({
             pnl: data.data.pnl,
             shares: shares,
             sharesUsd: sharesUsd,
           });
-          
+
           // Update context with vault balance
           setVaultBalance(sharesUsd);
         } else {
@@ -65,18 +65,18 @@ export function VaultCard({ walletAddress }: { walletAddress: string }) {
 
   if (loading) {
     return (
-      <Card className="p-6 bg-card border border-border animate-pulse">
-        <div className="h-4 bg-secondary/50 rounded w-16 mb-4"></div>
-        <div className="h-8 bg-secondary/50 rounded w-24"></div>
+      <Card className="p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse flex flex-col items-center justify-center min-h-[160px]">
+        <div className="w-8 h-8 rounded-full border-2 border-accent/20 border-t-accent animate-spin mb-4" />
+        <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest italic">checking vault...</p>
       </Card>
     );
   }
 
   if (error) {
     return (
-      <Card className="p-6 bg-card border border-border">
-        <h3 className="text-sm font-semibold text-muted-foreground mb-2">Vault</h3>
-        <p className="text-xs text-muted-foreground">{error}</p>
+      <Card className="p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl flex flex-col items-center justify-center min-h-[160px]">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-2">Vault</h3>
+        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic">{error}</p>
       </Card>
     );
   }
@@ -88,36 +88,33 @@ export function VaultCard({ walletAddress }: { walletAddress: string }) {
   const isPnlPositive = vaultData.pnl >= 0;
 
   return (
-    <Card className="p-6 bg-card border border-border">
-      <h3 className="text-sm font-semibold text-muted-foreground mb-4">Vault</h3>
-      
-      <div className="space-y-4">
+    <Card className="group relative overflow-hidden p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl transition-all hover:border-accent/10 shadow-sm">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">Vault</h3>
+        <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-mono font-bold uppercase tracking-widest"> MAG7.ssi </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-6">
         {/* PnL */}
-        <div>
-          <p className="text-xs text-muted-foreground mb-1">PnL</p>
+        <div className="space-y-2">
+          <p className="text-[9px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">management</p>
           <div className="flex items-center gap-2">
-            {isPnlPositive ? (
-              <TrendingUp className="w-4 h-4 text-green-500" />
-            ) : (
-              <TrendingDown className="w-4 h-4 text-red-500" />
-            )}
-            <span className={`text-lg font-semibold ${isPnlPositive ? 'text-green-500' : 'text-red-500'}`}>
-              {isPnlPositive ? '+' : ''}{vaultData.pnl.toFixed(6)}
+            <span className={`text-xl font-bold font-mono tracking-tight ${isPnlPositive ? 'text-green-400' : 'text-red-400'}`}>
+              {isPnlPositive ? '+' : ''}{vaultData.pnl.toFixed(4)}
             </span>
           </div>
+          <p className="text-[8px] text-muted-foreground/20 font-bold uppercase tracking-widest">Realized PnL</p>
         </div>
 
         {/* Shares */}
-        <div>
-          <p className="text-xs text-muted-foreground mb-1">Vault Balance</p>
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <p className="text-lg font-semibold text-foreground">
-                ${(vaultData.sharesUsd || 0).toLocaleString('en-US', { maximumFractionDigits: 2 })}
-              </p>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {vaultData.shares.toFixed(6)} MAG7.ssi
+        <div className="space-y-2 text-right">
+          <p className="text-[9px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">valuation</p>
+          <div className="flex flex-col items-end">
+            <p className="text-xl font-bold font-mono tracking-tight text-foreground/80">
+              ${(vaultData.sharesUsd || 0).toLocaleString('en-US', { maximumFractionDigits: 2 })}
+            </p>
+            <p className="text-[8px] text-muted-foreground/20 font-bold uppercase tracking-widest mt-1">
+              {vaultData.shares.toFixed(4)} units
             </p>
           </div>
         </div>

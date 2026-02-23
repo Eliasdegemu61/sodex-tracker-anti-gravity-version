@@ -31,16 +31,19 @@ const AnnouncementItem = memo(function AnnouncementItem({
 
   return (
     <div
-      className="group cursor-pointer p-2 rounded hover:bg-secondary/50 transition-colors"
+      className="group cursor-pointer p-4 rounded-2xl bg-secondary/5 border border-border/5 hover:bg-orange-500/5 hover:border-orange-500/10 transition-all duration-300"
       onClick={() => onNavigate(article.id)}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onNavigate(article.id)}
     >
-      <p className="text-xs font-medium text-accent group-hover:text-accent/80 line-clamp-2 transition-colors">
+      <p className="text-[11px] font-bold text-foreground/80 group-hover:text-orange-400 line-clamp-2 transition-colors leading-relaxed">
         {article.title}
       </p>
-      <p className="text-xs text-muted-foreground mt-1">{formatDate(article.created_at)}</p>
+      <p className="text-[9px] text-muted-foreground/30 font-mono mt-2 flex items-center gap-2">
+        <span className="w-1 h-1 rounded-full bg-orange-400/30" />
+        {formatDate(article.created_at)}
+      </p>
     </div>
   )
 })
@@ -74,11 +77,11 @@ export function AnnouncementsPanel() {
         )
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
         const data = await response.json()
-        
+
         const sorted = (data.articles || []).sort(
           (a: Article, b: Article) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
         ).slice(0, 3)
-        
+
         cachedAnnouncements = sorted
         cacheTimestamp = now
         setAnnouncements(sorted)
@@ -109,14 +112,11 @@ export function AnnouncementsPanel() {
 
   if (isLoading) {
     return (
-      <Card className="p-4 bg-card border border-border">
-        <h3 className="text-sm font-semibold mb-4">Latest Announcements</h3>
+      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-4">Scanning Broadcasts</h3>
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="space-y-2">
-              <div className="h-4 bg-secondary/30 rounded animate-pulse w-32" />
-              <div className="h-3 bg-secondary/30 rounded animate-pulse w-24" />
-            </div>
+            <div key={i} className="h-16 bg-secondary/10 rounded-2xl" />
           ))}
         </div>
       </Card>
@@ -125,16 +125,16 @@ export function AnnouncementsPanel() {
 
   if (announcements.length === 0) {
     return (
-      <Card className="p-4 bg-card border border-border">
-        <h3 className="text-sm font-semibold mb-4">Latest Announcements</h3>
-        <p className="text-xs text-muted-foreground">No announcements available</p>
+      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic mb-4">System Broadcasts</h3>
+        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic text-center py-6">No active transmissions</p>
       </Card>
     )
   }
 
   return (
-    <Card className="p-4 bg-card border border-border">
-      <h3 className="text-sm font-semibold mb-4">Latest Announcements</h3>
+    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
+      <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic mb-4">System Broadcasts</h3>
       <div className="space-y-3">
         {announcementItems}
       </div>

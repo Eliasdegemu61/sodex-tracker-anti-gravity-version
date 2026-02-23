@@ -119,21 +119,20 @@ export function OpenPositions() {
 
   if (!userId) {
     return (
-      <Card className="p-12 bg-card border border-border text-center">
-        <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-50" />
-        <h3 className="text-lg font-bold text-foreground mb-2">No Account Bound</h3>
-        <p className="text-muted-foreground">Bind your account to view open positions</p>
+      <Card className="p-12 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl text-center">
+        <AlertCircle className="w-12 h-12 text-muted-foreground/20 mx-auto mb-3" />
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-2">No Account Bound</h3>
+        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic">Bind your account to view open positions</p>
       </Card>
     );
   }
 
   if (isLoading) {
     return (
-      <Card className="p-12 bg-card border border-border text-center">
-        <div className="space-y-3">
-          <div className="h-2 bg-muted-foreground/20 rounded-full animate-pulse"></div>
-          <div className="h-2 bg-muted-foreground/20 rounded-full animate-pulse"></div>
-          <p className="text-sm text-muted-foreground mt-4">Loading open positions...</p>
+      <Card className="p-12 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl text-center">
+        <div className="flex flex-col items-center justify-center p-8">
+          <div className="w-8 h-8 rounded-full border-2 border-accent/20 border-t-accent animate-spin mb-4" />
+          <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest italic">scanning perimeter...</p>
         </div>
       </Card>
     );
@@ -141,13 +140,11 @@ export function OpenPositions() {
 
   if (error) {
     return (
-      <Card className="p-8 bg-card border border-red-500/30">
-        <div className="flex items-start gap-4">
-          <AlertCircle className="w-6 h-6 text-red-400 flex-shrink-0 mt-0.5" />
-          <div>
-            <h3 className="font-bold text-red-400 mb-1">Error Loading Open Positions</h3>
-            <p className="text-sm text-muted-foreground">{error}</p>
-          </div>
+      <Card className="p-8 bg-card/20 backdrop-blur-xl border border-red-500/20 rounded-3xl">
+        <div className="flex flex-col items-center justify-center py-6 text-center">
+          <AlertCircle className="w-8 h-8 text-red-400/40 mb-3" />
+          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400/60 italic mb-1">Signal Interrupted</h3>
+          <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic">{error}</p>
         </div>
       </Card>
     );
@@ -155,99 +152,93 @@ export function OpenPositions() {
 
   if (openPositions.length === 0) {
     return (
-      <Card className="p-12 bg-card border border-border text-center">
-        <h3 className="text-lg font-bold text-foreground mb-2">No Open Positions</h3>
-        <p className="text-muted-foreground">You don't have any active positions</p>
+      <Card className="p-12 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl text-center">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-2">No Open Positions</h3>
+        <p className="text-[10px] text-muted-foreground/20 font-bold uppercase tracking-widest italic">All systems clear</p>
       </Card>
     );
   }
 
   return (
-    <Card className="p-3 md:p-6 bg-card border border-border">
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-3 md:mb-4 gap-2">
-        <div className="flex items-center gap-2 md:gap-3">
-          <h3 className="text-base md:text-lg font-bold text-foreground">Open Positions</h3>
-          <div className="flex items-center justify-center p-1.5 md:p-2 rounded-full bg-primary/10 border border-primary/30">
-            <Loader2 className="w-3.5 md:w-4 h-3.5 md:h-4 text-primary animate-spin" />
+    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm overflow-hidden">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+        <div className="flex items-center gap-3">
+          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">Open Positions</h3>
+          <div className="flex items-center justify-center w-5 h-5 rounded-full bg-accent/10 border border-accent/20">
+            <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
           </div>
         </div>
         {lastUpdateTime && (
-          <span className="text-xs text-muted-foreground">Last updated: {lastUpdateTime}</span>
+          <span className="text-[9px] text-muted-foreground/30 font-bold font-mono uppercase tracking-widest italic">
+            Sync: {lastUpdateTime}
+          </span>
         )}
       </div>
 
       {/* Balance Info */}
       {balanceData && (
-        <div className="grid grid-cols-3 gap-2 md:gap-4 mb-4 md:mb-6">
-          <div className="p-2 md:p-4 rounded-lg bg-secondary/30 border border-border/50">
-            <p className="text-xs text-muted-foreground font-medium mb-1">Wallet Balance (perps)</p>
-            <p className="text-base md:text-2xl font-bold text-foreground">${parseFloat(balanceData.walletBalance).toFixed(2)}</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
+          <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
+            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Wallet Balance</p>
+            <p className="text-xl font-bold font-mono tracking-tight text-foreground/80">${parseFloat(balanceData.walletBalance).toFixed(2)}</p>
+            <p className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest">perpetuals (usdc)</p>
           </div>
-          <div className="p-2 md:p-4 rounded-lg bg-secondary/30 border border-border/50">
-            <p className="text-xs text-muted-foreground font-medium mb-1">Available Balance (perps)</p>
-            <p className="text-base md:text-2xl font-bold text-emerald-400">${parseFloat(balanceData.availableBalance).toFixed(2)}</p>
+          <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
+            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Liquidity</p>
+            <p className="text-xl font-bold font-mono tracking-tight text-green-400">${parseFloat(balanceData.availableBalance).toFixed(2)}</p>
+            <p className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest">Available to trade</p>
           </div>
-          <div className="p-2 md:p-4 rounded-lg bg-secondary/30 border border-border/50">
-            <p className="text-xs text-muted-foreground font-medium mb-1">Margin Frozen (perps)</p>
-            <p className="text-base md:text-2xl font-bold text-orange-400">${parseFloat(balanceData.openOrderMarginFrozen).toFixed(2)}</p>
+          <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
+            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Exposure</p>
+            <p className="text-xl font-bold font-mono tracking-tight text-orange-400">${parseFloat(balanceData.openOrderMarginFrozen).toFixed(2)}</p>
+            <p className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest">Margin in use</p>
           </div>
         </div>
       )}
 
       {/* Desktop Table */}
       <div className="hidden md:block overflow-x-auto">
-        <table className="w-full text-xs md:text-sm">
+        <table className="w-full text-[11px] border-separate border-spacing-y-1.5">
           <thead>
-            <tr className="border-b border-border">
-              <th className="text-left py-2 md:py-3 px-2 text-muted-foreground font-medium">Symbol</th>
-              <th className="text-left py-2 md:py-3 px-2 text-muted-foreground font-medium">Side</th>
-              <th className="text-right py-2 md:py-3 px-2 text-muted-foreground font-medium">Size</th>
-              <th className="text-right py-2 md:py-3 px-2 text-muted-foreground font-medium">Entry</th>
-              <th className="text-right py-2 md:py-3 px-2 text-muted-foreground font-medium">Liquidation</th>
-              <th className="text-right py-2 md:py-3 px-2 text-muted-foreground font-medium">Leverage</th>
-              <th className="text-right py-2 md:py-3 px-2 text-muted-foreground font-medium">Margin</th>
-              <th className="text-right py-2 md:py-3 px-2 text-muted-foreground font-medium">Unrealized PnL</th>
-              <th className="text-right py-2 md:py-3 px-2 text-muted-foreground font-medium">Fee</th>
-              <th className="text-left py-2 md:py-3 px-2 text-muted-foreground font-medium">Opened</th>
+            <tr className="text-muted-foreground/40 font-bold uppercase tracking-widest italic">
+              <th className="text-left py-2 px-3">Symbol</th>
+              <th className="text-left py-2 px-3">Side</th>
+              <th className="text-right py-2 px-3">Size</th>
+              <th className="text-right py-2 px-3">Entry</th>
+              <th className="text-right py-2 px-3">Liq.</th>
+              <th className="text-right py-2 px-3">Lev.</th>
+              <th className="text-right py-2 px-3">Margin</th>
+              <th className="text-right py-2 px-3">uPnL</th>
+              <th className="text-right py-2 px-3">Fee</th>
+              <th className="text-left py-2 px-3">Timestamp</th>
             </tr>
           </thead>
           <tbody>
             {paginatedPositions.map((position) => (
-              <tr key={position.id} className="border-b border-border hover:bg-secondary/30 transition-colors">
-                <td className="py-3 px-2 font-semibold text-foreground text-xs md:text-sm">{position.symbol}</td>
+              <tr key={position.id} className="group relative bg-secondary/10 hover:bg-secondary/20 transition-all rounded-xl">
+                <td className="py-3 px-3 first:rounded-l-xl last:rounded-r-xl font-bold font-mono text-foreground/80">{position.symbol}</td>
                 <td className="py-3 px-2">
-                  <Badge
-                    variant={position.side === 'LONG' ? 'default' : 'secondary'}
-                    className={
-                      position.side === 'LONG'
-                        ? 'bg-emerald-900/50 text-emerald-300 text-xs'
-                        : 'bg-red-900/50 text-red-300 text-xs'
-                    }
-                  >
+                  <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold tracking-tighter ${position.side === 'LONG' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
                     {position.side}
-                  </Badge>
+                  </span>
                 </td>
-                <td className="py-3 px-2 text-right text-foreground font-medium text-xs">
+                <td className="py-3 px-2 text-right font-mono font-bold text-foreground/80">
                   {position.size.toFixed(4)}
                 </td>
-                <td className="py-3 px-2 text-right text-muted-foreground text-xs">${position.entry.toFixed(6)}</td>
-                <td className="py-3 px-2 text-right text-muted-foreground text-xs">${position.liquidation.toFixed(6)}</td>
-                <td className="py-3 px-2 text-right text-foreground font-medium text-xs">{position.leverage}x</td>
-                <td className="py-3 px-2 text-right text-muted-foreground text-xs">${position.margin.toFixed(6)}</td>
+                <td className="py-3 px-2 text-right font-mono text-muted-foreground/60">${position.entry.toFixed(4)}</td>
+                <td className="py-3 px-2 text-right font-mono text-red-400/40">${position.liquidation.toFixed(4)}</td>
+                <td className="py-3 px-2 text-right font-mono font-bold text-accent/60">{position.leverage}x</td>
+                <td className="py-3 px-2 text-right font-mono text-muted-foreground/60">${position.margin.toFixed(4)}</td>
                 <td
-                  className={`py-3 px-2 text-right font-bold text-xs flex items-center justify-end gap-1 ${
-                    position.unrealized >= 0 ? 'text-emerald-400' : 'text-red-400'
-                  }`}
+                  className={`py-3 px-2 text-right font-bold font-mono ${position.unrealized >= 0 ? 'text-green-400' : 'text-red-400'
+                    }`}
                 >
-                  {position.unrealized >= 0 ? (
-                    <ArrowUpRight className="w-3 h-3 md:w-4 md:h-4" />
-                  ) : (
-                    <ArrowDownLeft className="w-3 h-3 md:w-4 md:h-4" />
-                  )}
-                  {position.unrealized >= 0 ? '+' : ''}${position.unrealized.toFixed(4)}
+                  <div className="flex items-center justify-end gap-1">
+                    {position.unrealized >= 0 ? '+' : ''}${Math.abs(position.unrealized).toFixed(2)}
+                  </div>
                 </td>
-                <td className="py-3 px-2 text-right text-muted-foreground text-xs">${position.fee.toFixed(6)}</td>
-                <td className="py-3 px-2 text-left text-muted-foreground text-xs">{position.createdAt}</td>
+                <td className="py-3 px-2 text-right font-mono text-muted-foreground/40 text-[9px]">${position.fee.toFixed(4)}</td>
+                <td className="py-3 px-3 first:rounded-l-xl last:rounded-r-xl text-left font-mono text-muted-foreground/30 text-[9px]">{position.createdAt}</td>
               </tr>
             ))}
           </tbody>
@@ -255,68 +246,65 @@ export function OpenPositions() {
       </div>
 
       {/* Mobile Expandable List */}
-      <div className="md:hidden space-y-2">
+      <div className="md:hidden space-y-3">
         {paginatedPositions.map((position) => (
-          <div key={position.id} className="border border-border rounded-lg overflow-hidden">
+          <div key={position.id} className="bg-secondary/10 border border-border/10 rounded-2xl overflow-hidden transition-all hover:border-accent/10">
             {/* Expandable Row Summary */}
             <button
               onClick={() => toggleExpand(position.id)}
-              className="w-full p-3 flex items-center justify-between bg-card/50 hover:bg-secondary/30 transition-colors text-left"
+              className="w-full p-4 flex items-center justify-between hover:bg-secondary/10 transition-colors text-left"
             >
               <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="font-semibold text-foreground text-sm">{position.symbol}</span>
-                  <Badge
-                    variant={position.side === 'LONG' ? 'default' : 'secondary'}
-                    className={`text-xs ${
-                      position.side === 'LONG'
-                        ? 'bg-emerald-900/50 text-emerald-300'
-                        : 'bg-red-900/50 text-red-300'
-                    }`}
-                  >
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="font-bold font-mono text-foreground/80">{position.symbol}</span>
+                  <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold tracking-wider ${position.side === 'LONG' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
                     {position.side}
-                  </Badge>
-                </div>
-                <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                  <span>Size: {position.size.toFixed(4)}</span>
-                  <span className={position.unrealized >= 0 ? 'text-emerald-400 font-semibold' : 'text-red-400 font-semibold'}>
-                    {position.unrealized >= 0 ? '+' : ''} ${position.unrealized.toFixed(4)}
                   </span>
+                </div>
+                <div className="flex items-center gap-4 text-[10px] font-mono">
+                  <div className="flex flex-col">
+                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-0.5 italic">Size</span>
+                    <span className="text-muted-foreground/60">{position.size.toFixed(4)}</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-0.5 italic">uPnL</span>
+                    <span className={position.unrealized >= 0 ? 'text-green-400 font-bold' : 'text-red-400 font-bold'}>
+                      {position.unrealized >= 0 ? '+' : ''}${Math.abs(position.unrealized).toFixed(2)}
+                    </span>
+                  </div>
                 </div>
               </div>
               <ChevronDown
-                className={`w-5 h-5 text-muted-foreground transition-transform flex-shrink-0 ${expandedRows.has(position.id) ? 'rotate-180' : ''}`}
+                className={`w-4 h-4 text-muted-foreground/40 transition-transform duration-300 ${expandedRows.has(position.id) ? 'rotate-180' : ''}`}
               />
             </button>
 
             {/* Expandable Details */}
             {expandedRows.has(position.id) && (
-              <div className="p-3 border-t border-border bg-card/30 space-y-2 text-xs">
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <span className="text-muted-foreground text-xs">Entry Price</span>
-                    <p className="font-semibold text-foreground text-sm">${position.entry.toFixed(6)}</p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground text-xs">Liquidation</span>
-                    <p className="font-semibold text-foreground text-sm">${position.liquidation.toFixed(6)}</p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground text-xs">Leverage</span>
-                    <p className="font-semibold text-foreground text-sm">{position.leverage}x</p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground text-xs">Margin</span>
-                    <p className="font-semibold text-foreground text-sm">${position.margin.toFixed(6)}</p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground text-xs">Fee</span>
-                    <p className="font-semibold text-foreground text-sm">${position.fee.toFixed(6)}</p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground text-xs">Opened</span>
-                    <p className="font-semibold text-foreground text-xs">{position.createdAt}</p>
-                  </div>
+              <div className="p-4 border-t border-border/5 bg-secondary/[0.02] grid grid-cols-2 gap-y-4 gap-x-6">
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Entry</span>
+                  <p className="font-bold font-mono text-[11px] text-foreground/80">${position.entry.toFixed(4)}</p>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Liq. Price</span>
+                  <p className="font-bold font-mono text-[11px] text-red-400/60">${position.liquidation.toFixed(4)}</p>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Leverage</span>
+                  <p className="font-bold font-mono text-[11px] text-accent/60">{position.leverage}x</p>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Margin</span>
+                  <p className="font-bold font-mono text-[11px] text-foreground/60">${position.margin.toFixed(4)}</p>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Fee</span>
+                  <p className="font-bold font-mono text-[11px] text-muted-foreground/40">${position.fee.toFixed(6)}</p>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Opened</span>
+                  <p className="font-bold font-mono text-[9px] text-muted-foreground/30">{position.createdAt}</p>
                 </div>
               </div>
             )}
@@ -325,19 +313,18 @@ export function OpenPositions() {
       </div>
 
       {/* Pagination Controls */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mt-4 md:mt-6 pt-4 md:pt-6 border-t border-border gap-4">
-        <div className="flex items-center gap-2 md:gap-3">
-          <span className="text-xs md:text-sm text-muted-foreground font-medium">Rows:</span>
-          <div className="flex gap-1 p-1 bg-secondary/30 rounded-lg border border-border/50">
+      <div className="flex flex-col md:flex-row items-center justify-between mt-8 pt-8 border-t border-border/5 gap-6">
+        <div className="flex items-center gap-3">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground/30 italic">Rows</span>
+          <div className="flex gap-1.5 p-1 bg-secondary/10 rounded-xl border border-border/5">
             {[5, 10, 20, 50].map((value) => (
               <button
                 key={value}
                 onClick={() => handleRowsPerPageChange(value)}
-                className={`px-2 md:px-3 py-1 md:py-1.5 text-xs md:text-sm font-medium rounded-md transition-all ${
-                  rowsPerPage === value
-                    ? 'bg-primary text-primary-foreground shadow-lg'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
-                }`}
+                className={`px-3 py-1 text-[10px] font-bold font-mono rounded-lg transition-all ${rowsPerPage === value
+                    ? 'bg-accent text-accent-foreground shadow-lg'
+                    : 'text-muted-foreground/40 hover:text-foreground hover:bg-secondary/20'
+                  }`}
               >
                 {value}
               </button>
@@ -345,25 +332,24 @@ export function OpenPositions() {
           </div>
         </div>
 
-        <div className="text-xs md:text-sm text-muted-foreground order-3 md:order-2 w-full md:w-auto text-center md:text-left">
+        <div className="text-[10px] font-bold font-mono text-muted-foreground/20 uppercase tracking-widest">
           {startIndex + 1}-{Math.min(endIndex, displayPositions.length)} of {displayPositions.length}
         </div>
 
-        <div className="flex items-center gap-1 md:gap-2 order-2 md:order-3">
+        <div className="flex items-center gap-2">
           <Button
             onClick={handlePrevPage}
             disabled={currentPage === 1}
             variant="outline"
-            size="sm"
-            className="gap-1 bg-transparent px-2 md:px-3 h-8 md:h-9 text-xs md:text-sm"
+            className="h-8 md:h-9 bg-secondary/10 border-border/10 rounded-xl hover:bg-accent/10 hover:text-accent transition-all text-[10px] font-bold uppercase tracking-widest"
           >
-            <ChevronLeft className="w-3 h-3 md:w-4 md:h-4" />
-            <span className="hidden md:inline">Prev</span>
+            <ChevronLeft className="w-4 h-4 mr-1" />
+            Prev
           </Button>
 
-          <div className="flex items-center gap-1 px-2">
-            <span className="text-xs text-muted-foreground">
-              {currentPage}/{totalPages}
+          <div className="px-3 py-1.5 bg-secondary/5 rounded-xl border border-border/5">
+            <span className="text-[10px] font-bold font-mono text-muted-foreground/60">
+              {currentPage} / {totalPages}
             </span>
           </div>
 
@@ -371,11 +357,10 @@ export function OpenPositions() {
             onClick={handleNextPage}
             disabled={currentPage === totalPages}
             variant="outline"
-            size="sm"
-            className="gap-1 bg-transparent px-2 md:px-3 h-8 md:h-9 text-xs md:text-sm"
+            className="h-8 md:h-9 bg-secondary/10 border-border/10 rounded-xl hover:bg-accent/10 hover:text-accent transition-all text-[10px] font-bold uppercase tracking-widest"
           >
-            <span className="hidden md:inline">Next</span>
-            <ChevronRight className="w-3 h-3 md:w-4 md:h-4" />
+            Next
+            <ChevronRight className="w-4 h-4 ml-1" />
           </Button>
         </div>
       </div>

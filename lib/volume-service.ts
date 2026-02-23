@@ -1,12 +1,12 @@
 import { cacheManager } from '@/lib/cache-manager'
 
-interface PairVolume {
+export interface PairVolume {
   pair: string
   volume: number
   type: 'spot' | 'futures'
 }
 
-interface VolumeApiResponse {
+export interface VolumeApiResponse {
   updated_at: string
   all_time_stats: {
     total_combined_volume: number
@@ -22,7 +22,7 @@ interface VolumeApiResponse {
   }
 }
 
-interface DayVolume {
+export interface DayVolume {
   day_date: string
   timestamp: number
   pairs: PairVolume[]
@@ -30,7 +30,7 @@ interface DayVolume {
   cumulative: number
 }
 
-interface CachedVolumeData {
+export interface CachedVolumeData {
   lastUpdated: number
   data: DayVolume[]
   topPairsAllTime: PairVolume[]
@@ -47,7 +47,7 @@ const LEADERBOARD_CACHE_KEY = 'leaderboard_data'
 const SPOT_LEADERBOARD_CACHE_KEY = 'spot_leaderboard_data'
 const CHART_CACHE_KEY = 'chart_data'
 
-interface ChartDataPoint {
+export interface ChartDataPoint {
   day: string
   spot_vol: number
   futures_vol: number
@@ -89,21 +89,21 @@ async function fetchVolumeFromApi(): Promise<VolumeApiResponse | null> {
 function convertApiToCache(apiData: VolumeApiResponse): CachedVolumeData {
   const allTimeStats = apiData.all_time_stats
   const todayStats = apiData.today_stats
-  
+
   // Create top pairs array from API
   const topPairsAllTime: PairVolume[] = [
     ...allTimeStats.top_5_spot.map(p => ({ ...p, type: 'spot' as const })),
     ...allTimeStats.top_5_futures.map(p => ({ ...p, type: 'futures' as const })),
   ].sort((a, b) => b.volume - a.volume)
-  
+
   // Create today's data
   const todayPairs: PairVolume[] = [
     ...todayStats.top_5_spot.map(p => ({ ...p, type: 'spot' as const })),
     ...todayStats.top_5_futures.map(p => ({ ...p, type: 'futures' as const })),
   ]
-  
+
   const todayTotal = todayPairs.reduce((sum, p) => sum + p.volume, 0)
-  
+
   const todayData: DayVolume = {
     day_date: todayStats.date,
     timestamp: new Date(todayStats.date).getTime(),
@@ -111,7 +111,7 @@ function convertApiToCache(apiData: VolumeApiResponse): CachedVolumeData {
     total: todayTotal,
     cumulative: todayTotal,
   }
-  
+
   return {
     lastUpdated: Date.now(),
     data: [todayData],
@@ -124,24 +124,24 @@ function convertApiToCache(apiData: VolumeApiResponse): CachedVolumeData {
 // Mock data fallback
 function generateMockVolumeData(): CachedVolumeData {
   const mockPairs = ['BTC/USDC', 'ETH/USDC', 'SOL/USDC', 'BTC-USD', 'ETH-USD', 'SOL-USD']
-  
+
   const data: DayVolume[] = []
   let cumulative = 0
-  
+
   for (let i = 89; i >= 0; i--) {
     const date = new Date()
     date.setDate(date.getDate() - i)
     const dateStr = date.toISOString().split('T')[0]
-    
+
     const pairs: PairVolume[] = mockPairs.map((pair) => ({
       pair,
       volume: Math.random() * 50000 + 5000,
       type: pair.includes('/') ? 'spot' : 'futures',
     }))
-    
+
     const dayTotal = pairs.reduce((sum, p) => sum + p.volume, 0)
     cumulative += dayTotal
-    
+
     data.push({
       day_date: dateStr,
       timestamp: date.getTime(),
@@ -150,16 +150,16 @@ function generateMockVolumeData(): CachedVolumeData {
       cumulative,
     })
   }
-  
+
   const topPairsAllTime: PairVolume[] = mockPairs.map((pair) => ({
     pair,
     volume: Math.random() * 5000000 + 500000,
-    type: pair.includes('/') ? 'spot' : 'futures',
+    type: (pair.includes('/') ? 'spot' : 'futures') as 'spot' | 'futures',
   })).sort((a, b) => b.volume - a.volume)
-  
+
   const todayDate = getTodayDate()
   const todayData = data.find(d => d.day_date === todayDate) || null
-  
+
   return {
     lastUpdated: Date.now(),
     data,
@@ -345,15 +345,15 @@ export async function fetchChartData(): Promise<ChartDataPoint[]> {
 function generateMockChartData(): ChartDataPoint[] {
   const data: ChartDataPoint[] = []
   const now = new Date()
-  
+
   for (let i = 89; i >= 0; i--) {
     const date = new Date(now)
     date.setDate(date.getDate() - i)
     const dateStr = date.toISOString().split('T')[0]
-    
+
     const spotVol = Math.random() * 5000 + 500
     const futuresVol = Math.random() * 8000 + 1000
-    
+
     data.push({
       day: dateStr,
       spot_vol: Number(spotVol.toFixed(2)),
@@ -361,7 +361,7 @@ function generateMockChartData(): ChartDataPoint[] {
       total_day_vol: Number((spotVol + futuresVol).toFixed(2)),
     })
   }
-  
+
   return data
 }
 
@@ -372,21 +372,21 @@ export async function fetchLeaderboardData(): Promise<LeaderboardApiEntry[]> {
       const response = await fetch('https://raw.githubusercontent.com/Eliasdegemu61/sodex-finalised-raw-data/refs/heads/main/pnl_leaderboard.csv');
       if (!response.ok) throw new Error(`Leaderboard API error: ${response.status}`);
       const csvText = await response.text();
-      
+
       // Parse CSV
       const lines = csvText.trim().split('\n');
       if (lines.length < 2) throw new Error('Empty CSV data');
-      
+
       const headers = lines[0].split(',').map(h => h.trim());
       const data: LeaderboardApiEntry[] = [];
-      
+
       for (let i = 1; i < lines.length; i++) {
         const values = lines[i].split(',').map(v => v.trim());
         const obj: any = {};
         headers.forEach((header, index) => {
           obj[header] = values[index] || '';
         });
-        
+
         data.push({
           userId: obj.userId || obj.user_id || '',
           address: obj.address || '',
@@ -394,7 +394,7 @@ export async function fetchLeaderboardData(): Promise<LeaderboardApiEntry[]> {
           vol: obj.vol || '0',
         });
       }
-      
+
       console.log('[v0] Leaderboard data fetched from GitHub:', data.length, 'entries');
       return data;
     } catch (error) {
@@ -412,7 +412,7 @@ function generateMockLeaderboardData(): LeaderboardApiEntry[] {
     '0x1234567890abcdef1234567890abcdef12345678',
     '0xabcdefabcdefabcdefabcdefabcdefabcdefabcd',
   ]
-  
+
   return users.map((address, idx) => ({
     userId: String(1000 + idx),
     address,
@@ -429,21 +429,21 @@ export async function fetchSpotLeaderboardData(): Promise<Array<{ address: strin
       const response = await fetch('https://raw.githubusercontent.com/Eliasdegemu61/sodex-finalised-raw-data/refs/heads/main/spot_leaderboard.csv');
       if (!response.ok) throw new Error(`Spot leaderboard API error: ${response.status}`);
       const csvText = await response.text();
-      
+
       // Parse CSV
       const lines = csvText.trim().split('\n');
       if (lines.length < 2) throw new Error('Empty CSV data');
-      
+
       const headers = lines[0].split(',').map(h => h.trim());
       const data: Array<{ address: string; userId: string; vol: number; last_ts: number }> = [];
-      
+
       for (let i = 1; i < lines.length; i++) {
         const values = lines[i].split(',').map(v => v.trim());
         const obj: any = {};
         headers.forEach((header, index) => {
           obj[header] = values[index] || '';
         });
-        
+
         data.push({
           address: obj.address || '',
           userId: obj.userId || obj.user_id || '',
@@ -451,7 +451,7 @@ export async function fetchSpotLeaderboardData(): Promise<Array<{ address: strin
           last_ts: Date.now(),
         });
       }
-      
+
       console.log('[v0] Spot leaderboard data fetched from GitHub:', data.length, 'entries');
       return data;
     } catch (error) {
@@ -469,7 +469,7 @@ function generateMockSpotLeaderboardData(): Array<{ address: string; userId: str
     '0x3d4595C8742d0a58173a9963c05755B59A8f8255',
     '0x1234567890abcdef1234567890abcdef12345678',
   ]
-  
+
   return users.map((address, idx) => ({
     address,
     userId: String(1000 + idx),

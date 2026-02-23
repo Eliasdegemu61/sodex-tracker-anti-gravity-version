@@ -42,29 +42,32 @@ export function TVLCard() {
 
   if (isLoading) {
     return (
-      <Card className="p-3 bg-card/50 border-border">
-        <div className="h-12 bg-muted/30 rounded animate-pulse" />
+      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
+        <div className="h-[40px] bg-secondary/10 rounded-xl" />
       </Card>
     )
   }
 
   if (error) {
     return (
-      <Card className="p-3 md:p-4 bg-card/50 border-border">
-        <p className="text-xs text-muted-foreground mb-2">Total Value Locked</p>
-        <p className="text-xs text-red-500">Error loading TVL</p>
+      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-red-500/20 rounded-3xl">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400/60 italic mb-2">Sync Error</h3>
+        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic">TVL connectivity lost</p>
       </Card>
     )
   }
 
   return (
-    <Card className="p-3 md:p-4 bg-card/50 border-border">
-      <p className="text-xs text-muted-foreground mb-2">Total Value Locked</p>
+    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm group hover:border-orange-500/20 transition-all duration-300">
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Value Locked</h3>
+        <div className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
+      </div>
       <div className="flex items-baseline gap-2">
-        <div className="text-lg md:text-xl font-bold text-foreground">
-          {formatNumber(tvl)}
+        <div className="text-xl font-bold font-mono tracking-tight text-foreground">
+          ${formatNumber(tvl)}
         </div>
-        <div className="text-xs text-muted-foreground font-semibold">
+        <div className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic group-hover:text-orange-400/40 transition-colors">
           MAG7.SSI
         </div>
       </div>

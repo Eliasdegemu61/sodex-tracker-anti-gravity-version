@@ -44,7 +44,6 @@ const TOKEN_DECIMALS: Record<string, number> = {
   LINK: 18,
   UNI: 18,
   AAVE: 18,
-  USDT: 6,
   DAI: 18,
   WMATIC: 18,
   MATIC: 18,
@@ -146,69 +145,81 @@ export function AssetFlowCard({ walletAddress }: AssetFlowCardProps) {
 
   if (isLoading) {
     return (
-      <Card className="p-4 md:p-6 bg-card border border-border">
-        <h3 className="text-base md:text-lg font-bold text-foreground mb-4">Asset Allocation</h3>
-        <div className="flex items-center justify-center py-8">
-          <Loader2 className="w-6 h-6 text-muted-foreground animate-spin" />
-        </div>
+      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse flex flex-col items-center justify-center min-h-[200px]">
+        <div className="w-8 h-8 rounded-full border-2 border-accent/20 border-t-accent animate-spin mb-4" />
+        <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest italic">checking holdings...</p>
       </Card>
     );
   }
 
   if (error) {
     return (
-      <Card className="p-4 md:p-6 bg-card border border-border">
-        <h3 className="text-base md:text-lg font-bold text-foreground mb-4">Asset Allocation</h3>
-        <div className="flex flex-col items-center justify-center py-8 gap-4">
-          <p className="text-sm text-red-400">{error}</p>
-        </div>
+      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl flex flex-col items-center justify-center min-h-[200px]">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-2">Asset Allocation</h3>
+        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic">{error}</p>
       </Card>
     );
   }
 
   if (assets.length === 0) {
     return (
-      <Card className="p-4 md:p-6 bg-card border border-border">
-        <h3 className="text-base md:text-lg font-bold text-foreground mb-4">Asset Allocation</h3>
-        <p className="text-muted-foreground text-xs md:text-sm">No assets available</p>
+      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl flex flex-col items-center justify-center min-h-[200px]">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-2">Asset Allocation</h3>
+        <p className="text-[10px] text-muted-foreground/20 font-bold uppercase italic">no holdings detected</p>
       </Card>
     );
   }
 
   return (
-    <Card className="p-4 md:p-6 bg-card border border-border">
+    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
       <div className="space-y-6">
         {/* Holdings List */}
-        <div className="space-y-3">
-          <h3 className="text-base md:text-lg font-bold text-foreground">Asset Allocation</h3>
-          
-          <div className="space-y-2">
+        <div className="space-y-4">
+          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">Asset Allocation</h3>
+
+          <div className="grid grid-cols-1 gap-2">
             {assets.map((asset, idx) => {
               const tokenLogo = getTokenLogo(asset.coin);
               return (
                 <div
                   key={idx}
-                  className="flex items-center justify-between p-3 rounded-lg bg-secondary/10 hover:bg-secondary/20 transition-colors border-l-4"
-                  style={{ borderLeftColor: asset.color }}
+                  className="group relative flex items-center justify-between p-3 rounded-2xl bg-secondary/10 hover:bg-secondary/20 transition-all border border-transparent hover:border-border/10"
                 >
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    {tokenLogo && (
-                      <img
-                        src={tokenLogo}
-                        alt={asset.coin}
-                        className="w-5 h-5 rounded-full flex-shrink-0 bg-secondary"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none'
-                        }}
-                      />
-                    )}
-                    <span className="font-semibold text-sm md:text-base text-foreground truncate">
-                      {getDisplayName(asset.coin)}
-                    </span>
+                  {/* Color Glow */}
+                  <div
+                    className="absolute inset-y-2 left-0 w-1.5 rounded-r-full blur-[2px] opacity-40 transition-opacity group-hover:opacity-80"
+                    style={{ backgroundColor: asset.color }}
+                  />
+
+                  <div className="flex items-center gap-3 flex-1 min-w-0 pl-3">
+                    <div className="relative">
+                      {tokenLogo ? (
+                        <img
+                          src={tokenLogo}
+                          alt={asset.coin}
+                          className="w-6 h-6 rounded-full flex-shrink-0 bg-secondary/50 p-0.5"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none'
+                          }}
+                        />
+                      ) : (
+                        <div className="w-6 h-6 rounded-full bg-secondary/50 flex items-center justify-center text-[8px] font-bold text-muted-foreground">
+                          {asset.coin[0]}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-bold font-mono text-[11px] text-foreground/80 tracking-tight">
+                        {getDisplayName(asset.coin)}
+                      </span>
+                      {asset.isFuture && (
+                        <span className="text-[7px] text-accent/40 font-bold uppercase tracking-widest italic leading-none mt-0.5">futures</span>
+                      )}
+                    </div>
                   </div>
 
                   <div className="text-right flex-shrink-0">
-                    <p className="text-xs md:text-sm text-muted-foreground">
+                    <p className="text-[11px] font-bold font-mono text-muted-foreground/60">
                       {formatTokenBalance(asset.balance, asset.coin)}
                     </p>
                   </div>

@@ -12,7 +12,7 @@ interface DayData {
 
 export function PortfolioHeatmap() {
   const { positions } = usePortfolio();
-  
+
   // Get available years from positions
   const availableYears = useMemo(() => {
     if (!positions || positions.length === 0) {
@@ -51,7 +51,7 @@ export function PortfolioHeatmap() {
       } else {
         posDate = new Date(position.created_at);
       }
-      
+
       // Only include positions from selected year
       if (posDate.getFullYear() !== selectedYear) {
         return;
@@ -60,7 +60,7 @@ export function PortfolioHeatmap() {
       const dateKey = posDate.toISOString().split('T')[0];
       const pnlValue = position.realizedPnlValue || 0;
       const currentPnL = dateMap.get(dateKey) || 0;
-      
+
       dateMap.set(dateKey, currentPnL + pnlValue);
     });
 
@@ -127,7 +127,7 @@ export function PortfolioHeatmap() {
 
   const getColor = (pnl: number | null) => {
     if (pnl === null || pnl === 0) return 'border border-border/70 bg-card/30';
-    
+
     // Scale colors based on magnitude of PnL
     if (pnl > 0) {
       // Green colors for positive PnL
@@ -160,69 +160,69 @@ export function PortfolioHeatmap() {
   }
 
   return (
-    <Card className="p-3 md:p-6 bg-card border border-border">
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-4 md:mb-6 gap-2">
-        <h3 className="text-base md:text-lg font-bold text-foreground">Trading Activity Heatmap</h3>
-        <div className="flex gap-2 overflow-x-auto pb-2">
+    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">Activity Heatmap</h3>
+        <div className="flex gap-1.5 p-1 bg-secondary/10 rounded-xl border border-border/5 overflow-x-auto max-w-full">
           {availableYears.map((year) => (
-            <Button
+            <button
               key={year}
               onClick={() => setSelectedYear(year)}
-              variant={selectedYear === year ? 'default' : 'outline'}
-              size="sm"
-              className="px-2 md:px-3 text-xs md:text-sm whitespace-nowrap"
+              className={`px-3 py-1.5 text-[10px] font-bold font-mono rounded-lg transition-all ${selectedYear === year
+                  ? 'bg-accent text-accent-foreground shadow-lg'
+                  : 'text-muted-foreground/50 hover:text-foreground hover:bg-secondary/20'
+                }`}
             >
               {year}
-            </Button>
+            </button>
           ))}
         </div>
       </div>
 
       {/* Stats Section */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-2 md:gap-4 mb-4 md:mb-8">
-        <div className="p-2 md:p-4 rounded-lg bg-card/50 border border-border/50">
-          <p className="text-xs text-muted-foreground font-medium mb-0.5 md:mb-1">Overall PnL</p>
-          <p className={`text-sm md:text-xl font-bold ${stats.totalPnL >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-10">
+        <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
+          <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Net Return</p>
+          <p className={`text-base font-bold font-mono ${stats.totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
             {stats.totalPnL >= 0 ? '+' : ''}${stats.totalPnL.toFixed(2)}
           </p>
         </div>
 
-        <div className="p-2 md:p-4 rounded-lg bg-card/50 border border-border/50">
-          <p className="text-xs text-muted-foreground font-medium mb-0.5 md:mb-1">Total Trades</p>
-          <p className="text-sm md:text-xl font-bold text-foreground">{stats.totalTrades}</p>
+        <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
+          <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Volume</p>
+          <p className="text-base font-bold font-mono text-foreground/80">{stats.totalTrades}</p>
         </div>
 
-        <div className="p-2 md:p-4 rounded-lg bg-card/50 border border-border/50">
-          <p className="text-xs text-muted-foreground font-medium mb-0.5 md:mb-1">Wins</p>
-          <p className="text-sm md:text-xl font-bold text-emerald-400">{stats.wins}</p>
+        <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
+          <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Green</p>
+          <p className="text-base font-bold font-mono text-green-400">{stats.wins}</p>
         </div>
 
-        <div className="p-2 md:p-4 rounded-lg bg-card/50 border border-border/50">
-          <p className="text-xs text-muted-foreground font-medium mb-0.5 md:mb-1">Losses</p>
-          <p className="text-sm md:text-xl font-bold text-red-400">{stats.losses}</p>
+        <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
+          <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Red</p>
+          <p className="text-base font-bold font-mono text-red-400">{stats.losses}</p>
         </div>
 
-        <div className="p-2 md:p-4 rounded-lg bg-card/50 border border-border/50">
-          <p className="text-xs text-muted-foreground font-medium mb-0.5 md:mb-1">Win Rate</p>
-          <p className="text-sm md:text-xl font-bold text-foreground">{stats.winRate}%</p>
+        <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
+          <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Efficiency</p>
+          <p className="text-base font-bold font-mono text-foreground/80">{stats.winRate}%</p>
         </div>
       </div>
 
-      <div 
-        className="overflow-x-auto"
+      <div
+        className="overflow-x-auto heatmap-scroll"
         style={{
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
         } as React.CSSProperties}
       >
-        <style>{`.heatmap-scroll::-webkit-scrollbar { display: none; }`}</style>
-        <div className="flex gap-1 min-w-min">
+        <div className="flex gap-1.5 min-w-min pb-4">
           {weeks.map((week, weekIndex) => (
-            <div key={weekIndex} className="flex flex-col gap-1">
+            <div key={weekIndex} className="flex flex-col gap-1.5">
               {week.map((day) => (
                 <div
                   key={day.date.toISOString()}
-                  className={`w-6 h-6 rounded-sm cursor-pointer transition-all duration-200 ${getColor(day.pnl)}`}
+                  className={`w-4 h-4 rounded-sm cursor-pointer transition-all duration-300 border ${getColor(day.pnl)} hover:scale-125 hover:z-10`}
                   title={`${formatDate(day.date)}: ${day.pnl >= 0 ? '+' : ''}${day.pnl.toFixed(2)} PnL`}
                 />
               ))}
@@ -231,20 +231,18 @@ export function PortfolioHeatmap() {
         </div>
       </div>
 
-      <div className="flex items-center gap-4 mt-6 text-xs">
-        <span className="text-muted-foreground font-medium">Loss</span>
-        <div className="flex items-center gap-1">
-          <div className="w-4 h-4 rounded-sm bg-red-900/80"></div>
-          <div className="w-4 h-4 rounded-sm bg-red-800/70"></div>
-          <div className="w-4 h-4 rounded-sm bg-red-700/60"></div>
-          <div className="w-4 h-4 rounded-sm bg-red-600/40"></div>
-          <div className="w-4 h-4 rounded-sm border border-border/70 bg-card/30"></div>
-          <div className="w-4 h-4 rounded-sm bg-emerald-600/40"></div>
-          <div className="w-4 h-4 rounded-sm bg-emerald-700/60"></div>
-          <div className="w-4 h-4 rounded-sm bg-emerald-800/70"></div>
-          <div className="w-4 h-4 rounded-sm bg-emerald-900/80"></div>
+      <div className="flex items-center gap-4 mt-10">
+        <span className="text-[8px] text-muted-foreground/20 font-bold uppercase tracking-widest italic">Negative</span>
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 rounded-sm bg-red-900/80"></div>
+          <div className="w-3 h-3 rounded-sm bg-red-700/60"></div>
+          <div className="w-3 h-3 rounded-sm bg-red-500/30"></div>
+          <div className="w-3 h-3 rounded-sm bg-secondary/10 border border-border/5"></div>
+          <div className="w-3 h-3 rounded-sm bg-green-500/30"></div>
+          <div className="w-3 h-3 rounded-sm bg-green-700/60"></div>
+          <div className="w-3 h-3 rounded-sm bg-green-900/80"></div>
         </div>
-        <span className="text-muted-foreground font-medium">Gain</span>
+        <span className="text-[8px] text-muted-foreground/20 font-bold uppercase tracking-widest italic">Positive</span>
       </div>
     </Card>
   );

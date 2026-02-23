@@ -27,6 +27,20 @@ interface OverallStatsData {
     vol: number
     rank: number
   }>
+  top_5_futures_vol: Array<{
+    userId: string
+    address: string
+    pnl: number
+    vol: number
+    rank: number
+  }>
+  top_5_spot_vol: Array<{
+    userId: string
+    address: string
+    pnl: number
+    vol: number
+    rank: number
+  }>
 }
 
 interface DexDataContextType {
@@ -51,7 +65,7 @@ export function DexDataProvider({ children }: { children: ReactNode }) {
         const response = await fetch(
           'https://raw.githubusercontent.com/Eliasdegemu61/sodex-finalised-raw-data/main/overall_stats.json'
         )
-        
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }

@@ -11,10 +11,14 @@ export function TopPairsWidget() {
 
   if (isLoading || !volumeData) {
     return (
-      <Card className="p-3 md:p-4 bg-card/50 border-border">
-        <div className="animate-pulse space-y-2">
-          <div className="h-4 bg-secondary rounded w-1/3" />
-          <div className="h-32 bg-secondary rounded" />
+      <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] animate-pulse">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-8">Auditing Volume</h3>
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="h-16 bg-secondary/10 rounded-2xl" />
+            <div className="h-16 bg-secondary/10 rounded-2xl" />
+          </div>
+          <div className="h-48 bg-secondary/10 rounded-2xl" />
         </div>
       </Card>
     )
@@ -34,116 +38,78 @@ export function TopPairsWidget() {
     .slice(0, 5)
 
   return (
-    <Card className="p-3 md:p-4 bg-card/50 border-border">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm md:text-base font-semibold text-foreground flex items-center gap-2">
-          <TrendingUp className="w-4 h-4 text-accent" />
-          All-Time Top Pairs
-        </h3>
+    <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col">
+      <div className="flex items-center justify-between mb-8">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Historical Dominance</h3>
+        <TrendingUp className="w-4 h-4 text-orange-400/40" />
       </div>
 
-      {/* All-Time Stats */}
-      <div className="grid grid-cols-2 gap-2 mb-4">
-        <div className="p-2 bg-secondary/30 rounded">
-          <div className="text-xs text-muted-foreground">Spot Vol</div>
-          <div className="text-sm font-bold text-accent">${formatVolume(stats.total_spot_volume)}</div>
+      <div className="grid grid-cols-2 gap-4 mb-8">
+        <div className="p-4 bg-secondary/5 border border-border/5 rounded-2xl flex flex-col items-center">
+          <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic mb-1">Total Spot</span>
+          <span className="text-xl font-bold font-mono text-orange-400">${formatVolume(stats.total_spot_volume)}</span>
         </div>
-        <div className="p-2 bg-secondary/30 rounded">
-          <div className="text-xs text-muted-foreground">Futures Vol</div>
-          <div className="text-sm font-bold text-accent">${formatVolume(stats.total_futures_volume)}</div>
+        <div className="p-4 bg-secondary/5 border border-border/5 rounded-2xl flex flex-col items-center">
+          <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic mb-1">Total Futures</span>
+          <span className="text-xl font-bold font-mono text-orange-600">${formatVolume(stats.total_futures_volume)}</span>
         </div>
       </div>
 
-      {/* Top Pairs Tabs */}
       <Tabs defaultValue="all" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-transparent p-0 h-auto border-t border-border">
-          <TabsTrigger value="all" className="text-xs md:text-sm font-semibold rounded-none bg-transparent text-muted-foreground py-3 px-4 data-[state=active]:bg-secondary/50 data-[state=active]:text-foreground shadow-none">
-            All Pairs
-          </TabsTrigger>
-          <TabsTrigger value="spot" className="text-xs md:text-sm font-semibold rounded-none bg-transparent text-muted-foreground py-3 px-4 data-[state=active]:bg-secondary/50 data-[state=active]:text-foreground shadow-none">
-            Spot
-          </TabsTrigger>
-          <TabsTrigger value="futures" className="text-xs md:text-sm font-semibold rounded-none bg-transparent text-muted-foreground py-3 px-4 data-[state=active]:bg-secondary/50 data-[state=active]:text-foreground shadow-none">
-            Futures
-          </TabsTrigger>
+        <TabsList className="grid grid-cols-3 bg-secondary/5 p-1 rounded-2xl border border-border/5">
+          <TabsTrigger value="all" className="text-[10px] font-bold uppercase tracking-widest py-2 rounded-xl data-[state=active]:bg-orange-500 data-[state=active]:text-white transition-all">All</TabsTrigger>
+          <TabsTrigger value="spot" className="text-[10px] font-bold uppercase tracking-widest py-2 rounded-xl data-[state=active]:bg-orange-400 data-[state=active]:text-white transition-all">Spot</TabsTrigger>
+          <TabsTrigger value="futures" className="text-[10px] font-bold uppercase tracking-widest py-2 rounded-xl data-[state=active]:bg-orange-600 data-[state=active]:text-white transition-all">Futures</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="all" className="mt-4 space-y-2">
-          {allTopPairs && allTopPairs.length > 0 ? (
-            allTopPairs.map((pair, idx) => (
-              <div key={pair.pair} className="flex items-center justify-between p-2 hover:bg-secondary/20 rounded transition">
-                <div className="flex items-center gap-2 min-w-0 px-2 pl-0">
-                  {getTokenLogo(pair.pair) && (
+        <TabsContent value="all" className="mt-6 space-y-2 outline-none">
+          {allTopPairs.map((pair) => (
+            <div key={pair.pair} className="group flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-orange-500/5 transition-all duration-300">
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  {getTokenLogo(pair.pair) ? (
                     <img
                       src={getTokenLogo(pair.pair)}
                       alt={pair.pair}
-                      className="w-5 h-5 rounded-full flex-shrink-0 bg-secondary"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none'
-                      }}
+                      className="w-6 h-6 rounded-full flex-shrink-0 bg-background/50 p-0.5 border border-border/10 group-hover:border-orange-500/20"
+                      onError={(e) => { e.currentTarget.style.display = 'none' }}
                     />
+                  ) : (
+                    <div className="w-6 h-6 rounded-full bg-orange-500/10 flex items-center justify-center text-[8px] font-bold text-orange-400">{pair.pair.slice(0, 1)}</div>
                   )}
-                  <span className="text-xs md:text-sm font-mono text-foreground truncate">{pair.pair}</span>
-                  <span className={`text-xs px-2 py-0.5 rounded ${pair.pair.includes('-') ? 'bg-orange-600/20 text-orange-600' : 'bg-orange-400/20 text-orange-400'}`}>
-                    {pair.pair.includes('-') ? 'Futures' : 'Spot'}
-                  </span>
                 </div>
-                <span className="text-xs md:text-sm font-bold text-accent flex-shrink-0">${formatVolume(pair.volume)}</span>
+                <div className="flex flex-col">
+                  <span className="text-[12px] font-bold font-mono text-foreground/80">{pair.pair}</span>
+                  <span className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest italic">{pair.pair.includes('-') ? 'Futures' : 'Spot'}</span>
+                </div>
               </div>
-            ))
-          ) : (
-            <div className="text-xs text-muted-foreground text-center py-4">No data available</div>
-          )}
+              <span className="text-[12px] font-bold font-mono text-orange-400/90">${formatVolume(pair.volume)}</span>
+            </div>
+          ))}
         </TabsContent>
 
-        <TabsContent value="spot" className="mt-4 space-y-2">
-          {stats.top_5_spot && stats.top_5_spot.length > 0 ? (
-            stats.top_5_spot.map((pair, idx) => (
-              <div key={pair.pair} className="flex items-center justify-between p-2 hover:bg-secondary/20 rounded transition">
-                <div className="flex items-center gap-2 px-1 pl-0">
-                  {getTokenLogo(pair.pair) && (
-                    <img
-                      src={getTokenLogo(pair.pair)}
-                      alt={pair.pair}
-                      className="w-5 h-5 rounded-full flex-shrink-0 bg-secondary"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none'
-                      }}
-                    />
-                  )}
-                  <span className="text-xs md:text-sm font-mono text-foreground">{pair.pair}</span>
-                </div>
-                <span className="text-xs md:text-sm font-bold text-accent">${formatVolume(pair.volume)}</span>
+        <TabsContent value="spot" className="mt-6 space-y-2 outline-none">
+          {stats.top_5_spot.map((pair) => (
+            <div key={pair.pair} className="group flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-orange-400/5 transition-all duration-300">
+              <div className="flex items-center gap-3">
+                {getTokenLogo(pair.pair) && <img src={getTokenLogo(pair.pair)} alt={pair.pair} className="w-6 h-6 rounded-full bg-background/50 p-0.5 border border-border/10" />}
+                <span className="text-[12px] font-bold font-mono text-foreground/80">{pair.pair}</span>
               </div>
-            ))
-          ) : (
-            <div className="text-xs text-muted-foreground text-center py-4">No spot pairs available</div>
-          )}
+              <span className="text-[12px] font-bold font-mono text-orange-400/90">${formatVolume(pair.volume)}</span>
+            </div>
+          ))}
         </TabsContent>
 
-        <TabsContent value="futures" className="mt-4 space-y-2">
-          {stats.top_5_futures && stats.top_5_futures.length > 0 ? (
-            stats.top_5_futures.map((pair, idx) => (
-              <div key={pair.pair} className="flex items-center justify-between p-2 hover:bg-secondary/20 rounded transition">
-                <div className="flex items-center gap-2 px-1 pl-0">
-                  {getTokenLogo(pair.pair) && (
-                    <img
-                      src={getTokenLogo(pair.pair)}
-                      alt={pair.pair}
-                      className="w-5 h-5 rounded-full flex-shrink-0 bg-secondary"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none'
-                      }}
-                    />
-                  )}
-                  <span className="text-xs md:text-sm font-mono text-foreground">{pair.pair}</span>
-                </div>
-                <span className="text-xs md:text-sm font-bold text-accent">${formatVolume(pair.volume)}</span>
+        <TabsContent value="futures" className="mt-6 space-y-2 outline-none">
+          {stats.top_5_futures.map((pair) => (
+            <div key={pair.pair} className="group flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-orange-600/5 transition-all duration-300">
+              <div className="flex items-center gap-3">
+                {getTokenLogo(pair.pair) && <img src={getTokenLogo(pair.pair)} alt={pair.pair} className="w-6 h-6 rounded-full bg-background/50 p-0.5 border border-border/10" />}
+                <span className="text-[12px] font-bold font-mono text-foreground/80">{pair.pair}</span>
               </div>
-            ))
-          ) : (
-            <div className="text-xs text-muted-foreground text-center py-4">No futures pairs available</div>
-          )}
+              <span className="text-[12px] font-bold font-mono text-orange-600/90">${formatVolume(pair.volume)}</span>
+            </div>
+          ))}
         </TabsContent>
       </Tabs>
     </Card>

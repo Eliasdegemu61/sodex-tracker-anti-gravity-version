@@ -114,28 +114,30 @@ export function PnLChart({ title = 'Profit & Loss' }: PnLChartProps) {
   const hasData = chartData.length > 0;
 
   return (
-    <Card className="p-3 md:p-6 bg-card border border-border">
-      <div className="mb-4 md:mb-6">
-        <div className="flex items-center justify-between mb-3 md:mb-4">
-          <h3 className="text-base md:text-lg font-bold text-foreground">{title}</h3>
+    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
+      <div className="mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">
+            {title}
+          </h3>
           <Select value={timePeriod} onValueChange={(value: any) => setTimePeriod(value)}>
-            <SelectTrigger className="w-32 h-9 text-sm">
+            <SelectTrigger className="w-28 h-7 text-[10px] font-bold uppercase tracking-widest bg-secondary/10 border-border/10 rounded-lg">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Time</SelectItem>
-              <SelectItem value="1w">1 Week</SelectItem>
-              <SelectItem value="1m">1 Month</SelectItem>
-              <SelectItem value="3m">3 Months</SelectItem>
-              <SelectItem value="1y">1 Year</SelectItem>
+            <SelectContent className="bg-card border-border/10">
+              <SelectItem value="all" className="text-[10px]">All Time</SelectItem>
+              <SelectItem value="1w" className="text-[10px]">1 Week</SelectItem>
+              <SelectItem value="1m" className="text-[10px]">1 Month</SelectItem>
+              <SelectItem value="3m" className="text-[10px]">3 Months</SelectItem>
+              <SelectItem value="1y" className="text-[10px]">1 Year</SelectItem>
             </SelectContent>
           </Select>
         </div>
-        <div className="flex items-baseline gap-2 md:gap-3">
-          <p className={`text-lg md:text-2xl font-bold ${stats.isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
+        <div className="flex items-baseline gap-2">
+          <p className={`text-2xl font-bold font-mono tracking-tight ${stats.isPositive ? 'text-green-400' : 'text-red-400'}`}>
             {stats.displayValue}
           </p>
-          <p className={`text-[10px] md:text-xs font-semibold ${stats.isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
+          <p className={`text-[10px] font-bold font-mono ${stats.isPositive ? 'text-green-400' : 'text-red-400'}`}>
             {stats.isPositive ? '+' : ''}{stats.percentageChange}%
           </p>
         </div>
@@ -143,38 +145,53 @@ export function PnLChart({ title = 'Profit & Loss' }: PnLChartProps) {
 
       <div className="h-[250px] w-full flex items-center justify-center relative">
         {!hasData ? (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/5 rounded-lg border border-dashed border-border/50 transition-colors">
-            <p className="text-sm text-muted-foreground font-medium">No data available for this time frame</p>
-            <p className="text-[10px] text-muted-foreground/60 mt-1">Try selecting a different range</p>
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-secondary/5 rounded-2xl border border-dashed border-border/10 transition-colors">
+            <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest italic">No data available...</p>
           </div>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={chartData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
-              <XAxis dataKey="date" stroke="#666" style={{ fontSize: '10px' }} tick={{ fontSize: 10 }} />
-              <YAxis stroke="#666" style={{ fontSize: '10px' }} tick={{ fontSize: 10 }} />
+            <ComposedChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <XAxis
+                dataKey="date"
+                stroke="#ffffff10"
+                tick={{ fill: '#ffffff30', fontSize: 9, fontWeight: 700, fontFamily: 'monospace' }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <YAxis
+                stroke="#ffffff10"
+                tick={{ fill: '#ffffff30', fontSize: 9, fontWeight: 700, fontFamily: 'monospace' }}
+                axisLine={false}
+                tickLine={false}
+              />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: '#1a1a1a',
-                  border: '1px solid #333',
-                  borderRadius: '8px',
+                  backgroundColor: '#0a0a0a',
+                  border: '1px solid rgba(255,255,255,0.05)',
+                  borderRadius: '12px',
                   color: '#fff',
-                  fontSize: '12px',
+                  fontSize: '10px',
+                  fontFamily: 'monospace',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+                  backdropFilter: 'blur(10px)'
                 }}
-                labelStyle={{ color: '#fff' }}
+                itemStyle={{ fontSize: '10px', fontWeight: 700, textTransform: 'uppercase' }}
+                labelStyle={{ color: '#ffffff30', marginBottom: '4px', fontSize: '9px' }}
+                cursor={{ stroke: 'rgba(255,255,255,0.05)', strokeWidth: 1 }}
                 formatter={(value: any, name: any, props: any) => {
-                  if (name === 'waterfall') return null;
+                  if (name === 'waterfall') return [null, null];
                   const numValue = value as number;
                   const displayValue = Math.abs(numValue) > 999
                     ? `$${(numValue / 1000).toFixed(1)}K`
                     : `$${numValue.toFixed(2)}`;
 
                   if (props.payload && name === 'cumulative') {
-                    return [displayValue, 'Cumulative PnL'];
+                    return [displayValue, 'Cumulative'];
                   }
-                  return [displayValue, name === 'pnl' ? 'Daily PnL' : name];
+                  return [displayValue, name === 'pnl' ? 'Daily' : name];
                 }}
               />
-              <Bar dataKey="waterfall" radius={[2, 2, 2, 2]} barSize={8}>
+              <Bar dataKey="waterfall" radius={[2, 2, 2, 2]} barSize={6}>
                 {chartData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={getBarColor(entry.pnl)} />
                 ))}

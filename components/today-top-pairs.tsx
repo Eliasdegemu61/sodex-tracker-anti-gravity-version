@@ -2,7 +2,6 @@
 
 import { Card } from '@/components/ui/card'
 import { TrendingUp } from 'lucide-react'
-import { TodayData } from '@/types/today-data'
 import { useVolumeData } from '@/context/volume-data-context'
 import { getTokenLogo } from '@/lib/token-logos'
 
@@ -17,21 +16,23 @@ export function TodayTopPairs() {
 
   if (error) {
     return (
-      <Card className="p-4 bg-card/50 border-border">
-        <div className="text-center text-sm text-destructive">
-          <p className="font-semibold mb-1">Connection Lost</p>
-          <p className="text-xs text-muted-foreground">{error}</p>
-        </div>
+      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-red-500/20 rounded-3xl">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-red-400/60 italic mb-2">Sync Error</h3>
+        <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic">{error}</p>
       </Card>
     )
   }
 
   if (isLoading || !volumeData) {
     return (
-      <Card className="p-4 bg-card/50 border-border">
-        <div className="animate-pulse space-y-2">
-          <div className="h-4 bg-secondary rounded w-1/3" />
-          <div className="h-32 bg-secondary rounded" />
+      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
+        <div className="space-y-3">
+          <div className="h-2 bg-secondary/10 rounded-full w-1/3" />
+          <div className="space-y-2">
+            {[1, 2, 3, 4].map(idx => (
+              <div key={idx} className="h-10 bg-secondary/10 rounded-xl" />
+            ))}
+          </div>
         </div>
       </Card>
     )
@@ -42,47 +43,51 @@ export function TodayTopPairs() {
     .sort((a, b) => b.volume - a.volume)
     .slice(0, 4)
 
-  const todaySpotVolume = todayData.top_5_spot.reduce((sum, p) => sum + p.volume, 0)
-  const todayFuturesVolume = todayData.top_5_futures.reduce((sum, p) => sum + p.volume, 0)
-
   return (
-    <Card className="p-3 md:p-4 bg-card/50 border-border">
-      <h3 className="text-xs md:text-sm font-semibold text-foreground mb-1 flex items-center gap-2">
-        <TrendingUp className="w-4 h-4 text-accent" />
-        Today's Top Pairs
-      </h3>
-      <p className="text-xs text-muted-foreground mb-3">{todayData.date}</p>
+    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm overflow-hidden flex flex-col">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col">
+          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Top Performers</h3>
+          <span className="text-[8px] text-muted-foreground/20 font-mono italic">{todayData.date}</span>
+        </div>
+        <TrendingUp className="w-4 h-4 text-orange-400/40" />
+      </div>
 
-      {/* Top Pairs List */}
       <div className="space-y-2">
         {allTodayPairs.length > 0 ? (
           allTodayPairs.map((pair, idx) => {
             const isSpot = todayData.top_5_spot.some(p => p.pair === pair.pair)
             return (
-              <div key={pair.pair} className="flex items-center justify-between p-2 bg-secondary/30 rounded hover:bg-secondary/50 transition">
-                <div className="flex items-center gap-2 min-w-0 px-1 pl-0">
-                  {getTokenLogo(pair.pair) && (
-                    <img
-                      src={getTokenLogo(pair.pair)}
-                      alt={pair.pair}
-                      className="w-5 h-5 rounded-full flex-shrink-0 bg-secondary"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none'
-                      }}
-                    />
-                  )}
-                  <span className="text-xs font-mono text-foreground truncate">{pair.pair}</span>
-                  <span className={`text-xs px-1.5 py-0.5 rounded text-xs font-semibold ${isSpot ? 'bg-orange-400/20 text-orange-400' : 'bg-orange-600/20 text-orange-600'
-                    }`}>
-                    {isSpot ? 'S' : 'F'}
-                  </span>
+              <div key={pair.pair} className="group flex items-center justify-between p-3 bg-secondary/10 rounded-2xl border border-border/5 hover:bg-orange-500/5 hover:border-orange-500/10 transition-all duration-300">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="relative">
+                    {getTokenLogo(pair.pair) ? (
+                      <img
+                        src={getTokenLogo(pair.pair)}
+                        alt={pair.pair}
+                        className="w-6 h-6 rounded-full flex-shrink-0 bg-background/50 p-0.5 border border-border/10 group-hover:border-orange-500/20"
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none'
+                        }}
+                      />
+                    ) : (
+                      <div className="w-6 h-6 rounded-full bg-orange-500/10 flex items-center justify-center text-[8px] font-bold text-orange-400">
+                        {pair.pair.slice(0, 1)}
+                      </div>
+                    )}
+                    <div className={`absolute -bottom-1 -right-1 w-2.5 h-2.5 rounded-full border border-background flex items-center justify-center text-[6px] font-bold ${isSpot ? 'bg-orange-400 text-white' : 'bg-orange-600 text-white'
+                      }`}>
+                      {isSpot ? 'S' : 'F'}
+                    </div>
+                  </div>
+                  <span className="text-[12px] font-mono font-bold text-foreground/80 tracking-tight">{pair.pair}</span>
                 </div>
-                <span className="text-xs font-bold text-accent flex-shrink-0">${formatVolume(pair.volume)}</span>
+                <span className="text-[11px] font-bold font-mono text-orange-400/90">${formatVolume(pair.volume)}</span>
               </div>
             )
           })
         ) : (
-          <div className="text-xs text-muted-foreground text-center py-4">No pairs available</div>
+          <div className="text-[10px] text-muted-foreground/30 font-bold uppercase tracking-widest italic text-center py-6">Identity Shielded</div>
         )}
       </div>
     </Card>

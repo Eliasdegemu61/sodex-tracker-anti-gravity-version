@@ -47,31 +47,42 @@ export function OverallDepositsCard() {
 
     if (isLoading) {
         return (
-            <Card className="p-3 bg-card/50 border-border">
-                <div className="text-xs text-muted-foreground animate-pulse">Loading token flows...</div>
+            <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-4">Tracking Inflows</h3>
+                <div className="space-y-3">
+                    {[1, 2, 3].map(i => (
+                        <div key={i} className="h-8 bg-secondary/10 rounded-xl" />
+                    ))}
+                </div>
             </Card>
         )
     }
 
     return (
-        <Card className="p-3 bg-card/50 border-border flex-1">
-            <div className="flex items-center gap-2 mb-3">
-                <Wallet className="w-3.5 h-3.5 text-accent" />
-                <h3 className="text-sm font-semibold text-foreground">Overall Deposits & Withdrawals</h3>
+        <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm group">
+            <div className="flex items-center justify-between mb-4">
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Global Token Flow</h3>
+                <Wallet className="w-3.5 h-3.5 text-orange-400/40" />
             </div>
-            <div className="space-y-0.5">
+            <div className="space-y-2">
                 {data.map((item) => (
-                    <div key={item.token} className="flex items-center justify-between py-1.5 px-2 rounded-md hover:bg-secondary/30 transition-colors">
-                        <span className="text-xs font-medium text-foreground w-16 truncate">{item.token}</span>
-                        <div className="flex items-center gap-3 text-[10px]">
-                            <span className="flex items-center gap-0.5 text-green-500">
-                                <ArrowDownRight className="w-3 h-3" />
-                                {formatNumber(item.overall_deposit)}
-                            </span>
-                            <span className="flex items-center gap-0.5 text-red-500">
-                                <ArrowUpRight className="w-3 h-3" />
-                                {formatNumber(item.overall_withdrawal)}
-                            </span>
+                    <div key={item.token} className="flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-orange-500/5 transition-all duration-300">
+                        <span className="text-[11px] font-bold font-mono text-foreground/80 w-16 truncate">{item.token}</span>
+                        <div className="flex items-center gap-4">
+                            <div className="flex flex-col items-end">
+                                <span className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest italic leading-none mb-1">Inflow</span>
+                                <span className="flex items-center gap-1 text-[10px] font-bold font-mono text-green-400">
+                                    <ArrowDownRight className="w-2.5 h-2.5" />
+                                    {formatNumber(item.overall_deposit)}
+                                </span>
+                            </div>
+                            <div className="flex flex-col items-end">
+                                <span className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest italic leading-none mb-1">Outflow</span>
+                                <span className="flex items-center gap-1 text-[10px] font-bold font-mono text-red-400">
+                                    <ArrowUpRight className="w-2.5 h-2.5" />
+                                    {formatNumber(item.overall_withdrawal)}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 ))}
@@ -120,32 +131,40 @@ export function NetRemainingCard() {
 
     if (isLoading) {
         return (
-            <Card className="p-3 bg-card/50 border-border">
-                <div className="text-xs text-muted-foreground animate-pulse">Loading net remaining...</div>
+            <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-4">Auditing Reserves</h3>
+                <div className="space-y-3">
+                    {[1, 2].map(i => (
+                        <div key={i} className="h-8 bg-secondary/10 rounded-xl" />
+                    ))}
+                </div>
             </Card>
         )
     }
 
     if (data.length === 0) {
         return (
-            <Card className="p-3 bg-card/50 border-border">
-                <h3 className="text-sm font-semibold text-foreground mb-2">Net Tokens on SoDEX</h3>
-                <p className="text-xs text-muted-foreground">No tokens with positive net remaining</p>
+            <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl">
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/80 italic mb-2">Net Reserves</h3>
+                <p className="text-[10px] text-muted-foreground/30 font-bold uppercase italic">No positive retention detected</p>
             </Card>
         )
     }
 
     return (
-        <Card className="p-3 bg-card/50 border-border flex-1">
-            <div className="flex items-center gap-2 mb-3">
-                <Wallet className="w-3.5 h-3.5 text-green-500" />
-                <h3 className="text-sm font-semibold text-foreground">Net Tokens on SoDEX</h3>
+        <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm flex-1 group">
+            <div className="flex items-center justify-between mb-4">
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/80 italic">Net Token Retention</h3>
+                <Wallet className="w-3.5 h-3.5 text-green-500/40" />
             </div>
-            <div className="space-y-0.5">
+            <div className="space-y-2">
                 {data.map((item) => (
-                    <div key={item.token} className="flex items-center justify-between py-1.5 px-2 rounded-md hover:bg-secondary/30 transition-colors">
-                        <span className="text-xs font-medium text-foreground">{item.token}</span>
-                        <span className="text-[10px] font-semibold text-green-500">{formatNumber(item.net_remaining)}</span>
+                    <div key={item.token} className="flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-green-500/5 transition-all duration-300">
+                        <span className="text-[11px] font-bold font-mono text-foreground/80">{item.token}</span>
+                        <div className="flex flex-col items-end">
+                            <span className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest italic leading-none mb-1">Retained</span>
+                            <span className="text-[11px] font-bold font-mono text-green-400">{formatNumber(item.net_remaining)}</span>
+                        </div>
                     </div>
                 ))}
             </div>

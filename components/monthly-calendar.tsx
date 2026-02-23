@@ -38,7 +38,7 @@ export function MonthlyCalendar() {
       const month = String(posDate.getMonth() + 1).padStart(2, '0');
       const day = String(posDate.getDate()).padStart(2, '0');
       const dateKey = `${year}-${month}-${day}`;
-      
+
       const existing = dateMap.get(dateKey);
       const pnl = position.realizedPnlValue || 0;
 
@@ -129,7 +129,7 @@ export function MonthlyCalendar() {
   const monthStats = useMemo(() => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
-    
+
     let totalPnL = 0;
     let totalTrades = 0;
     let winningDays = 0;
@@ -138,7 +138,7 @@ export function MonthlyCalendar() {
     dayData.forEach((dayTrades) => {
       const dayYear = dayTrades.date.getFullYear();
       const dayMonth = dayTrades.date.getMonth();
-      
+
       if (dayYear === year && dayMonth === month) {
         totalPnL += dayTrades.pnl;
         totalTrades += dayTrades.trades.length;
@@ -153,66 +153,64 @@ export function MonthlyCalendar() {
   return (
     <>
       {/* Calendar Card - Compact Layout */}
-      <Card className="p-3 bg-card border border-border">
+      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
         {/* Header with Month/Year and Navigation */}
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xs font-bold text-foreground">{monthYear}</h3>
-          <div className="flex gap-1">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">{monthYear}</h3>
+          <div className="flex gap-2">
             <Button
               onClick={previousMonth}
               variant="outline"
-              size="sm"
-              className="h-5 w-5 p-0 bg-transparent"
+              className="h-7 w-7 p-0 bg-secondary/10 border-border/10 rounded-lg hover:bg-accent/10 hover:text-accent transition-all"
             >
-              <ChevronLeft className="w-2.5 h-2.5" />
+              <ChevronLeft className="w-3 h-3" />
             </Button>
             <Button
               onClick={nextMonth}
               variant="outline"
-              size="sm"
-              className="h-5 w-5 p-0 bg-transparent"
+              className="h-7 w-7 p-0 bg-secondary/10 border-border/10 rounded-lg hover:bg-accent/10 hover:text-accent transition-all"
             >
-              <ChevronRight className="w-2.5 h-2.5" />
+              <ChevronRight className="w-3 h-3" />
             </Button>
           </div>
         </div>
 
         {/* Month Stats */}
-        <div className="grid grid-cols-4 gap-2 mb-3 p-2 bg-secondary/20 rounded-lg">
-          <div className="text-center">
-            <p className="text-xs text-muted-foreground">Month PnL</p>
-            <p className={`text-sm font-bold ${monthStats.totalPnL >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-              {monthStats.totalPnL >= 0 ? '+' : ''}${monthStats.totalPnL.toFixed(0)}
+        <div className="grid grid-cols-4 gap-3 mb-6 p-4 bg-secondary/5 rounded-2xl border border-border/5">
+          <div className="text-center space-y-1">
+            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Return</p>
+            <p className={`text-sm font-bold font-mono ${monthStats.totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+              {monthStats.totalPnL >= 0 ? '+' : ''}${Math.abs(monthStats.totalPnL).toFixed(0)}
             </p>
           </div>
-          <div className="text-center">
-            <p className="text-xs text-muted-foreground">Trades</p>
-            <p className="text-sm font-bold text-foreground">{monthStats.totalTrades}</p>
+          <div className="text-center space-y-1">
+            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Volume</p>
+            <p className="text-sm font-bold font-mono text-foreground/80">{monthStats.totalTrades}</p>
           </div>
-          <div className="text-center">
-            <p className="text-xs text-muted-foreground">Win Days</p>
-            <p className="text-sm font-bold text-emerald-400">{monthStats.winningDays}</p>
+          <div className="text-center space-y-1">
+            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">green</p>
+            <p className="text-sm font-bold font-mono text-green-400">{monthStats.winningDays}</p>
           </div>
-          <div className="text-center">
-            <p className="text-xs text-muted-foreground">Loss Days</p>
-            <p className="text-sm font-bold text-red-400">{monthStats.losingDays}</p>
+          <div className="text-center space-y-1">
+            <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">red</p>
+            <p className="text-sm font-bold font-mono text-red-400">{monthStats.losingDays}</p>
           </div>
         </div>
 
-        {/* Weekday headers - Smaller */}
-        <div className="grid grid-cols-7 gap-1 mb-2">
+        {/* Weekday headers */}
+        <div className="grid grid-cols-7 gap-1.5 mb-3">
           {weekDaysFull.map((day) => (
             <div
               key={day}
-              className="text-center text-xs font-semibold text-foreground bg-secondary/40 rounded-full py-0.5"
+              className="text-center text-[8px] font-bold text-muted-foreground/20 tracking-widest uppercase italic"
             >
               {day[0]}
             </div>
           ))}
         </div>
 
-        {/* Calendar days - Grid layout */}
-        <div className="grid grid-cols-7 gap-1">
+        {/* Calendar days */}
+        <div className="grid grid-cols-7 gap-1.5">
           {calendarDays.map((date, idx) => {
             const dayTrades = getDayPnL(date);
             const hasActivity = dayTrades && dayTrades.pnl !== 0;
@@ -223,18 +221,18 @@ export function MonthlyCalendar() {
                 onClick={() => date && handleDayClick(date)}
                 disabled={!date}
                 className={`
-                  relative aspect-square rounded-md p-1 text-xs font-semibold transition-all duration-200 flex flex-col items-center justify-center
-                  ${!date ? 'bg-transparent cursor-default' : `${getBackgroundColor(dayTrades?.pnl ?? null)} hover:scale-105 cursor-pointer`}
+                  relative aspect-square rounded-lg transition-all duration-300 flex flex-col items-center justify-center border
+                  ${!date ? 'bg-transparent border-transparent' :
+                    hasActivity
+                      ? `${dayTrades.pnl > 0 ? 'bg-green-500/10 border-green-500/10 hover:bg-green-500/20' : 'bg-red-500/10 border-red-500/10 hover:bg-red-500/20'} cursor-pointer`
+                      : 'bg-secondary/5 border-border/5 hover:border-border/10 cursor-pointer'}
                 `}
               >
                 {date && (
                   <>
-                    <div className="text-foreground text-xs leading-none">{date.getDate()}</div>
-                    {hasActivity && (
-                      <div className={`text-xs leading-none mt-0.5 ${dayTrades.pnl >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                        ${Math.abs(dayTrades.pnl).toFixed(0)}
-                      </div>
-                    )}
+                    <div className={`text-[10px] font-mono font-bold leading-none ${hasActivity ? (dayTrades.pnl > 0 ? 'text-green-400' : 'text-red-400') : 'text-muted-foreground/40'}`}>
+                      {date.getDate()}
+                    </div>
                   </>
                 )}
               </button>
@@ -245,48 +243,52 @@ export function MonthlyCalendar() {
 
       {/* Modal Popup for Trades */}
       {isModalOpen && selectedDayTrades && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <Card className="bg-card border border-border max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <Card className="bg-[#0a0a0a]/90 backdrop-blur-xl border border-white/10 max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col rounded-[2.5rem] shadow-2xl">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 md:p-6 border-b border-border/50">
+            <div className="flex items-center justify-between p-8 border-b border-white/5">
               <div>
-                <h2 className="text-lg md:text-xl font-bold text-foreground">
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-2">
                   {selectedDate?.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
-                </h2>
-                <p className={`text-sm font-semibold mt-1 ${selectedDayTrades.pnl >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                  Daily PnL: {selectedDayTrades.pnl >= 0 ? '+' : ''}${selectedDayTrades.pnl.toFixed(2)}
+                </h3>
+                <p className={`text-2xl font-bold font-mono tracking-tight ${selectedDayTrades.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {selectedDayTrades.pnl >= 0 ? '+' : ''}${selectedDayTrades.pnl.toFixed(2)}
                 </p>
+                <p className="text-[8px] text-muted-foreground/20 font-bold uppercase tracking-widest mt-1">Daily Realized PnL</p>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="p-2 hover:bg-secondary/50 rounded-lg transition-colors"
+                className="p-3 bg-secondary/10 hover:bg-secondary/20 rounded-2xl transition-all border border-border/10"
               >
-                <X className="w-5 h-5 text-muted-foreground" />
+                <X className="w-5 h-5 text-muted-foreground/40" />
               </button>
             </div>
 
             {/* Trades List */}
-            <div className="overflow-y-auto flex-1 p-4 md:p-6 space-y-3">
+            <div className="overflow-y-auto flex-1 p-8 space-y-4 custom-scrollbar">
               {selectedDayTrades.trades.map((trade, idx) => (
-                <div key={idx} className="p-3 md:p-4 rounded-lg bg-secondary/20 border border-border/50 space-y-2">
+                <div key={idx} className="group p-5 rounded-3xl bg-secondary/5 border border-border/5 hover:border-accent/10 transition-all space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-sm md:text-base text-foreground">{trade.pairName}</span>
-                    <span className={`text-sm md:text-base font-bold ${trade.realizedPnlValue >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                      {trade.realizedPnlValue >= 0 ? '+' : ''}${trade.realizedPnlValue.toFixed(2)}
-                    </span>
+                    <span className="font-bold font-mono text-base text-foreground/80 tracking-tight">{trade.pairName}</span>
+                    <div className="flex flex-col items-end">
+                      <span className={`text-sm font-bold font-mono ${trade.realizedPnlValue >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {trade.realizedPnlValue >= 0 ? '+' : ''}${trade.realizedPnlValue.toFixed(2)}
+                      </span>
+                      <span className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest">Realized</span>
+                    </div>
                   </div>
-                  <div className="text-xs text-muted-foreground grid grid-cols-2 gap-2">
-                    <div className="flex justify-between">
-                      <span>Position:</span>
-                      <span className="text-foreground">{trade.positionSideLabel} {trade.leverage}x</span>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="flex flex-col">
+                      <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic mb-1">Position</span>
+                      <span className="text-[11px] font-bold font-mono text-foreground/70">{trade.positionSideLabel} {trade.leverage}x</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span>Entry / Close:</span>
-                      <span className="text-foreground">${parseFloat(trade.avg_entry_price).toFixed(4)} / ${parseFloat(trade.avg_close_price).toFixed(4)}</span>
+                    <div className="flex flex-col">
+                      <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic mb-1">Entry / Close</span>
+                      <span className="text-[11px] font-bold font-mono text-foreground/70">${parseFloat(trade.avg_entry_price).toFixed(2)} / ${parseFloat(trade.avg_close_price).toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span>Size:</span>
-                      <span className="text-foreground">{trade.closedSize.toFixed(4)}</span>
+                    <div className="flex flex-col text-right">
+                      <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic mb-1">Size</span>
+                      <span className="text-[11px] font-bold font-mono text-foreground/70">{trade.closedSize.toFixed(4)}</span>
                     </div>
                   </div>
                 </div>
@@ -294,13 +296,13 @@ export function MonthlyCalendar() {
             </div>
 
             {/* Footer */}
-            <div className="p-4 md:p-6 border-t border-border/50">
+            <div className="p-8 border-t border-white/5 bg-secondary/[0.02]">
               <Button
                 onClick={() => setIsModalOpen(false)}
-                className="w-full"
+                className="w-full h-12 bg-secondary/10 border-border/10 rounded-2xl hover:bg-accent/10 hover:text-accent transition-all text-xs font-bold uppercase tracking-widest"
                 variant="outline"
               >
-                Close
+                Close Connection
               </Button>
             </div>
           </Card>

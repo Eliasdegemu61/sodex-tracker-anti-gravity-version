@@ -100,61 +100,63 @@ export function FundFlowChart() {
     }, [data, selectedToken, timeRange])
     if (isLoading) {
         return (
-            <Card className="p-4 bg-card/50 border-border h-64 flex items-center justify-center mt-4">
-                <div className="text-muted-foreground">Loading Fund Flows...</div>
+            <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] animate-pulse mt-4">
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-8">Interrogating Flows</h3>
+                <div className="h-64 bg-secondary/10 rounded-2xl" />
             </Card>
         )
     }
 
     return (
-        <Card className="p-4 bg-card/50 border-border mt-4">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
+        <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col mt-4">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
                 <div>
-                    <h3 className="text-xs md:text-sm font-semibold text-foreground">Fund Flows</h3>
-                    <p className="text-xs text-muted-foreground">Daily Deposits and Withdrawals</p>
+                    <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Fund Velocity</h3>
+                    <p className="text-[8px] text-muted-foreground/10 font-mono mt-1 italic uppercase tracking-widest">Real-time custody pulse</p>
                 </div>
-                <div className="flex gap-2 items-center">
+                <div className="flex flex-wrap items-center gap-3">
                     <Select value={selectedToken} onValueChange={setSelectedToken}>
-                        <SelectTrigger className="w-[120px]">
-                            <SelectValue placeholder="Select Token" />
+                        <SelectTrigger className="w-[110px] h-9 bg-secondary/5 border-border/10 rounded-xl text-[10px] font-bold font-mono text-foreground/60 uppercase">
+                            <SelectValue placeholder="Asset" />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-card/90 backdrop-blur-xl border border-border/20 rounded-xl">
                             {tokens.map((t) => (
-                                <SelectItem key={t} value={t}>{t}</SelectItem>
+                                <SelectItem key={t} value={t} className="text-[10px] font-bold font-mono uppercase">{t}</SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
-                    <div className="flex gap-1 md:gap-2 flex-wrap justify-end">
+                    <div className="flex gap-1 bg-secondary/10 p-1 rounded-xl border border-border/5">
                         {(['1w', '1m', '3m', '6m', '1y'] as const).map((range) => (
-                            <Button
+                            <button
                                 key={range}
-                                variant={timeRange === range ? 'default' : 'outline'}
-                                size="sm"
                                 onClick={() => setTimeRange(range)}
-                                className="text-xs px-2 md:px-3 h-7 md:h-8"
+                                className={`text-[9px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-lg transition-all ${timeRange === range
+                                    ? 'bg-orange-500 text-white shadow-lg'
+                                    : 'text-muted-foreground/40 hover:text-foreground hover:bg-secondary/20'
+                                    }`}
                             >
-                                {range.toUpperCase()}
-                            </Button>
+                                {range}
+                            </button>
                         ))}
                     </div>
                 </div>
             </div>
 
-            <div className="w-full h-64">
+            <div className="h-64 w-full">
                 {chartData.length > 0 ? (
                     <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                        <AreaChart data={chartData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
                             <defs>
                                 <linearGradient id="colorDepo" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#22c55e" stopOpacity={0.3} />
+                                    <stop offset="5%" stopColor="#22c55e" stopOpacity={0.2} />
                                     <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
                                 </linearGradient>
                                 <linearGradient id="colorWith" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3} />
+                                    <stop offset="5%" stopColor="#ef4444" stopOpacity={0.2} />
                                     <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
                                 </linearGradient>
                             </defs>
-                            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} opacity={0.5} />
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="currentColor" opacity={0.05} />
                             <XAxis
                                 dataKey="date"
                                 tickFormatter={(val) => {
@@ -162,39 +164,41 @@ export function FundFlowChart() {
                                     return `${d.getMonth() + 1}/${d.getDate()}`
                                 }}
                                 stroke="currentColor"
-                                fontSize={11}
+                                fontSize={9}
                                 tickLine={false}
                                 axisLine={false}
-                                tickMargin={8}
-                                tick={{ fill: 'currentColor' }}
-                                className="text-muted-foreground"
+                                tick={{ fill: 'currentColor', opacity: 0.2, fontWeight: 'bold' }}
+                                dy={10}
                             />
                             <YAxis
                                 tickFormatter={(val) => val === 0 ? '0' : formatNumber(val)}
                                 stroke="currentColor"
-                                fontSize={11}
+                                fontSize={9}
                                 tickLine={false}
                                 axisLine={false}
-                                tickMargin={8}
-                                width={50}
-                                tick={{ fill: 'currentColor' }}
-                                className="text-muted-foreground"
+                                tick={{ fill: 'currentColor', opacity: 0.2, fontWeight: 'bold' }}
+                                width={60}
+                                dx={-10}
                             />
                             <Tooltip
                                 content={({ active, payload, label }) => {
-                                    if (active && payload && payload.length) {
-                                        const labelStr = label?.toString() || '';
-                                        const d = new Date(labelStr);
-                                        const dateStr = !isNaN(d.getTime()) ? `${d.getMonth() + 1}/${d.getDate()}` : labelStr;
+                                    if (active && payload && payload.length && label) {
+                                        const d = new Date(label);
+                                        const dateStr = !isNaN(d.getTime()) ? d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : label;
                                         return (
-                                            <div className="bg-white/90 dark:bg-black/80 border border-border p-2 rounded-md shadow-md text-xs">
-                                                <p className="text-muted-foreground mb-1">{dateStr}</p>
-                                                {payload.map((entry: any, index: number) => (
-                                                    <div key={index} className="flex items-center gap-2">
-                                                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
-                                                        <span className="text-foreground">{entry.name}: {formatNumber(entry.value)}</span>
-                                                    </div>
-                                                ))}
+                                            <div className="bg-card/90 backdrop-blur-xl border border-border/20 p-4 rounded-2xl shadow-2xl min-w-[160px]">
+                                                <p className="text-[9px] text-muted-foreground/40 font-bold uppercase tracking-widest italic mb-3">{dateStr}</p>
+                                                <div className="space-y-2">
+                                                    {payload.map((entry: any, index: number) => (
+                                                        <div key={index} className="flex items-center justify-between gap-4">
+                                                            <div className="flex items-center gap-2">
+                                                                <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: entry.color }} />
+                                                                <span className="text-[10px] text-foreground/60 font-medium">{entry.name}</span>
+                                                            </div>
+                                                            <span className="text-[11px] font-bold font-mono text-foreground/80">{formatNumber(entry.value)}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
                                             </div>
                                         )
                                     }
@@ -204,64 +208,76 @@ export function FundFlowChart() {
                             <Area
                                 type="monotone"
                                 dataKey="total_depo"
-                                name="Deposits"
+                                name="Inflow"
                                 stroke="#22c55e"
                                 fillOpacity={1}
                                 fill="url(#colorDepo)"
                                 strokeWidth={2}
+                                isAnimationActive={true}
+                                animationDuration={1500}
+                                dot={false}
+                                activeDot={{ r: 4, strokeWidth: 0, fill: '#22c55e' }}
                             />
                             <Area
                                 type="monotone"
                                 dataKey="total_with"
-                                name="Withdrawals"
+                                name="Outflow"
                                 stroke="#ef4444"
                                 fillOpacity={1}
                                 fill="url(#colorWith)"
                                 strokeWidth={2}
+                                isAnimationActive={true}
+                                animationDuration={1500}
+                                dot={false}
+                                activeDot={{ r: 4, strokeWidth: 0, fill: '#ef4444' }}
                             />
                             {showNetRemaining && (
                                 <Area
                                     type="monotone"
                                     dataKey="net_remaining"
-                                    name="Net Remaining"
+                                    name="Retention"
                                     stroke="#f59e0b"
                                     fill="none"
-                                    strokeWidth={2.5}
-                                    isAnimationActive={false}
+                                    strokeWidth={2}
+                                    strokeDasharray="4 4"
+                                    isAnimationActive={true}
+                                    animationDuration={1500}
                                     dot={false}
                                 />
                             )}
                         </AreaChart>
                     </ResponsiveContainer>
                 ) : (
-                    <div className="flex h-full items-center justify-center text-muted-foreground text-sm">
-                        No data available for {selectedToken}
+                    <div className="flex h-full items-center justify-center">
+                        <p className="text-[10px] text-muted-foreground/20 font-bold uppercase tracking-widest italic">Data stream offline for {selectedToken}</p>
                     </div>
                 )}
             </div>
 
-            <div className="mt-4 flex gap-6 text-xs justify-center flex-wrap items-center">
-                <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-green-500 rounded" />
-                    <span className="text-muted-foreground">Deposit</span>
+            <div className="mt-8 pt-6 border-t border-border/10 flex flex-wrap items-center justify-between gap-4">
+                <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                        <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic leading-none">Global Deposits</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                        <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic leading-none">Global Withdrawals</span>
+                    </div>
                 </div>
-                <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-red-500 rounded" />
-                    <span className="text-muted-foreground">Withdrawal</span>
-                </div>
-                <div className="flex items-center gap-2">
+
+                <div className="flex items-center gap-3 bg-secondary/5 px-3 py-1.5 rounded-xl border border-border/5">
                     <Checkbox
                         id="show-net-remaining"
                         checked={showNetRemaining}
                         onCheckedChange={(checked) => setShowNetRemaining(checked as boolean)}
-                        className="h-3.5 w-3.5"
+                        className="h-3.5 w-3.5 border-amber-500/20 data-[state=checked]:bg-amber-500 data-[state=checked]:border-amber-500"
                     />
                     <label
                         htmlFor="show-net-remaining"
-                        className="flex items-center gap-2 text-muted-foreground cursor-pointer select-none"
+                        className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground/60 cursor-pointer select-none"
                     >
-                        <div className="w-3 h-3 border-2 border-amber-500 rounded" />
-                        Net Remaining
+                        Trace Retention
                     </label>
                 </div>
             </div>

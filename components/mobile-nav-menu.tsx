@@ -72,13 +72,10 @@ export function MobileNavMenu({ currentPage, onNavigate }: MobileNavMenuProps) {
       {/* Mobile Menu */}
       <div
         ref={menuRef}
-        className={`fixed top-16 right-0 w-64 bg-card border border-border rounded-lg shadow-xl transition-all duration-200 z-40 md:hidden ${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+        className={`fixed top-20 right-6 left-6 bg-card/90 backdrop-blur-2xl border border-border/20 rounded-[2.5rem] shadow-2xl transition-all duration-300 z-40 xl:hidden ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 invisible'
           }`}
-        style={{
-          transform: isOpen ? 'translateY(0)' : 'translateY(-10px)',
-        }}
       >
-        <div className="p-3 space-y-1">
+        <div className="p-6 grid grid-cols-1 gap-2">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentPage === item.id;
@@ -87,16 +84,27 @@ export function MobileNavMenu({ currentPage, onNavigate }: MobileNavMenuProps) {
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isActive
-                  ? 'bg-orange-400/20 text-orange-400 border border-orange-400/30'
-                  : 'text-foreground hover:bg-secondary/50 border border-transparent'
+                className={`w-full flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-300 ${isActive
+                  ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
+                  : 'text-muted-foreground/60 hover:text-foreground hover:bg-secondary/10 border border-transparent'
                   }`}
               >
-                <Icon className="w-4 h-4 flex-shrink-0" />
-                <span className="text-xs md:text-sm font-medium">{item.label}</span>
+                <div className="flex items-center gap-4">
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-orange-400/60'}`} />
+                  <span className="text-[10px] font-bold uppercase tracking-[0.15em] italic">{item.label}</span>
+                </div>
+                {isActive && <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />}
               </button>
             );
           })}
+
+          <div className="mt-4 pt-4 border-t border-border/10">
+            <a href="https://sodex.com/join/TRADING" target="_blank" rel="noopener noreferrer">
+              <Button className="w-full h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] italic shadow-lg shadow-orange-500/20">
+                Execute Trade
+              </Button>
+            </a>
+          </div>
         </div>
       </div>
     </>

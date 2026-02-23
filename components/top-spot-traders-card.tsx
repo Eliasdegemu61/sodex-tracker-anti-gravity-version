@@ -22,11 +22,11 @@ export function TopSpotTradersCard() {
 
   if (isLoading) {
     return (
-      <Card className="p-3 bg-card/50 border-border">
-        <h3 className="text-sm font-semibold text-foreground mb-3">Top Traders (Spot)</h3>
-        <div className="space-y-2">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="h-6 bg-secondary/30 rounded animate-pulse" />
+      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-4">Spotting Whales</h3>
+        <div className="space-y-3">
+          {[1, 2, 3, 4, 5].map(i => (
+            <div key={i} className="h-8 bg-secondary/10 rounded-xl" />
           ))}
         </div>
       </Card>
@@ -34,21 +34,25 @@ export function TopSpotTradersCard() {
   }
 
   return (
-    <Card className="p-3 bg-card/50 border-border">
-      <h3 className="text-sm font-semibold text-foreground mb-3">Top Traders (Spot)</h3>
+    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm group">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Global Power</h3>
+        <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-mono font-bold uppercase tracking-widest">Spot</div>
+      </div>
+
       <div className="space-y-2">
         {traders.length > 0 ? (
           traders.map((trader, idx) => (
-            <div key={trader.address} className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2 min-w-0">
-                <span className="text-muted-foreground font-bold">#{idx + 1}</span>
-                <span className="text-muted-foreground truncate">{formatAddress(trader.address)}</span>
+            <div key={trader.address} className="flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-orange-500/5 transition-all duration-300">
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="text-[10px] font-bold font-mono text-orange-500/60 w-4">#{idx + 1}</span>
+                <span className="text-[11px] font-mono text-foreground/70 dark:text-foreground/60 tracking-tight truncate">{formatAddress(trader.address)}</span>
               </div>
-              <span className="text-accent font-semibold flex-shrink-0">${formatNumber(trader.vol)}</span>
+              <span className="text-[11px] font-bold font-mono text-foreground/80 tracking-tight">${formatNumber(trader.vol)}</span>
             </div>
           ))
         ) : (
-          <div className="text-xs text-muted-foreground text-center py-2">No data available</div>
+          <div className="text-[10px] text-muted-foreground/30 font-bold uppercase tracking-widest italic text-center py-6">Intelligence Blank</div>
         )}
       </div>
     </Card>

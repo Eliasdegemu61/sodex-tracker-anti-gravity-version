@@ -41,23 +41,26 @@ export function OverallProfitEfficiencyCard() {
 
   if (isLoading) {
     return (
-      <Card className="p-3 bg-card/50 border-border">
-        <div className="h-12 bg-muted/30 rounded animate-pulse" />
+      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic mb-4">Optimizing yield</h3>
+        <div className="h-8 bg-secondary/10 rounded-xl" />
       </Card>
     )
   }
 
   return (
-    <Card className="p-3 md:p-4 bg-card/50 border-border">
-      <p className="text-xs text-muted-foreground mb-2">Overall Profit Efficiency</p>
-      <div className="flex items-center gap-2">
-        <div className="text-xl md:text-2xl font-bold">
-          <span className={overallEfficiency >= 0 ? 'text-green-500' : 'text-destructive'}>
-            ${formatNumber(overallEfficiency)}
-          </span>
+    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm group hover:border-orange-500/20 transition-all duration-300">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Global Efficiency</h3>
+        <div className="w-1.5 h-1.5 rounded-full bg-orange-400/40" />
+      </div>
+      <div className="flex items-center gap-3">
+        <div className={`text-xl font-bold font-mono tracking-tight ${overallEfficiency >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+          ${formatNumber(overallEfficiency)}
         </div>
-        <div className="text-xs text-muted-foreground">
-          <div>per 1K volume</div>
+        <div className="flex flex-col">
+          <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic leading-none">Yield/1K</span>
+          <span className="text-[10px] font-bold font-mono text-foreground/40 mt-0.5">ESTIMATED</span>
         </div>
       </div>
     </Card>

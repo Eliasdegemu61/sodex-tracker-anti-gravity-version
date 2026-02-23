@@ -617,25 +617,33 @@ export default function Dashboard() {
   return (
     <div>
       {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="flex items-center justify-between h-16 px-3 md:px-6 gap-2 md:gap-4">
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <img
-              src={theme === 'dark' ? 'https://sodex.com/_next/image?url=%2Flogo%2Flogo.webp&w=256&q=75' : 'https://testnet.sodex.com/assets/SoDEX-Dh5Mk-Pl.svg'}
-              alt="Sodex Logo"
-              className="h-7 w-auto object-contain"
-              loading="eager"
-              decoding="async"
-            />
-            <span className="hidden sm:inline text-xs md:text-sm font-semibold text-foreground">Tracker</span>
+      <header className="border-b border-border/10 bg-background/20 backdrop-blur-2xl sticky top-0 z-50">
+        <div className="max-w-[1800px] mx-auto flex items-center justify-between h-20 px-6 gap-8">
+          <div className="flex items-center gap-4 flex-shrink-0 cursor-pointer" onClick={() => setCurrentPage('leaderboard')}>
+            <div className="relative">
+              <div className="absolute -inset-1 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+              <img
+                src={theme === 'dark' ? 'https://sodex.com/_next/image?url=%2Flogo%2Flogo.webp&w=256&q=75' : 'https://testnet.sodex.com/assets/SoDEX-Dh5Mk-Pl.svg'}
+                alt="Sodex Logo"
+                className="relative h-8 w-auto object-contain"
+                loading="eager"
+                decoding="async"
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-orange-400 italic leading-none">Intelligence</span>
+              <span className="text-xs font-bold text-foreground/80 tracking-tight">TERMINAL</span>
+            </div>
           </div>
 
-          <div className="flex-1 max-w-xs md:max-w-md">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <div className="flex-1 max-w-xl hidden lg:block">
+            <div className="relative group">
+              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                <Search className="w-4 h-4 text-muted-foreground/40 group-focus-within:text-orange-400 transition-colors" />
+              </div>
               <Input
-                placeholder="Search address"
-                className="pl-10 bg-secondary border-border focus:border-accent text-xs md:text-sm"
+                placeholder="Scan Network Address..."
+                className="h-10 pl-11 pr-4 bg-secondary/5 border-border/10 focus:border-orange-500/30 focus:ring-0 rounded-2xl text-[12px] font-mono tracking-tight transition-all placeholder:text-muted-foreground/20 placeholder:italic"
                 value={searchAddressInput}
                 onChange={(e) => setSearchAddressInput(e.target.value)}
                 onKeyDown={handleSearchBarSubmit}
@@ -643,218 +651,141 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-8">
-            <button
-              onClick={() => setCurrentPage('dex-status')}
-              className={`text-xs md:text-sm border-b-2 transition-all pb-1 font-semibold ${currentPage === 'dex-status'
-                ? 'text-foreground border-b-orange-400'
-                : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
-                }`}
-            >
-              Dex Status
-            </button>
-            <button
-              onClick={() => setCurrentPage('tracker')}
-              className={`text-xs md:text-sm border-b-2 transition-all pb-1 ${currentPage === 'tracker'
-                ? 'text-foreground border-b-orange-400'
-                : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
-                }`}
-            >
-              Tracker
-            </button>
-            <button
-              onClick={() => setCurrentPage('portfolio')}
-              className={`text-xs md:text-sm border-b-2 transition-all pb-1 ${currentPage === 'portfolio'
-                ? 'text-foreground border-b-orange-400'
-                : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
-                }`}
-            >
-              Portfolio
-            </button>
-            <button
-              onClick={() => setCurrentPage('leaderboard')}
-              className={`text-xs md:text-sm border-b-2 transition-all pb-1 ${currentPage === 'leaderboard'
-                ? 'text-foreground border-b-orange-400'
-                : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
-                }`}
-            >
-              Leaderboard
-            </button>
-            <button
-              onClick={() => setCurrentPage('analyzer')}
-              className={`text-xs md:text-sm border-b-2 transition-all pb-1 ${currentPage === 'analyzer'
-                ? 'text-foreground border-b-orange-400'
-                : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
-                }`}
-            >
-              Analyzer
-            </button>
-            {/* More Dropdown */}
+          <nav className="hidden xl:flex items-center gap-2">
+            {[
+              { id: 'dex-status', label: 'Network' },
+              { id: 'tracker', label: 'Monitor' },
+              { id: 'portfolio', label: 'Assets' },
+              { id: 'leaderboard', label: 'Rankings' },
+              { id: 'analyzer', label: 'Forensics' },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setCurrentPage(item.id as any)}
+                className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-[0.15em] italic transition-all duration-300 ${currentPage === item.id
+                  ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
+                  : 'text-muted-foreground/60 hover:text-foreground hover:bg-secondary/10'
+                  }`}
+              >
+                {item.label}
+              </button>
+            ))}
+
             <div
               className="relative"
               onMouseEnter={() => setShowMoreMenu(true)}
               onMouseLeave={() => setShowMoreMenu(false)}
             >
               <button
-                onClick={() => setShowMoreMenu(!showMoreMenu)}
-                className={`flex items-center gap-1 text-xs md:text-sm border-b-2 transition-all pb-1 ${currentPage === 'about' || currentPage === 'whale-tracker'
-                  ? 'text-foreground border-b-orange-400 font-bold'
-                  : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-[0.15em] italic transition-all duration-300 ${currentPage === 'about' || currentPage === 'whale-tracker'
+                  ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
+                  : 'text-muted-foreground/60 hover:text-foreground hover:bg-secondary/10'
                   }`}
               >
-                More
-                <ChevronDown className={`w-4 h-4 transition-transform ${showMoreMenu ? 'rotate-180' : ''}`} />
+                Access
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${showMoreMenu ? 'rotate-180' : ''}`} />
               </button>
 
               {showMoreMenu && (
-                <div className="absolute top-full left-0 pt-2 w-48 z-50">
-                  <div className="bg-card border border-border rounded-xl shadow-xl py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="absolute top-full right-0 pt-2 w-56 z-50">
+                  <div className="bg-card/90 backdrop-blur-2xl border border-border/20 rounded-[2rem] shadow-2xl p-2 animate-in fade-in slide-in-from-top-4 duration-300">
                     <button
                       onClick={() => { setCurrentPage('whale-tracker'); setShowMoreMenu(false); }}
-                      className={`w-full text-left px-4 py-2 text-sm hover:bg-secondary transition-colors ${currentPage === 'whale-tracker' ? 'text-accent font-bold' : 'text-foreground'
+                      className={`w-full text-left px-5 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all ${currentPage === 'whale-tracker' ? 'bg-orange-500 text-white' : 'text-muted-foreground/60 hover:bg-secondary/20 hover:text-foreground'
                         }`}
                     >
-                      Whale Tracker
+                      Whale Signals
                     </button>
                     <button
                       onClick={() => { setCurrentPage('about'); setShowMoreMenu(false); }}
-                      className={`w-full text-left px-4 py-2 text-sm hover:bg-secondary transition-colors ${currentPage === 'about' ? 'text-accent font-bold' : 'text-foreground'
+                      className={`w-full text-left px-5 py-3 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all ${currentPage === 'about' ? 'bg-orange-500 text-white' : 'text-muted-foreground/60 hover:bg-secondary/20 hover:text-foreground'
                         }`}
                     >
-                      What is SoDEX
+                      System Protocol
                     </button>
                   </div>
                 </div>
               )}
             </div>
-          </div>
+          </nav>
 
-          <MobileNavMenu currentPage={currentPage} onNavigate={(page: any) => setCurrentPage(page)} />
-
-          <div className="flex items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-3">
             {mounted && (
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={toggleTheme}
-                className="text-muted-foreground hover:text-foreground h-9 w-9"
+                className="h-10 w-10 rounded-2xl bg-secondary/5 border border-border/5 text-muted-foreground/60 hover:text-orange-400 hover:bg-orange-400/5 transition-all"
               >
-                {theme === 'light' ? (
-                  <Moon className="w-5 h-5" />
-                ) : (
-                  <Sun className="w-5 h-5" />
-                )}
+                {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
               </Button>
             )}
-            <a href="https://sodex.com/join/TRADING" target="_blank" rel="noopener noreferrer">
-              <Button variant="ghost" className="hidden md:flex items-center gap-2 text-foreground hover:bg-secondary px-3 h-9">
-                <img
-                  src="https://ssi.sosovalue.com/_next/image?url=%2Fimages%2Fwhat-is-soso%2F%24soso.png&w=256&q=75"
-                  alt="SOSO"
-                  className="w-5 h-5"
-                />
-                <span className="text-sm font-semibold text-accent">Trade</span>
+
+            <div className="h-6 w-[1px] bg-border/10 hidden md:block mx-1" />
+
+            <a href="https://sodex.com/join/TRADING" target="_blank" rel="noopener noreferrer" className="hidden md:block">
+              <Button className="h-10 px-6 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] italic shadow-lg shadow-orange-500/20 transition-all active:scale-95">
+                Execute Trade
               </Button>
             </a>
-            <Button
-              variant="ghost"
-              className="hidden md:flex items-center gap-2 text-foreground hover:bg-secondary px-2 h-9"
-            >
-              <span className="text-xs font-semibold text-accent">v1.01</span>
-            </Button>
+
+            <MobileNavMenu currentPage={currentPage} onNavigate={(page: any) => setCurrentPage(page)} />
           </div>
         </div>
       </header>
 
       {/* Main Content - Only render active tab */}
       {currentPage === 'dex-status' && (
-        <Suspense fallback={<div className="w-full h-screen flex items-center justify-center"><div className="text-muted-foreground">Loading DEX Status...</div></div>}>
-          <div className="flex flex-col lg:flex-row overflow-y-auto w-full">
-            {/* Top Stats - Mobile Only */}
-            <div className="w-full lg:hidden p-3 order-0 border-b border-border">
-              <DashboardStats variant="compact" />
-            </div>
-
+        <Suspense fallback={<div className="w-full h-screen flex items-center justify-center"><div className="text-muted-foreground animate-pulse font-mono text-[10px] tracking-widest uppercase">Initializing Neural Link...</div></div>}>
+          <div className="flex flex-col lg:flex-row w-full max-w-[1800px] mx-auto min-h-[calc(100vh-5rem)]">
             {/* Left Sidebar */}
-            <div className="w-full lg:w-64 lg:border-r border-border p-3 md:p-4 space-y-4 lg:flex-shrink-0 order-2 lg:order-1">
-              {/* Key Metrics */}
-              <div className="hidden lg:block">
+            <div className="w-full lg:w-[320px] xl:w-[380px] lg:border-r border-border/10 p-6 space-y-6 lg:flex-shrink-0 order-2 lg:order-1 bg-secondary/5 lg:bg-transparent">
+              <div className="space-y-6">
                 <DashboardStats />
+                <TVLCard />
+                <TodayTopPairs />
+                <div className="pt-2">
+                  <TopTradersCard />
+                </div>
+                <OverallDepositsCard />
               </div>
-
-              {/* Overall Profit Efficiency */}
-              <TVLCard />
-
-              {/* Top Pairs */}
-              <TodayTopPairs />
-
-              {/* Top Traders (Perps) - order-last on mobile, normal on lg */}
-              <div className="order-last lg:order-none">
-                <TopTradersCard />
-              </div>
-
-              {/* Overall Deposits & Withdrawals */}
-              <OverallDepositsCard />
             </div>
 
             {/* Center Content */}
-            <div className="flex-1 lg:border-r border-border p-2 md:p-6 space-y-2 md:space-y-4 lg:flex-shrink-0 order-1 lg:order-2">
-              {/* Chart Area */}
+            <div className="flex-1 lg:border-r border-border/10 p-6 space-y-6 order-1 lg:order-2">
               <VolumeChart />
               <FundFlowChart />
-
-              {/* Volume Range Analysis */}
               <VolumeRangeCard />
-
-              {/* Top Trading Pairs */}
               <TopPairsWidget />
             </div>
 
             {/* Right Sidebar */}
-            <div className="w-full lg:w-72 lg:border-l border-border p-2 md:p-4 space-y-2 md:space-y-4 lg:flex-shrink-0 order-3">
-              {/* Announcements */}
+            <div className="w-full lg:w-[320px] xl:w-[380px] p-6 space-y-6 lg:flex-shrink-0 order-3 bg-secondary/5 lg:bg-transparent">
               <AnnouncementsPanel />
-
-              {/* Top Gainers */}
               <TopGainersCard />
-
-              {/* Top Losers */}
               <TopLosersCard />
 
-              {/* SoDex Promo Card - order-last on mobile, normal on lg */}
-              <div className="relative overflow-hidden rounded-lg border border-border hover:border-accent/50 transition-all duration-300 group order-last lg:order-none">
-                {/* Background Image */}
+              <div className="relative group overflow-hidden rounded-[2.5rem] border border-border/20 shadow-2xl transition-all duration-500 hover:border-orange-500/30">
                 <img
                   src="https://sodex.com/_next/image?url=%2Fimg%2Fhome%2Fcontent1-inner.webp&w=1920&q=75"
-                  alt="Trade on SoDex"
-                  className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                  alt="Trade"
+                  className="w-full h-48 object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-
-                {/* Content */}
-                <div className="absolute inset-0 flex flex-col items-center justify-end p-4">
-                  <a
-                    href="https://sodex.com/join/TRADING"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full"
-                  >
-                    <button
-                      type="button"
-                      className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 font-sans"
-                    >
-                      Trade on SoDex
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
+                <div className="absolute inset-0 p-8 flex flex-col justify-between">
+                  <div>
+                    <h4 className="text-[10px] font-bold uppercase tracking-[0.2em] text-orange-400 italic mb-2">Network Access</h4>
+                    <p className="text-xs font-bold text-white leading-relaxed">Execute high-frequency trades on the most liquid DEX protocol.</p>
+                  </div>
+                  <a href="https://sodex.com/join/TRADING" target="_blank" rel="noopener noreferrer">
+                    <button className="w-full py-3 bg-white/10 hover:bg-orange-500 text-white rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all backdrop-blur-md border border-white/10 hover:border-orange-400">
+                      Open Terminal
                     </button>
                   </a>
                 </div>
               </div>
 
-              {/* Top Traders Spot */}
               <TopSpotTradersCard />
-
-              {/* Net Tokens Remaining on SoDEX */}
               <NetRemainingCard />
             </div>
           </div>

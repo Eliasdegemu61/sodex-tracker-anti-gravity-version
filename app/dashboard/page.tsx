@@ -16,6 +16,7 @@ import { TopPairsWidget } from '@/components/top-pairs-widget'
 import { TodayTopPairs } from '@/components/today-top-pairs'
 import { TopTradersCard } from '@/components/top-traders-card'
 import { TopSpotTradersCard } from '@/components/top-spot-traders-card'
+import { OverallDepositsCard, NetRemainingCard } from '@/components/overall-token-flow'
 import { TopGainersCard } from '@/components/top-gainers-card'
 import { TopLosersCard } from '@/components/top-losers-card'
 import { LeaderboardPage } from '@/components/leaderboard-page'
@@ -750,6 +751,9 @@ export default function Dashboard() {
               <div className="order-last lg:order-none">
                 <TopTradersCard />
               </div>
+
+              {/* Overall Deposits & Withdrawals */}
+              <OverallDepositsCard />
             </div>
 
             {/* Center Content */}
@@ -808,6 +812,9 @@ export default function Dashboard() {
 
               {/* Top Traders Spot */}
               <TopSpotTradersCard />
+
+              {/* Net Tokens Remaining on SoDEX */}
+              <NetRemainingCard />
             </div>
           </div>
         </Suspense>

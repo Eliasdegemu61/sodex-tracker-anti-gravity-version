@@ -126,7 +126,7 @@ export function VolumeChartClient({ data, chartData }: VolumeChartClientProps) {
             fill="url(#colorSpot)"
             fillOpacity={1}
             strokeWidth={2}
-            isAnimationActive={false}
+            isAnimationActive={true} animationDuration={600}
             name="S"
             dot={false}
           />
@@ -137,7 +137,7 @@ export function VolumeChartClient({ data, chartData }: VolumeChartClientProps) {
             fill="url(#colorFutures)"
             fillOpacity={1}
             strokeWidth={2}
-            isAnimationActive={false}
+            isAnimationActive={true} animationDuration={600}
             name="F"
             dot={false}
           />
@@ -147,7 +147,7 @@ export function VolumeChartClient({ data, chartData }: VolumeChartClientProps) {
             stroke="#f59e0b"
             fill="none"
             strokeWidth={2.5}
-            isAnimationActive={false}
+            isAnimationActive={true} animationDuration={600}
             name="Total"
             dot={false}
           />

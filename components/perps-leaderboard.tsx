@@ -180,11 +180,11 @@ export function PerpsLeaderboard() {
           <div className="flex flex-col md:flex-row md:items-center gap-8">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
-                <span className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-mono font-bold uppercase tracking-widest">Matched Identity</span>
+                <span className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold uppercase tracking-widest">Matched Identity</span>
                 <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">Global Profile</span>
               </div>
               <div className="flex items-center gap-3">
-                <p className="text-lg md:text-2xl font-mono font-bold text-foreground tracking-tight break-all">
+                <p className="text-lg md:text-2xl font-bold text-foreground tracking-tight break-all">
                   {searchResult.address}
                 </p>
                 <button
@@ -203,15 +203,15 @@ export function PerpsLeaderboard() {
             <div className="grid grid-cols-3 gap-6 min-w-[300px]">
               <div className="space-y-1 text-center">
                 <p className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Rank</p>
-                <p className="text-2xl font-bold font-mono text-orange-400">#{searchResult.rank}</p>
+                <p className="text-2xl font-bold text-orange-400">#{searchResult.rank}</p>
               </div>
               <div className="space-y-1 text-center">
                 <p className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Volume</p>
-                <p className="text-2xl font-bold font-mono text-foreground/80">${formatNumber(searchResult.vol)}</p>
+                <p className="text-2xl font-bold text-foreground/80">${formatNumber(searchResult.vol)}</p>
               </div>
               <div className="space-y-1 text-center">
                 <p className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">PnL</p>
-                <p className={`text-2xl font-bold font-mono ${searchResult.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                <p className={`text-2xl font-bold ${searchResult.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                   {searchResult.pnl >= 0 ? '+' : ''}${formatNumber(Math.abs(searchResult.pnl))}
                 </p>
               </div>
@@ -226,7 +226,7 @@ export function PerpsLeaderboard() {
           <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/70 italic">
             {sortBy === 'volume' ? 'Volume Dominance' : 'Profit Efficiency'} Rankings
           </h3>
-          <div className="text-[9px] text-muted-foreground/20 font-mono italic">DATA_SOURCE: SODEX_MAINNET</div>
+          <div className="text-[9px] text-muted-foreground/20 italic">DATA_SOURCE: SODEX_MAINNET</div>
         </div>
 
         <div className="overflow-x-auto">
@@ -242,10 +242,10 @@ export function PerpsLeaderboard() {
             <tbody>
               {displayData.map((entry) => (
                 <tr key={`${entry.userId}-${entry.address}`} className="group relative bg-secondary/5 hover:bg-secondary/10 transition-all rounded-2xl">
-                  <td className="px-6 py-4 first:rounded-l-2xl last:rounded-r-2xl font-bold font-mono text-orange-500/80">#{entry.rank}</td>
+                  <td className="px-6 py-4 first:rounded-l-2xl last:rounded-r-2xl font-bold text-orange-500/80">#{entry.rank}</td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <span className="font-mono text-xs text-foreground/60 dark:text-foreground/60 text-foreground/80">
+                      <span className=" text-xs text-foreground/60 dark:text-foreground/60 text-foreground/80">
                         {entry.address.slice(0, 6)}...{entry.address.slice(-4)}
                       </span>
                       <button
@@ -256,8 +256,8 @@ export function PerpsLeaderboard() {
                       </button>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-right font-bold font-mono text-foreground/70 tracking-tight">${formatNumber(entry.vol)}</td>
-                  <td className={`px-6 py-4 text-right first:rounded-l-2xl last:rounded-r-2xl font-bold font-mono ${entry.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  <td className="px-6 py-4 text-right font-bold text-foreground/70 tracking-tight">${formatNumber(entry.vol)}</td>
+                  <td className={`px-6 py-4 text-right first:rounded-l-2xl last:rounded-r-2xl font-bold ${entry.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                     {entry.pnl >= 0 ? '+' : ''}${formatNumber(Math.abs(entry.pnl))}
                   </td>
                 </tr>
@@ -275,7 +275,7 @@ export function PerpsLeaderboard() {
                 <button
                   key={v}
                   onClick={() => { setRowsPerPage(v); setCurrentPage(1); }}
-                  className={`px-3 py-1 text-[10px] font-bold font-mono rounded-lg transition-all ${rowsPerPage === v ? 'bg-orange-500 text-white shadow-lg' : 'text-muted-foreground/40 hover:text-foreground hover:bg-secondary/10'
+                  className={`px-3 py-1 text-[10px] font-bold rounded-lg transition-all ${rowsPerPage === v ? 'bg-orange-500 text-white shadow-lg' : 'text-muted-foreground/40 hover:text-foreground hover:bg-secondary/10'
                     }`}
                 >
                   {v}
@@ -285,7 +285,7 @@ export function PerpsLeaderboard() {
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-[9px] text-muted-foreground/20 font-mono font-bold uppercase">
+            <span className="text-[9px] text-muted-foreground/20 font-bold uppercase">
               Sector {currentPage} of {totalPages || 1}
             </span>
             <div className="flex gap-2">

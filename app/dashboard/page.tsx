@@ -470,7 +470,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
                               <p className="text-red-400">Not found</p>
                             ) : (
                               <div className="space-y-1">
-                                <p className="font-mono text-xs truncate">{searchAddressResult.address}</p>
+                                <p className=" text-xs truncate">{searchAddressResult.address}</p>
                                 <div className="flex justify-between">
                                   <span className="text-muted-foreground">Vol:</span>
                                   <span className="font-bold">${searchAddressResult.vol.toLocaleString('en-US', { maximumFractionDigits: 2 })}</span>
@@ -512,7 +512,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
                     maxLength={4}
                     value={reversePrefix}
                     onChange={(e) => setReversePrefix(e.target.value.toUpperCase())}
-                    className="font-mono"
+                    className=""
                   />
                 </div>
                 <div>
@@ -522,7 +522,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
                     maxLength={4}
                     value={reverseSuffix}
                     onChange={(e) => setReverseSuffix(e.target.value.toUpperCase())}
-                    className="font-mono"
+                    className=""
                   />
                 </div>
               </div>
@@ -545,7 +545,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
                       <tbody>
                         {reverseResults.map((trader, i) => (
                           <tr key={i} className="border-b border-border/50 hover:bg-secondary/20">
-                            <td className="px-3 py-2 font-mono text-xs">{trader.address || 'N/A'}</td>
+                            <td className="px-3 py-2 text-xs">{trader.address || 'N/A'}</td>
                             <td className="px-3 py-2">${typeof trader.vol === 'string' ? parseFloat(trader.vol).toFixed(0) : trader.vol || 0}</td>
                             <td className={`px-3 py-2 ${(trader.pnl || 0) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                               ${typeof trader.pnl === 'string' ? parseFloat(trader.pnl).toFixed(0) : trader.pnl || 0}
@@ -643,7 +643,7 @@ export default function Dashboard() {
               </div>
               <Input
                 placeholder="Scan Network Address..."
-                className="h-10 pl-11 pr-4 bg-secondary/5 border-border/10 focus:border-orange-500/30 focus:ring-0 rounded-2xl text-[12px] font-mono tracking-tight transition-all placeholder:text-muted-foreground/20 placeholder:italic"
+                className="h-10 pl-11 pr-4 bg-secondary/5 border-border/10 focus:border-orange-500/30 focus:ring-0 rounded-2xl text-[12px] tracking-tight transition-all placeholder:text-muted-foreground/20 placeholder:italic"
                 value={searchAddressInput}
                 onChange={(e) => setSearchAddressInput(e.target.value)}
                 onKeyDown={handleSearchBarSubmit}
@@ -736,7 +736,7 @@ export default function Dashboard() {
 
       {/* Main Content - Only render active tab */}
       {currentPage === 'dex-status' && (
-        <Suspense fallback={<div className="w-full h-screen flex items-center justify-center"><div className="text-muted-foreground animate-pulse font-mono text-[10px] tracking-widest uppercase">Initializing Neural Link...</div></div>}>
+        <Suspense fallback={<div className="w-full h-screen flex items-center justify-center"><div className="text-muted-foreground animate-pulse text-[10px] tracking-widest uppercase">Initializing Neural Link...</div></div>}>
           <div className="flex flex-col lg:flex-row w-full max-w-[1800px] mx-auto min-h-[calc(100vh-5rem)]">
             {/* Left Sidebar */}
             <div className="w-full lg:w-[320px] xl:w-[380px] lg:border-r border-border/10 p-6 space-y-6 lg:flex-shrink-0 order-2 lg:order-1 bg-secondary/5 lg:bg-transparent">

@@ -64,7 +64,7 @@ export function TVLCard() {
         <div className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
       </div>
       <div className="flex items-baseline gap-2">
-        <div className="text-xl font-bold font-mono tracking-tight text-foreground">
+        <div className="text-xl font-bold tracking-tight text-foreground">
           ${formatNumber(tvl)}
         </div>
         <div className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic group-hover:text-orange-400/40 transition-colors">

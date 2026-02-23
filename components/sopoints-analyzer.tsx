@@ -468,7 +468,7 @@ export function SopointsAnalyzer() {
                     return (
                       <TableRow key={user.address} className="border-border/30">
                         <TableCell className="font-medium text-orange-500">#{startIdx + idx + 1}</TableCell>
-                        <TableCell className="font-mono text-xs truncate max-w-xs text-muted-foreground">{user.address}</TableCell>
+                        <TableCell className=" text-xs truncate max-w-xs text-muted-foreground">{user.address}</TableCell>
                         {analysisState.hasFuturesData && (
                           <TableCell className="text-right text-foreground">{formatNumber(user.futuresVolGained)}</TableCell>
                         )}

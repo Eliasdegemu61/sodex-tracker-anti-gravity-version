@@ -384,7 +384,7 @@ export function NewTradersTracker() {
           {/* Search Result */}
           {searchResult && (
             <div className="mb-4 p-3 bg-green-500/10 border border-green-500/30 rounded-lg">
-              <p className="text-xs font-mono text-muted-foreground mb-2 truncate">{searchResult.address}</p>
+              <p className="text-xs text-muted-foreground mb-2 truncate">{searchResult.address}</p>
               <div className="space-y-2 text-xs">
                 <div className="flex justify-between">
                   <p className="text-muted-foreground">Old Volume:</p>
@@ -409,7 +409,7 @@ export function NewTradersTracker() {
               {paginatedTraders.map((trader, idx) => (
                 <div key={trader.address} className="p-2 bg-secondary/20 rounded border border-border">
                   <div className="flex justify-between items-start mb-1">
-                    <span className="text-xs font-mono text-muted-foreground truncate flex-1">{trader.address}</span>
+                    <span className="text-xs text-muted-foreground truncate flex-1">{trader.address}</span>
                     <span className="text-xs font-bold text-orange-500 ml-2">#{startIndex + idx + 1}</span>
                   </div>
                   <div className="grid grid-cols-2 gap-2 text-xs">

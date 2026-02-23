@@ -48,7 +48,7 @@ export function TodayTopPairs() {
       <div className="flex items-center justify-between mb-4">
         <div className="flex flex-col">
           <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Top Performers</h3>
-          <span className="text-[8px] text-muted-foreground/20 font-mono italic">{todayData.date}</span>
+          <span className="text-[8px] text-muted-foreground/20 italic">{todayData.date}</span>
         </div>
         <TrendingUp className="w-4 h-4 text-orange-400/40" />
       </div>
@@ -80,9 +80,9 @@ export function TodayTopPairs() {
                       {isSpot ? 'S' : 'F'}
                     </div>
                   </div>
-                  <span className="text-[12px] font-mono font-bold text-foreground/80 tracking-tight">{pair.pair}</span>
+                  <span className="text-[12px] font-bold text-foreground/80 tracking-tight">{pair.pair}</span>
                 </div>
-                <span className="text-[11px] font-bold font-mono text-orange-400/90">${formatVolume(pair.volume)}</span>
+                <span className="text-[11px] font-bold text-orange-400/90">${formatVolume(pair.volume)}</span>
               </div>
             )
           })

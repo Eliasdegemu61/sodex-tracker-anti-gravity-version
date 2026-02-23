@@ -67,18 +67,18 @@ export function OverallDepositsCard() {
             <div className="space-y-2">
                 {data.map((item) => (
                     <div key={item.token} className="flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-orange-500/5 transition-all duration-300">
-                        <span className="text-[11px] font-bold font-mono text-foreground/80 w-16 truncate">{item.token}</span>
+                        <span className="text-[11px] font-bold text-foreground/80 w-16 truncate">{item.token}</span>
                         <div className="flex items-center gap-4">
                             <div className="flex flex-col items-end">
                                 <span className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest italic leading-none mb-1">Inflow</span>
-                                <span className="flex items-center gap-1 text-[10px] font-bold font-mono text-green-400">
+                                <span className="flex items-center gap-1 text-[10px] font-bold text-green-400">
                                     <ArrowDownRight className="w-2.5 h-2.5" />
                                     {formatNumber(item.overall_deposit)}
                                 </span>
                             </div>
                             <div className="flex flex-col items-end">
                                 <span className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest italic leading-none mb-1">Outflow</span>
-                                <span className="flex items-center gap-1 text-[10px] font-bold font-mono text-red-400">
+                                <span className="flex items-center gap-1 text-[10px] font-bold text-red-400">
                                     <ArrowUpRight className="w-2.5 h-2.5" />
                                     {formatNumber(item.overall_withdrawal)}
                                 </span>
@@ -160,10 +160,10 @@ export function NetRemainingCard() {
             <div className="space-y-2">
                 {data.map((item) => (
                     <div key={item.token} className="flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-green-500/5 transition-all duration-300">
-                        <span className="text-[11px] font-bold font-mono text-foreground/80">{item.token}</span>
+                        <span className="text-[11px] font-bold text-foreground/80">{item.token}</span>
                         <div className="flex flex-col items-end">
                             <span className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest italic leading-none mb-1">Retained</span>
-                            <span className="text-[11px] font-bold font-mono text-green-400">{formatNumber(item.net_remaining)}</span>
+                            <span className="text-[11px] font-bold text-green-400">{formatNumber(item.net_remaining)}</span>
                         </div>
                     </div>
                 ))}

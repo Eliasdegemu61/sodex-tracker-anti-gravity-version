@@ -169,7 +169,7 @@ export function OpenPositions() {
           </div>
         </div>
         {lastUpdateTime && (
-          <span className="text-[9px] text-muted-foreground/30 font-bold font-mono uppercase tracking-widest italic">
+          <span className="text-[9px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">
             Sync: {lastUpdateTime}
           </span>
         )}
@@ -180,17 +180,17 @@ export function OpenPositions() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
           <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
             <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Wallet Balance</p>
-            <p className="text-xl font-bold font-mono tracking-tight text-foreground/80">${parseFloat(balanceData.walletBalance).toFixed(2)}</p>
+            <p className="text-xl font-bold tracking-tight text-foreground/80">${parseFloat(balanceData.walletBalance).toFixed(2)}</p>
             <p className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest">perpetuals (usdc)</p>
           </div>
           <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
             <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Liquidity</p>
-            <p className="text-xl font-bold font-mono tracking-tight text-green-400">${parseFloat(balanceData.availableBalance).toFixed(2)}</p>
+            <p className="text-xl font-bold tracking-tight text-green-400">${parseFloat(balanceData.availableBalance).toFixed(2)}</p>
             <p className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest">Available to trade</p>
           </div>
           <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
             <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Exposure</p>
-            <p className="text-xl font-bold font-mono tracking-tight text-orange-400">${parseFloat(balanceData.openOrderMarginFrozen).toFixed(2)}</p>
+            <p className="text-xl font-bold tracking-tight text-orange-400">${parseFloat(balanceData.openOrderMarginFrozen).toFixed(2)}</p>
             <p className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest">Margin in use</p>
           </div>
         </div>
@@ -216,29 +216,29 @@ export function OpenPositions() {
           <tbody>
             {paginatedPositions.map((position) => (
               <tr key={position.id} className="group relative bg-secondary/10 hover:bg-secondary/20 transition-all rounded-xl">
-                <td className="py-3 px-3 first:rounded-l-xl last:rounded-r-xl font-bold font-mono text-foreground/80">{position.symbol}</td>
+                <td className="py-3 px-3 first:rounded-l-xl last:rounded-r-xl font-bold text-foreground/80">{position.symbol}</td>
                 <td className="py-3 px-2">
                   <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold tracking-tighter ${position.side === 'LONG' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
                     {position.side}
                   </span>
                 </td>
-                <td className="py-3 px-2 text-right font-mono font-bold text-foreground/80">
+                <td className="py-3 px-2 text-right font-bold text-foreground/80">
                   {position.size.toFixed(4)}
                 </td>
-                <td className="py-3 px-2 text-right font-mono text-muted-foreground/60">${position.entry.toFixed(4)}</td>
-                <td className="py-3 px-2 text-right font-mono text-red-400/40">${position.liquidation.toFixed(4)}</td>
-                <td className="py-3 px-2 text-right font-mono font-bold text-accent/60">{position.leverage}x</td>
-                <td className="py-3 px-2 text-right font-mono text-muted-foreground/60">${position.margin.toFixed(4)}</td>
+                <td className="py-3 px-2 text-right text-muted-foreground/60">${position.entry.toFixed(4)}</td>
+                <td className="py-3 px-2 text-right text-red-400/40">${position.liquidation.toFixed(4)}</td>
+                <td className="py-3 px-2 text-right font-bold text-accent/60">{position.leverage}x</td>
+                <td className="py-3 px-2 text-right text-muted-foreground/60">${position.margin.toFixed(4)}</td>
                 <td
-                  className={`py-3 px-2 text-right font-bold font-mono ${position.unrealized >= 0 ? 'text-green-400' : 'text-red-400'
+                  className={`py-3 px-2 text-right font-bold ${position.unrealized >= 0 ? 'text-green-400' : 'text-red-400'
                     }`}
                 >
                   <div className="flex items-center justify-end gap-1">
                     {position.unrealized >= 0 ? '+' : ''}${Math.abs(position.unrealized).toFixed(2)}
                   </div>
                 </td>
-                <td className="py-3 px-2 text-right font-mono text-muted-foreground/40 text-[9px]">${position.fee.toFixed(4)}</td>
-                <td className="py-3 px-3 first:rounded-l-xl last:rounded-r-xl text-left font-mono text-muted-foreground/30 text-[9px]">{position.createdAt}</td>
+                <td className="py-3 px-2 text-right text-muted-foreground/40 text-[9px]">${position.fee.toFixed(4)}</td>
+                <td className="py-3 px-3 first:rounded-l-xl last:rounded-r-xl text-left text-muted-foreground/30 text-[9px]">{position.createdAt}</td>
               </tr>
             ))}
           </tbody>
@@ -256,12 +256,12 @@ export function OpenPositions() {
             >
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="font-bold font-mono text-foreground/80">{position.symbol}</span>
+                  <span className="font-bold text-foreground/80">{position.symbol}</span>
                   <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold tracking-wider ${position.side === 'LONG' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
                     {position.side}
                   </span>
                 </div>
-                <div className="flex items-center gap-4 text-[10px] font-mono">
+                <div className="flex items-center gap-4 text-[10px]">
                   <div className="flex flex-col">
                     <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-0.5 italic">Size</span>
                     <span className="text-muted-foreground/60">{position.size.toFixed(4)}</span>
@@ -284,27 +284,27 @@ export function OpenPositions() {
               <div className="p-4 border-t border-border/5 bg-secondary/[0.02] grid grid-cols-2 gap-y-4 gap-x-6">
                 <div className="flex flex-col">
                   <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Entry</span>
-                  <p className="font-bold font-mono text-[11px] text-foreground/80">${position.entry.toFixed(4)}</p>
+                  <p className="font-bold text-[11px] text-foreground/80">${position.entry.toFixed(4)}</p>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Liq. Price</span>
-                  <p className="font-bold font-mono text-[11px] text-red-400/60">${position.liquidation.toFixed(4)}</p>
+                  <p className="font-bold text-[11px] text-red-400/60">${position.liquidation.toFixed(4)}</p>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Leverage</span>
-                  <p className="font-bold font-mono text-[11px] text-accent/60">{position.leverage}x</p>
+                  <p className="font-bold text-[11px] text-accent/60">{position.leverage}x</p>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Margin</span>
-                  <p className="font-bold font-mono text-[11px] text-foreground/60">${position.margin.toFixed(4)}</p>
+                  <p className="font-bold text-[11px] text-foreground/60">${position.margin.toFixed(4)}</p>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Fee</span>
-                  <p className="font-bold font-mono text-[11px] text-muted-foreground/40">${position.fee.toFixed(6)}</p>
+                  <p className="font-bold text-[11px] text-muted-foreground/40">${position.fee.toFixed(6)}</p>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Opened</span>
-                  <p className="font-bold font-mono text-[9px] text-muted-foreground/30">{position.createdAt}</p>
+                  <p className="font-bold text-[9px] text-muted-foreground/30">{position.createdAt}</p>
                 </div>
               </div>
             )}
@@ -321,7 +321,7 @@ export function OpenPositions() {
               <button
                 key={value}
                 onClick={() => handleRowsPerPageChange(value)}
-                className={`px-3 py-1 text-[10px] font-bold font-mono rounded-lg transition-all ${rowsPerPage === value
+                className={`px-3 py-1 text-[10px] font-bold rounded-lg transition-all ${rowsPerPage === value
                     ? 'bg-accent text-accent-foreground shadow-lg'
                     : 'text-muted-foreground/40 hover:text-foreground hover:bg-secondary/20'
                   }`}
@@ -332,7 +332,7 @@ export function OpenPositions() {
           </div>
         </div>
 
-        <div className="text-[10px] font-bold font-mono text-muted-foreground/20 uppercase tracking-widest">
+        <div className="text-[10px] font-bold text-muted-foreground/20 uppercase tracking-widest">
           {startIndex + 1}-{Math.min(endIndex, displayPositions.length)} of {displayPositions.length}
         </div>
 
@@ -348,7 +348,7 @@ export function OpenPositions() {
           </Button>
 
           <div className="px-3 py-1.5 bg-secondary/5 rounded-xl border border-border/5">
-            <span className="text-[10px] font-bold font-mono text-muted-foreground/60">
+            <span className="text-[10px] font-bold text-muted-foreground/60">
               {currentPage} / {totalPages}
             </span>
           </div>

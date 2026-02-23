@@ -244,19 +244,19 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
         <div className="grid grid-cols-3 gap-3">
           <div className="bg-green-500/5 border border-green-500/10 rounded-2xl p-4 space-y-1">
             <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic text-center">Inflow</p>
-            <p className="text-sm font-bold font-mono text-green-400 text-center">
+            <p className="text-sm font-bold text-green-400 text-center">
               ${netflowStats.deposits.toLocaleString('en-US', { maximumFractionDigits: 0 })}
             </p>
           </div>
           <div className="bg-red-500/5 border border-red-500/10 rounded-2xl p-4 space-y-1">
             <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic text-center">Outflow</p>
-            <p className="text-sm font-bold font-mono text-red-400 text-center">
+            <p className="text-sm font-bold text-red-400 text-center">
               ${netflowStats.withdrawals.toLocaleString('en-US', { maximumFractionDigits: 0 })}
             </p>
           </div>
           <div className={`rounded-2xl p-4 border space-y-1 ${netflowStats.netflow >= 0 ? 'bg-green-500/5 border-green-500/10' : 'bg-red-500/5 border-red-500/10'}`}>
             <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic text-center">Net</p>
-            <p className={`text-sm font-bold font-mono text-center ${netflowStats.netflow >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+            <p className={`text-sm font-bold text-center ${netflowStats.netflow >= 0 ? 'text-green-400' : 'text-red-400'}`}>
               ${(netflowStats.netflow >= 0 ? '+' : '')}{netflowStats.netflow.toLocaleString('en-US', { maximumFractionDigits: 0 })}
             </p>
           </div>
@@ -313,8 +313,8 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
                     </span>
                   </div>
                 </td>
-                <td className="py-3 px-2 font-bold font-mono text-foreground/80">{flow.coin}</td>
-                <td className={`py-3 px-2 text-right font-bold font-mono ${isDeposit(flow.type) ? 'text-green-400' : 'text-red-400'}`}>
+                <td className="py-3 px-2 font-bold text-foreground/80">{flow.coin}</td>
+                <td className={`py-3 px-2 text-right font-bold ${isDeposit(flow.type) ? 'text-green-400' : 'text-red-400'}`}>
                   {isDeposit(flow.type) ? '+' : '-'} {formatAmount(flow.amount, flow.decimals)}
                 </td>
                 <td className="py-3 px-2">
@@ -322,7 +322,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
                     {flow.chain.replace('_', ' ')}
                   </span>
                 </td>
-                <td className="py-3 px-3 first:rounded-l-xl last:rounded-r-xl text-left font-mono text-muted-foreground/30 text-[9px]">{formatDate(flow.statusTime)}</td>
+                <td className="py-3 px-3 first:rounded-l-xl last:rounded-r-xl text-left text-muted-foreground/30 text-[9px]">{formatDate(flow.statusTime)}</td>
               </tr>
             ))}
           </tbody>
@@ -351,13 +351,13 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
                       {isDeposit(flow.type) ? 'Deposit' : 'Withdraw'}
                     </span>
                   </div>
-                  <div className="text-[10px] font-mono text-muted-foreground/40">
+                  <div className="text-[10px] text-muted-foreground/40">
                     {flow.coin} • {flow.chain.replace('_', ' ')}
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="text-right">
-                    <div className={`font-bold font-mono ${isDeposit(flow.type) ? 'text-green-400' : 'text-red-400'}`}>
+                    <div className={`font-bold ${isDeposit(flow.type) ? 'text-green-400' : 'text-red-400'}`}>
                       {isDeposit(flow.type) ? '+' : '-'} {formatAmount(flow.amount, flow.decimals)}
                     </div>
                   </div>
@@ -372,15 +372,15 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
                 <div className="p-4 border-t border-border/5 bg-secondary/[0.02] grid grid-cols-2 gap-y-4 gap-x-6">
                   <div className="flex flex-col">
                     <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Network</span>
-                    <p className="font-bold font-mono text-[11px] text-foreground/80">{flow.chain.replace('_', ' ')}</p>
+                    <p className="font-bold text-[11px] text-foreground/80">{flow.chain.replace('_', ' ')}</p>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Timestamp</span>
-                    <p className="font-bold font-mono text-[9px] text-muted-foreground/30">{formatDate(flow.statusTime)}</p>
+                    <p className="font-bold text-[9px] text-muted-foreground/30">{formatDate(flow.statusTime)}</p>
                   </div>
                   <div className="col-span-2">
                     <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Total Value</span>
-                    <p className={`font-bold font-mono text-sm ${isDeposit(flow.type) ? 'text-green-400' : 'text-red-400'}`}>
+                    <p className={`font-bold text-sm ${isDeposit(flow.type) ? 'text-green-400' : 'text-red-400'}`}>
                       {isDeposit(flow.type) ? '+' : '-'} {formatAmount(flow.amount, flow.decimals)} {flow.coin}
                     </p>
                   </div>
@@ -400,7 +400,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
               <button
                 key={value}
                 onClick={() => handleRowsPerPageChange(value)}
-                className={`px-3 py-1 text-[10px] font-bold font-mono rounded-lg transition-all ${rowsPerPage === value
+                className={`px-3 py-1 text-[10px] font-bold rounded-lg transition-all ${rowsPerPage === value
                   ? 'bg-accent text-accent-foreground shadow-lg'
                   : 'text-muted-foreground/40 hover:text-foreground hover:bg-secondary/20'
                   }`}
@@ -411,7 +411,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
           </div>
         </div>
 
-        <div className="text-[10px] font-bold font-mono text-muted-foreground/20 uppercase tracking-widest">
+        <div className="text-[10px] font-bold text-muted-foreground/20 uppercase tracking-widest">
           {startIndex + 1}-{Math.min(endIndex, displayFlows.length)} of {displayFlows.length}
         </div>
 
@@ -427,7 +427,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
           </Button>
 
           <div className="px-3 py-1.5 bg-secondary/5 rounded-xl border border-border/5">
-            <span className="text-[10px] font-bold font-mono text-muted-foreground/60">
+            <span className="text-[10px] font-bold text-muted-foreground/60">
               {currentPage} / {totalPages}
             </span>
           </div>

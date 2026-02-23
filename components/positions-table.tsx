@@ -117,7 +117,7 @@ export function PositionsTable() {
           <tbody>
             {paginatedPositions.map((position) => (
               <tr key={position.id} className="group relative bg-secondary/10 hover:bg-secondary/20 transition-all rounded-xl">
-                <td className="py-3 px-3 first:rounded-l-xl last:rounded-r-xl font-bold font-mono text-foreground/80">{position.pair}</td>
+                <td className="py-3 px-3 first:rounded-l-xl last:rounded-r-xl font-bold text-foreground/80">{position.pair}</td>
                 <td className="py-3 px-3">
                   <span className={`px-2 py-0.5 rounded-md text-[9px] font-bold tracking-tighter ${position.type === 'long' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
                     {position.type.toUpperCase()}
@@ -128,20 +128,20 @@ export function PositionsTable() {
                     {position.marginMode}
                   </span>
                 </td>
-                <td className="py-3 px-3 text-right font-mono text-muted-foreground/60">${position.entry.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</td>
-                <td className="py-3 px-3 text-right font-mono font-bold text-foreground/80">${position.close.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</td>
-                <td className="py-3 px-3 text-right font-mono text-muted-foreground/60">{position.size.toLocaleString(undefined, { maximumFractionDigits: 4 })}</td>
-                <td className="py-3 px-3 text-right font-mono font-bold text-foreground/80">{position.leverage}</td>
-                <td className="py-3 px-3 text-right font-mono text-muted-foreground/60">${position.fee.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}</td>
-                <td className={`py-3 px-3 text-right font-bold font-mono ${position.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                <td className="py-3 px-3 text-right text-muted-foreground/60">${position.entry.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</td>
+                <td className="py-3 px-3 text-right font-bold text-foreground/80">${position.close.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</td>
+                <td className="py-3 px-3 text-right text-muted-foreground/60">{position.size.toLocaleString(undefined, { maximumFractionDigits: 4 })}</td>
+                <td className="py-3 px-3 text-right font-bold text-foreground/80">{position.leverage}</td>
+                <td className="py-3 px-3 text-right text-muted-foreground/60">${position.fee.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}</td>
+                <td className={`py-3 px-3 text-right font-bold ${position.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                   {position.pnl >= 0 ? '+' : ''}${Math.abs(position.pnl).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 })}
                 </td>
                 <td className="py-3 px-3 text-right">
-                  <div className={`flex items-center justify-end gap-1 font-bold font-mono ${position.pnlPercent >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  <div className={`flex items-center justify-end gap-1 font-bold ${position.pnlPercent >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                     {position.pnlPercent >= 0 ? '+' : ''}{position.pnlPercent.toFixed(2)}%
                   </div>
                 </td>
-                <td className="py-3 px-3 first:rounded-l-xl last:rounded-r-xl text-left text-muted-foreground/40 font-mono text-[9px]">{position.createdAt}</td>
+                <td className="py-3 px-3 first:rounded-l-xl last:rounded-r-xl text-left text-muted-foreground/40 text-[9px]">{position.createdAt}</td>
               </tr>
             ))}
           </tbody>
@@ -159,12 +159,12 @@ export function PositionsTable() {
             >
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="font-bold font-mono text-foreground/80">{position.pair}</span>
+                  <span className="font-bold text-foreground/80">{position.pair}</span>
                   <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold tracking-wider ${position.type === 'long' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
                     {position.type.toUpperCase()}
                   </span>
                 </div>
-                <div className="flex items-center gap-4 text-[10px] font-mono">
+                <div className="flex items-center gap-4 text-[10px]">
                   <div className="flex flex-col">
                     <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-0.5 italic">Entry</span>
                     <span className="text-muted-foreground/60">${position.entry.toFixed(2)}</span>
@@ -187,33 +187,33 @@ export function PositionsTable() {
               <div className="p-4 border-t border-border/5 bg-secondary/[0.02] grid grid-cols-2 gap-y-4 gap-x-6">
                 <div className="flex flex-col">
                   <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Close Price</span>
-                  <p className="font-bold font-mono text-[11px] text-foreground/80">${position.close.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</p>
+                  <p className="font-bold text-[11px] text-foreground/80">${position.close.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</p>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Size</span>
-                  <p className="font-bold font-mono text-[11px] text-foreground/80">{position.size.toFixed(4)}</p>
+                  <p className="font-bold text-[11px] text-foreground/80">{position.size.toFixed(4)}</p>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Leverage</span>
-                  <p className="font-bold font-mono text-[11px] text-foreground/80">{position.leverage}</p>
+                  <p className="font-bold text-[11px] text-foreground/80">{position.leverage}</p>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Mode</span>
-                  <p className="font-bold font-mono text-[11px] text-foreground/80 uppercase tracking-tighter">{position.marginMode}</p>
+                  <p className="font-bold text-[11px] text-foreground/80 uppercase tracking-tighter">{position.marginMode}</p>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Fee</span>
-                  <p className="font-bold font-mono text-[11px] text-muted-foreground/60">${position.fee.toFixed(4)}</p>
+                  <p className="font-bold text-[11px] text-muted-foreground/60">${position.fee.toFixed(4)}</p>
                 </div>
                 <div className="flex flex-col">
                   <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Return %</span>
-                  <p className={`font-bold font-mono text-[11px] ${position.pnlPercent >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  <p className={`font-bold text-[11px] ${position.pnlPercent >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                     {position.pnlPercent >= 0 ? '+' : ''}{position.pnlPercent.toFixed(2)}%
                   </p>
                 </div>
                 <div className="col-span-2 flex flex-col pt-2 border-t border-border/5">
                   <span className="text-muted-foreground/30 uppercase text-[8px] font-bold mb-1 italic">Date Closed</span>
-                  <p className="font-mono text-[11px] text-muted-foreground/60">{position.createdAt}</p>
+                  <p className=" text-[11px] text-muted-foreground/60">{position.createdAt}</p>
                 </div>
               </div>
             )}
@@ -230,7 +230,7 @@ export function PositionsTable() {
               <button
                 key={value}
                 onClick={() => handleRowsPerPageChange(value)}
-                className={`w-8 h-8 flex items-center justify-center text-[10px] font-bold font-mono rounded-lg transition-all ${rowsPerPage === value
+                className={`w-8 h-8 flex items-center justify-center text-[10px] font-bold rounded-lg transition-all ${rowsPerPage === value
                     ? 'bg-accent text-accent-foreground shadow-lg'
                     : 'text-muted-foreground/50 hover:text-foreground hover:bg-secondary/20'
                   }`}
@@ -242,7 +242,7 @@ export function PositionsTable() {
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="text-[10px] font-mono text-muted-foreground/40 font-bold uppercase tracking-tighter">
+          <div className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-tighter">
             {startIndex + 1}—{Math.min(endIndex, displayPositions.length)} <span className="text-muted-foreground/20 italic mx-1">of</span> {displayPositions.length}
           </div>
 
@@ -256,7 +256,7 @@ export function PositionsTable() {
               <ChevronLeft className="w-4 h-4" />
             </Button>
 
-            <span className="text-[10px] font-mono font-bold text-muted-foreground/30">
+            <span className="text-[10px] font-bold text-muted-foreground/30">
               {currentPage} / {totalPages}
             </span>
 

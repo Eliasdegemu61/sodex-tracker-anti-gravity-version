@@ -336,7 +336,7 @@ export function PortfolioOverview() {
                 ) : (
                   <div className="space-y-1">
                     <div className="flex items-baseline gap-2">
-                      <p className="text-2xl font-bold font-mono tracking-tight text-foreground truncate">
+                      <p className="text-2xl font-bold tracking-tight text-foreground truncate">
                         {stat.value}
                       </p>
                     </div>
@@ -351,16 +351,16 @@ export function PortfolioOverview() {
                       <div className="flex flex-col gap-1 mt-3 pt-3 border-t border-border/5">
                         <div className="flex items-center justify-between text-[10px]">
                           <span className="text-muted-foreground/40 font-bold uppercase tracking-tight">{stat.breakdown.futures_label}</span>
-                          <span className="font-mono text-foreground/70">${stat.breakdown.futures?.toLocaleString('en-US', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) || '0.0'}</span>
+                          <span className=" text-foreground/70">${stat.breakdown.futures?.toLocaleString('en-US', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) || '0.0'}</span>
                         </div>
                         <div className="flex items-center justify-between text-[10px]">
                           <span className="text-muted-foreground/40 font-bold uppercase tracking-tight">{stat.breakdown.spot_label}</span>
-                          <span className="font-mono text-foreground/70">${stat.breakdown.spot?.toLocaleString('en-US', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) || '0.0'}</span>
+                          <span className=" text-foreground/70">${stat.breakdown.spot?.toLocaleString('en-US', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) || '0.0'}</span>
                         </div>
                         {stat.breakdown.vault !== undefined && stat.breakdown.vault_label && (
                           <div className="flex items-center justify-between text-[10px]">
                             <span className="text-muted-foreground/40 font-bold uppercase tracking-tight">{stat.breakdown.vault_label}</span>
-                            <span className="font-mono text-foreground/70">${stat.breakdown.vault?.toLocaleString('en-US', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) || '0.0'}</span>
+                            <span className=" text-foreground/70">${stat.breakdown.vault?.toLocaleString('en-US', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) || '0.0'}</span>
                           </div>
                         )}
                       </div>
@@ -373,7 +373,7 @@ export function PortfolioOverview() {
                         ) : (
                           <TrendingDown className="w-3 h-3 text-red-400" />
                         )}
-                        <span className={`text-[10px] font-bold font-mono ${stat.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        <span className={`text-[10px] font-bold ${stat.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                           {stat.change >= 0 ? '+' : ''}{stat.change.toFixed(1)}%
                         </span>
                       </div>

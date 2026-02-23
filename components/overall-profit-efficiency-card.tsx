@@ -55,12 +55,12 @@ export function OverallProfitEfficiencyCard() {
         <div className="w-1.5 h-1.5 rounded-full bg-orange-400/40" />
       </div>
       <div className="flex items-center gap-3">
-        <div className={`text-xl font-bold font-mono tracking-tight ${overallEfficiency >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+        <div className={`text-xl font-bold tracking-tight ${overallEfficiency >= 0 ? 'text-green-500' : 'text-red-500'}`}>
           ${formatNumber(overallEfficiency)}
         </div>
         <div className="flex flex-col">
           <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic leading-none">Yield/1K</span>
-          <span className="text-[10px] font-bold font-mono text-foreground/40 mt-0.5">ESTIMATED</span>
+          <span className="text-[10px] font-bold text-foreground/40 mt-0.5">ESTIMATED</span>
         </div>
       </div>
     </Card>

@@ -53,11 +53,11 @@ export function DashboardStats({ variant = 'default' }: DashboardStatsProps) {
       <div className="grid grid-cols-2 lg:grid-cols-1 gap-3">
         <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
           <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic mb-2">Total Users</h3>
-          <div className="text-xl font-bold font-mono tracking-tight text-foreground">{totalUsers.toLocaleString()}</div>
+          <div className="text-xl font-bold tracking-tight text-foreground">{totalUsers.toLocaleString()}</div>
         </Card>
         <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
           <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic mb-2">Total Volume</h3>
-          <div className="text-xl font-bold font-mono tracking-tight text-foreground">${formatNumber(totalVolume)}</div>
+          <div className="text-xl font-bold tracking-tight text-foreground">${formatNumber(totalVolume)}</div>
         </Card>
       </div>
     )
@@ -69,11 +69,11 @@ export function DashboardStats({ variant = 'default' }: DashboardStatsProps) {
       <div className="grid grid-cols-2 lg:grid-cols-1 gap-3">
         <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
           <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic mb-2">Total Users</h3>
-          <div className="text-xl font-bold font-mono tracking-tight text-foreground">{totalUsers.toLocaleString()}</div>
+          <div className="text-xl font-bold tracking-tight text-foreground">{totalUsers.toLocaleString()}</div>
         </Card>
         <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
           <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic mb-2">Total Volume</h3>
-          <div className="text-xl font-bold font-mono tracking-tight text-foreground">${formatNumber(totalVolume)}</div>
+          <div className="text-xl font-bold tracking-tight text-foreground">${formatNumber(totalVolume)}</div>
         </Card>
       </div>
 
@@ -81,7 +81,7 @@ export function DashboardStats({ variant = 'default' }: DashboardStatsProps) {
       <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm overflow-hidden group">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Market Split</h3>
-          <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-mono font-bold uppercase tracking-widest">Live Flow</div>
+          <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold uppercase tracking-widest">Live Flow</div>
         </div>
 
         <div className="relative w-full h-40 flex items-center justify-center">
@@ -115,7 +115,7 @@ export function DashboardStats({ variant = 'default' }: DashboardStatsProps) {
           </ResponsiveContainer>
           <div className="absolute flex flex-col items-center justify-center text-center">
             <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Futures</span>
-            <span className="text-xs font-bold font-mono text-foreground/80">
+            <span className="text-xs font-bold text-foreground/80">
               {((futuresVolume / totalVolume) * 100).toFixed(1)}%
             </span>
           </div>
@@ -127,14 +127,14 @@ export function DashboardStats({ variant = 'default' }: DashboardStatsProps) {
               <div className="w-1.5 h-1.5 rounded-full bg-orange-400" />
               <span className="text-[8px] text-muted-foreground/70 dark:text-muted-foreground/40 font-bold uppercase tracking-widest italic">Spot</span>
             </div>
-            <p className="text-xs font-bold font-mono text-foreground/80">${formatNumber(spotVolume)}</p>
+            <p className="text-xs font-bold text-foreground/80">${formatNumber(spotVolume)}</p>
           </div>
           <div className="p-3 bg-secondary/10 rounded-2xl border border-border/5 space-y-1">
             <div className="flex items-center gap-2 mb-1">
               <div className="w-1.5 h-1.5 rounded-full bg-orange-600" />
               <span className="text-[8px] text-muted-foreground/70 dark:text-muted-foreground/40 font-bold uppercase tracking-widest italic">Futures</span>
             </div>
-            <p className="text-xs font-bold font-mono text-foreground/80">${formatNumber(futuresVolume)}</p>
+            <p className="text-xs font-bold text-foreground/80">${formatNumber(futuresVolume)}</p>
           </div>
         </div>
       </Card>

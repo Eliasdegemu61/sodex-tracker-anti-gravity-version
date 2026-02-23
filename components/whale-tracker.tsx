@@ -215,7 +215,7 @@ export function WhaleTracker() {
                             </div>
                             <div className="min-w-0">
                                 <p className="text-[9px] text-muted-foreground/50 uppercase tracking-widest font-bold">Target</p>
-                                <p className="text-xs font-mono font-bold text-foreground/80 truncate">{whaleInfo.address}</p>
+                                <p className="text-xs font-bold text-foreground/80 truncate">{whaleInfo.address}</p>
                             </div>
                         </div>
                     </div>
@@ -232,7 +232,7 @@ export function WhaleTracker() {
                                 active positions ({whaleData.length})
                             </h2>
                         </div>
-                        <div className="text-[9px] text-muted-foreground/30 font-mono uppercase italic">
+                        <div className="text-[9px] text-muted-foreground/30 uppercase italic">
                             live update • {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                         </div>
                     </div>
@@ -272,7 +272,7 @@ export function WhaleTracker() {
                                                             {pos.side} {pos.leverage}
                                                         </span>
                                                     </div>
-                                                    <p className="text-[9px] text-muted-foreground/30 font-mono">#{pos.positionId}</p>
+                                                    <p className="text-[9px] text-muted-foreground/30">#{pos.positionId}</p>
                                                 </div>
                                             </div>
                                             <div className="flex-1 px-4 h-8 self-center">
@@ -297,7 +297,7 @@ export function WhaleTracker() {
                                                 </ResponsiveContainer>
                                             </div>
                                             <div className="text-right">
-                                                <p className={`text-xl font-bold font-mono tracking-tighter ${isProfit ? 'text-green-400' : 'text-red-400'}`}>
+                                                <p className={`text-xl font-bold tracking-tighter ${isProfit ? 'text-green-400' : 'text-red-400'}`}>
                                                     {isProfit ? '+' : ''}{formatCurrency(pos.unrealized_pnl)}
                                                 </p>
                                                 <p className="text-[8px] text-muted-foreground/40 uppercase font-bold tracking-widest mt-0.5">unrealized pnl</p>
@@ -313,7 +313,7 @@ export function WhaleTracker() {
                                             ].map((stat, i) => (
                                                 <div key={i} className="p-2.5 rounded-2xl bg-secondary/10 border border-border/5">
                                                     <p className="text-[7px] text-muted-foreground/40 uppercase font-bold mb-0.5">{stat.label}</p>
-                                                    <p className={`text-[10px] font-bold font-mono truncate ${stat.color || ''}`}>{stat.val}</p>
+                                                    <p className={`text-[10px] font-bold truncate ${stat.color || ''}`}>{stat.val}</p>
                                                 </div>
                                             ))}
                                         </div>
@@ -322,11 +322,11 @@ export function WhaleTracker() {
                                             <div className="grid grid-cols-2 gap-3">
                                                 <div className="p-2.5 rounded-2xl border border-green-500/10 bg-green-500/[0.02]">
                                                     <p className="text-[6px] text-green-500/40 uppercase font-bold mb-1">take profit</p>
-                                                    <p className="text-[10px] font-bold font-mono">{pos.tp === "None" ? 'none' : formatCurrency(pos.tp)}</p>
+                                                    <p className="text-[10px] font-bold">{pos.tp === "None" ? 'none' : formatCurrency(pos.tp)}</p>
                                                 </div>
                                                 <div className="p-2.5 rounded-2xl border border-red-500/10 bg-red-500/[0.02]">
                                                     <p className="text-[6px] text-red-500/40 uppercase font-bold mb-1">stop loss</p>
-                                                    <p className="text-[10px] font-bold font-mono">{pos.sl === "None" ? 'none' : formatCurrency(pos.sl)}</p>
+                                                    <p className="text-[10px] font-bold">{pos.sl === "None" ? 'none' : formatCurrency(pos.sl)}</p>
                                                 </div>
                                             </div>
                                         </div>

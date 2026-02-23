@@ -117,7 +117,7 @@ export function RankingCard({ walletAddress }: RankingCardProps) {
       ) : rank !== null ? (
         <div className="relative">
           <div className={`absolute inset-0 blur-lg opacity-20 ${getRankColor(rank).replace('text-', 'bg-')}`} />
-          <p className={`relative text-2xl font-bold font-mono tracking-tighter ${getRankColor(rank)}`}>
+          <p className={`relative text-2xl font-bold tracking-tighter ${getRankColor(rank)}`}>
             <span className="text-sm opacity-30 mr-0.5">#</span>{rank}
           </p>
         </div>

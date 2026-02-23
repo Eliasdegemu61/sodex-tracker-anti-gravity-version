@@ -134,10 +134,10 @@ export function PnLChart({ title = 'Profit & Loss' }: PnLChartProps) {
           </Select>
         </div>
         <div className="flex items-baseline gap-2">
-          <p className={`text-2xl font-bold font-mono tracking-tight ${stats.isPositive ? 'text-green-400' : 'text-red-400'}`}>
+          <p className={`text-2xl font-bold tracking-tight ${stats.isPositive ? 'text-green-400' : 'text-red-400'}`}>
             {stats.displayValue}
           </p>
-          <p className={`text-[10px] font-bold font-mono ${stats.isPositive ? 'text-green-400' : 'text-red-400'}`}>
+          <p className={`text-[10px] font-bold ${stats.isPositive ? 'text-green-400' : 'text-red-400'}`}>
             {stats.isPositive ? '+' : ''}{stats.percentageChange}%
           </p>
         </div>

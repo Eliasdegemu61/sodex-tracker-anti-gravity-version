@@ -47,11 +47,11 @@ export function TopPairsWidget() {
       <div className="grid grid-cols-2 gap-4 mb-8">
         <div className="p-4 bg-secondary/5 border border-border/5 rounded-2xl flex flex-col items-center">
           <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic mb-1">Total Spot</span>
-          <span className="text-xl font-bold font-mono text-orange-400">${formatVolume(stats.total_spot_volume)}</span>
+          <span className="text-xl font-bold text-orange-400">${formatVolume(stats.total_spot_volume)}</span>
         </div>
         <div className="p-4 bg-secondary/5 border border-border/5 rounded-2xl flex flex-col items-center">
           <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic mb-1">Total Futures</span>
-          <span className="text-xl font-bold font-mono text-orange-600">${formatVolume(stats.total_futures_volume)}</span>
+          <span className="text-xl font-bold text-orange-600">${formatVolume(stats.total_futures_volume)}</span>
         </div>
       </div>
 
@@ -79,11 +79,11 @@ export function TopPairsWidget() {
                   )}
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-[12px] font-bold font-mono text-foreground/80">{pair.pair}</span>
+                  <span className="text-[12px] font-bold text-foreground/80">{pair.pair}</span>
                   <span className="text-[7px] text-muted-foreground/20 font-bold uppercase tracking-widest italic">{pair.pair.includes('-') ? 'Futures' : 'Spot'}</span>
                 </div>
               </div>
-              <span className="text-[12px] font-bold font-mono text-orange-400/90">${formatVolume(pair.volume)}</span>
+              <span className="text-[12px] font-bold text-orange-400/90">${formatVolume(pair.volume)}</span>
             </div>
           ))}
         </TabsContent>
@@ -93,9 +93,9 @@ export function TopPairsWidget() {
             <div key={pair.pair} className="group flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-orange-400/5 transition-all duration-300">
               <div className="flex items-center gap-3">
                 {getTokenLogo(pair.pair) && <img src={getTokenLogo(pair.pair)} alt={pair.pair} className="w-6 h-6 rounded-full bg-background/50 p-0.5 border border-border/10" />}
-                <span className="text-[12px] font-bold font-mono text-foreground/80">{pair.pair}</span>
+                <span className="text-[12px] font-bold text-foreground/80">{pair.pair}</span>
               </div>
-              <span className="text-[12px] font-bold font-mono text-orange-400/90">${formatVolume(pair.volume)}</span>
+              <span className="text-[12px] font-bold text-orange-400/90">${formatVolume(pair.volume)}</span>
             </div>
           ))}
         </TabsContent>
@@ -105,9 +105,9 @@ export function TopPairsWidget() {
             <div key={pair.pair} className="group flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-orange-600/5 transition-all duration-300">
               <div className="flex items-center gap-3">
                 {getTokenLogo(pair.pair) && <img src={getTokenLogo(pair.pair)} alt={pair.pair} className="w-6 h-6 rounded-full bg-background/50 p-0.5 border border-border/10" />}
-                <span className="text-[12px] font-bold font-mono text-foreground/80">{pair.pair}</span>
+                <span className="text-[12px] font-bold text-foreground/80">{pair.pair}</span>
               </div>
-              <span className="text-[12px] font-bold font-mono text-orange-600/90">${formatVolume(pair.volume)}</span>
+              <span className="text-[12px] font-bold text-orange-600/90">${formatVolume(pair.volume)}</span>
             </div>
           ))}
         </TabsContent>

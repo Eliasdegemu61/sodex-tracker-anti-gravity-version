@@ -112,16 +112,16 @@ export function FundFlowChart() {
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
                 <div>
                     <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Fund Velocity</h3>
-                    <p className="text-[8px] text-muted-foreground/10 font-mono mt-1 italic uppercase tracking-widest">Real-time custody pulse</p>
+                    <p className="text-[8px] text-muted-foreground/10 mt-1 italic uppercase tracking-widest">Real-time custody pulse</p>
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
                     <Select value={selectedToken} onValueChange={setSelectedToken}>
-                        <SelectTrigger className="w-[110px] h-9 bg-secondary/5 border-border/10 rounded-xl text-[10px] font-bold font-mono text-foreground/60 uppercase">
+                        <SelectTrigger className="w-[110px] h-9 bg-secondary/5 border-border/10 rounded-xl text-[10px] font-bold text-foreground/60 uppercase">
                             <SelectValue placeholder="Asset" />
                         </SelectTrigger>
                         <SelectContent className="bg-card/90 backdrop-blur-xl border border-border/20 rounded-xl">
                             {tokens.map((t) => (
-                                <SelectItem key={t} value={t} className="text-[10px] font-bold font-mono uppercase">{t}</SelectItem>
+                                <SelectItem key={t} value={t} className="text-[10px] font-bold uppercase">{t}</SelectItem>
                             ))}
                         </SelectContent>
                     </Select>
@@ -195,7 +195,7 @@ export function FundFlowChart() {
                                                                 <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: entry.color }} />
                                                                 <span className="text-[10px] text-foreground/60 font-medium">{entry.name}</span>
                                                             </div>
-                                                            <span className="text-[11px] font-bold font-mono text-foreground/80">{formatNumber(entry.value)}</span>
+                                                            <span className="text-[11px] font-bold text-foreground/80">{formatNumber(entry.value)}</span>
                                                         </div>
                                                     ))}
                                                 </div>

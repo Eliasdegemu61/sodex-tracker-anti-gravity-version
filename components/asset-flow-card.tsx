@@ -209,7 +209,7 @@ export function AssetFlowCard({ walletAddress }: AssetFlowCardProps) {
                       )}
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-bold font-mono text-[11px] text-foreground/80 tracking-tight">
+                      <span className="font-bold text-[11px] text-foreground/80 tracking-tight">
                         {getDisplayName(asset.coin)}
                       </span>
                       {asset.isFuture && (
@@ -219,7 +219,7 @@ export function AssetFlowCard({ walletAddress }: AssetFlowCardProps) {
                   </div>
 
                   <div className="text-right flex-shrink-0">
-                    <p className="text-[11px] font-bold font-mono text-muted-foreground/60">
+                    <p className="text-[11px] font-bold text-muted-foreground/60">
                       {formatTokenBalance(asset.balance, asset.coin)}
                     </p>
                   </div>

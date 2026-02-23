@@ -40,7 +40,7 @@ const AnnouncementItem = memo(function AnnouncementItem({
       <p className="text-[11px] font-bold text-foreground/80 group-hover:text-orange-400 line-clamp-2 transition-colors leading-relaxed">
         {article.title}
       </p>
-      <p className="text-[9px] text-muted-foreground/30 font-mono mt-2 flex items-center gap-2">
+      <p className="text-[9px] text-muted-foreground/30 mt-2 flex items-center gap-2">
         <span className="w-1 h-1 rounded-full bg-orange-400/30" />
         {formatDate(article.created_at)}
       </p>

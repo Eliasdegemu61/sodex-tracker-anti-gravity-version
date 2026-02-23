@@ -123,7 +123,7 @@ export function VolumeChartClient({ data, chartData }: VolumeChartClientProps) {
                               <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: entry.color }} />
                               <span className="text-[10px] text-foreground/60 font-medium">{entry.name}</span>
                             </div>
-                            <span className="text-[11px] font-bold font-mono text-foreground/80">${entry.value}M</span>
+                            <span className="text-[11px] font-bold text-foreground/80">${entry.value}M</span>
                           </div>
                         ))}
                       </div>
@@ -172,7 +172,7 @@ export function VolumeChartClient({ data, chartData }: VolumeChartClientProps) {
             <span className="text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Futures Orderbook</span>
           </div>
         </div>
-        <span className="text-[8px] text-muted-foreground/10 font-mono italic">UNIT: MILLION_USD</span>
+        <span className="text-[8px] text-muted-foreground/10 italic">UNIT: MILLION_USD</span>
       </div>
     </Card>
   )

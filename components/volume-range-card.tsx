@@ -44,7 +44,7 @@ export function VolumeRangeCard() {
       <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col">
         <div className="flex items-center justify-between mb-8">
           <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">PnL by Intensity</h3>
-          <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-mono font-bold uppercase tracking-widest">Cohort Study</div>
+          <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold uppercase tracking-widest">Cohort Study</div>
         </div>
 
         <div className="space-y-2">
@@ -58,7 +58,7 @@ export function VolumeRangeCard() {
                   <div className="group flex items-center gap-6 p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-orange-500/5 transition-all duration-300">
                     {/* Range Label */}
                     <div className="w-16 md:w-24 shrink-0">
-                      <span className="text-[10px] font-bold font-mono text-muted-foreground/70 dark:text-muted-foreground/40 uppercase tracking-widest italic group-hover:text-foreground/60 transition-colors">
+                      <span className="text-[10px] font-bold text-muted-foreground/70 dark:text-muted-foreground/40 uppercase tracking-widest italic group-hover:text-foreground/60 transition-colors">
                         {entry.range}
                       </span>
                     </div>
@@ -83,7 +83,7 @@ export function VolumeRangeCard() {
 
                     {/* PnL Value */}
                     <div className="w-16 md:w-24 text-right shrink-0">
-                      <span className={`text-[12px] font-bold font-mono tracking-tight ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
+                      <span className={`text-[12px] font-bold tracking-tight ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
                         {isPositive ? '+' : '-'}${formatNumber(Math.abs(entry.avg_pnl))}
                       </span>
                     </div>
@@ -94,7 +94,7 @@ export function VolumeRangeCard() {
                     <p className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest italic">{entry.range} Cohort</p>
                     <div className="flex items-center gap-3">
                       <div className={`w-2 h-2 rounded-full ${isPositive ? 'bg-green-400 shadow-[0_0_8px_rgba(74,222,128,0.5)]' : 'bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.5)]'}`} />
-                      <p className={`text-xl font-bold font-mono tracking-tight ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
+                      <p className={`text-xl font-bold tracking-tight ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
                         {isPositive ? '+' : '-'}${formatNumber(Math.abs(entry.avg_pnl))}
                       </p>
                     </div>
@@ -117,7 +117,7 @@ export function VolumeRangeCard() {
               <span className="text-[8px] text-muted-foreground/20 font-bold uppercase tracking-widest italic leading-none">Net Profit</span>
             </div>
           </div>
-          <span className="text-[8px] text-muted-foreground/10 font-mono italic">UNIT: USD_FLOW</span>
+          <span className="text-[8px] text-muted-foreground/10 italic">UNIT: USD_FLOW</span>
         </div>
       </Card>
     </TooltipProvider>

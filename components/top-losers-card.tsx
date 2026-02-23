@@ -49,10 +49,10 @@ export function TopLosersCard() {
           losers.map((item, idx) => (
             <div key={item.address} className="group flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-red-500/5 transition-all duration-300">
               <div className="flex items-center gap-3 min-w-0">
-                <span className="text-[10px] font-bold font-mono text-red-500/60 w-4">#{idx + 1}</span>
-                <span className="text-[11px] font-mono text-foreground/60 dark:text-foreground/60 text-foreground/80 truncate">{formatAddress(item.address)}</span>
+                <span className="text-[10px] font-bold text-red-500/60 w-4">#{idx + 1}</span>
+                <span className="text-[11px] text-foreground/60 dark:text-foreground/60 text-foreground/80 truncate">{formatAddress(item.address)}</span>
               </div>
-              <span className="text-[11px] font-bold font-mono text-red-400 tracking-tight">-${formatNumber(Math.abs(item.pnl))}</span>
+              <span className="text-[11px] font-bold text-red-400 tracking-tight">-${formatNumber(Math.abs(item.pnl))}</span>
             </div>
           ))
         ) : (

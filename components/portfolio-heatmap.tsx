@@ -168,7 +168,7 @@ export function PortfolioHeatmap() {
             <button
               key={year}
               onClick={() => setSelectedYear(year)}
-              className={`px-3 py-1.5 text-[10px] font-bold font-mono rounded-lg transition-all ${selectedYear === year
+              className={`px-3 py-1.5 text-[10px] font-bold rounded-lg transition-all ${selectedYear === year
                   ? 'bg-accent text-accent-foreground shadow-lg'
                   : 'text-muted-foreground/50 hover:text-foreground hover:bg-secondary/20'
                 }`}
@@ -183,29 +183,29 @@ export function PortfolioHeatmap() {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-10">
         <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
           <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Net Return</p>
-          <p className={`text-base font-bold font-mono ${stats.totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+          <p className={`text-base font-bold ${stats.totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
             {stats.totalPnL >= 0 ? '+' : ''}${stats.totalPnL.toFixed(2)}
           </p>
         </div>
 
         <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
           <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Volume</p>
-          <p className="text-base font-bold font-mono text-foreground/80">{stats.totalTrades}</p>
+          <p className="text-base font-bold text-foreground/80">{stats.totalTrades}</p>
         </div>
 
         <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
           <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Green</p>
-          <p className="text-base font-bold font-mono text-green-400">{stats.wins}</p>
+          <p className="text-base font-bold text-green-400">{stats.wins}</p>
         </div>
 
         <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
           <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Red</p>
-          <p className="text-base font-bold font-mono text-red-400">{stats.losses}</p>
+          <p className="text-base font-bold text-red-400">{stats.losses}</p>
         </div>
 
         <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
           <p className="text-[7px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">Efficiency</p>
-          <p className="text-base font-bold font-mono text-foreground/80">{stats.winRate}%</p>
+          <p className="text-base font-bold text-foreground/80">{stats.winRate}%</p>
         </div>
       </div>
 

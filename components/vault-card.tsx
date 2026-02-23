@@ -91,7 +91,7 @@ export function VaultCard({ walletAddress }: { walletAddress: string }) {
     <Card className="group relative overflow-hidden p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl transition-all hover:border-accent/10 shadow-sm">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/40 italic">Vault</h3>
-        <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-mono font-bold uppercase tracking-widest"> MAG7.ssi </div>
+        <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold uppercase tracking-widest"> MAG7.ssi </div>
       </div>
 
       <div className="grid grid-cols-2 gap-6">
@@ -99,7 +99,7 @@ export function VaultCard({ walletAddress }: { walletAddress: string }) {
         <div className="space-y-2">
           <p className="text-[9px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">management</p>
           <div className="flex items-center gap-2">
-            <span className={`text-xl font-bold font-mono tracking-tight ${isPnlPositive ? 'text-green-400' : 'text-red-400'}`}>
+            <span className={`text-xl font-bold tracking-tight ${isPnlPositive ? 'text-green-400' : 'text-red-400'}`}>
               {isPnlPositive ? '+' : ''}{vaultData.pnl.toFixed(4)}
             </span>
           </div>
@@ -110,7 +110,7 @@ export function VaultCard({ walletAddress }: { walletAddress: string }) {
         <div className="space-y-2 text-right">
           <p className="text-[9px] text-muted-foreground/30 font-bold uppercase tracking-widest italic">valuation</p>
           <div className="flex flex-col items-end">
-            <p className="text-xl font-bold font-mono tracking-tight text-foreground/80">
+            <p className="text-xl font-bold tracking-tight text-foreground/80">
               ${(vaultData.sharesUsd || 0).toLocaleString('en-US', { maximumFractionDigits: 2 })}
             </p>
             <p className="text-[8px] text-muted-foreground/20 font-bold uppercase tracking-widest mt-1">

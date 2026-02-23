@@ -37,7 +37,7 @@ export function TopSpotTradersCard() {
     <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm group">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/70 dark:text-muted-foreground/40 italic">Global Power</h3>
-        <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-mono font-bold uppercase tracking-widest">Spot</div>
+        <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold uppercase tracking-widest">Spot</div>
       </div>
 
       <div className="space-y-2">
@@ -45,10 +45,10 @@ export function TopSpotTradersCard() {
           traders.map((trader, idx) => (
             <div key={trader.address} className="flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-orange-500/5 transition-all duration-300">
               <div className="flex items-center gap-3 min-w-0">
-                <span className="text-[10px] font-bold font-mono text-orange-500/60 w-4">#{idx + 1}</span>
-                <span className="text-[11px] font-mono text-foreground/70 dark:text-foreground/60 tracking-tight truncate">{formatAddress(trader.address)}</span>
+                <span className="text-[10px] font-bold text-orange-500/60 w-4">#{idx + 1}</span>
+                <span className="text-[11px] text-foreground/70 dark:text-foreground/60 tracking-tight truncate">{formatAddress(trader.address)}</span>
               </div>
-              <span className="text-[11px] font-bold font-mono text-foreground/80 tracking-tight">${formatNumber(trader.vol)}</span>
+              <span className="text-[11px] font-bold text-foreground/80 tracking-tight">${formatNumber(trader.vol)}</span>
             </div>
           ))
         ) : (

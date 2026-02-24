@@ -559,6 +559,18 @@ export default function Dashboard() {
   const [searchAddressInput, setSearchAddressInput] = useState('')
   const [trackerSearchAddress, setTrackerSearchAddress] = useState('')
   const [showMoreMenu, setShowMoreMenu] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Handle tab parameter from URL - lazy load only when user navigates
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
+    return () => window.removeEventListener('resize', checkMobile)
+  }, []);
 
   // Handle tab parameter from URL - lazy load only when user navigates
   useEffect(() => {
@@ -738,22 +750,24 @@ export default function Dashboard() {
               </div>
 
               {/* Left Sidebar - Desktop Only */}
-              <div className="hidden lg:block lg:w-64 lg:border-r border-border p-3 md:p-4 space-y-4 lg:flex-shrink-0 lg:order-1">
-                {/* Key Metrics */}
-                <DashboardStats />
+              {!isMobile && (
+                <div className="hidden lg:block lg:w-64 lg:border-r border-border p-3 md:p-4 space-y-4 lg:flex-shrink-0 lg:order-1">
+                  {/* Key Metrics */}
+                  <DashboardStats />
 
-                {/* Overall Profit Efficiency */}
-                <TVLCard />
+                  {/* Overall Profit Efficiency */}
+                  <TVLCard />
 
-                {/* Top Pairs */}
-                <TodayTopPairs />
+                  {/* Top Pairs */}
+                  <TodayTopPairs />
 
-                {/* Top Traders (Perps) */}
-                <TopTradersCard />
+                  {/* Top Traders (Perps) */}
+                  <TopTradersCard />
 
-                {/* Overall Deposits & Withdrawals */}
-                <OverallDepositsCard />
-              </div>
+                  {/* Overall Deposits & Withdrawals */}
+                  <OverallDepositsCard />
+                </div>
+              )}
 
               {/* Center Content */}
               <div className="flex-1 lg:border-r border-border p-2 md:p-6 space-y-2 md:space-y-4 lg:flex-shrink-0 order-1 lg:order-2">
@@ -824,47 +838,49 @@ export default function Dashboard() {
               </div>
 
               {/* Right Sidebar - Desktop Only */}
-              <div className="hidden lg:block lg:w-72 lg:border-l border-border p-2 md:p-4 space-y-2 md:space-y-4 lg:flex-shrink-0 lg:order-3">
-                {/* Announcements */}
-                <AnnouncementsPanel />
+              {!isMobile && (
+                <div className="hidden lg:block lg:w-72 lg:border-l border-border p-2 md:p-4 space-y-2 md:space-y-4 lg:flex-shrink-0 lg:order-3">
+                  {/* Announcements */}
+                  <AnnouncementsPanel />
 
-                {/* Top Gainers */}
-                <TopGainersCard />
+                  {/* Top Gainers */}
+                  <TopGainersCard />
 
-                {/* Top Losers */}
-                <TopLosersCard />
+                  {/* Top Losers */}
+                  <TopLosersCard />
 
-                {/* SoDex Promo Card */}
-                <div className="relative overflow-hidden rounded-lg border border-border hover:border-accent/50 transition-all duration-300 group">
-                  <img
-                    src="https://sodex.com/_next/image?url=%2Fimg%2Fhome%2Fcontent1-inner.webp&w=1920&q=75"
-                    alt="Trade on SoDex"
-                    className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                  <div className="absolute inset-0 flex flex-col items-center justify-end p-4">
-                    <a
-                      href="https://sodex.com/join/TRADING"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full"
-                    >
-                      <button
-                        type="button"
-                        className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 font-sans"
+                  {/* SoDex Promo Card */}
+                  <div className="relative overflow-hidden rounded-lg border border-border hover:border-accent/50 transition-all duration-300 group">
+                    <img
+                      src="https://sodex.com/_next/image?url=%2Fimg%2Fhome%2Fcontent1-inner.webp&w=1920&q=75"
+                      alt="Trade on SoDex"
+                      className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-end p-4">
+                      <a
+                        href="https://sodex.com/join/TRADING"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full"
                       >
-                        Trade on SoDex
-                      </button>
-                    </a>
+                        <button
+                          type="button"
+                          className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 font-sans"
+                        >
+                          Trade on SoDex
+                        </button>
+                      </a>
+                    </div>
                   </div>
+
+                  {/* Top Traders Spot */}
+                  <TopSpotTradersCard />
+
+                  {/* Net Tokens Remaining on SoDEX */}
+                  <NetRemainingCard />
                 </div>
-
-                {/* Top Traders Spot */}
-                <TopSpotTradersCard />
-
-                {/* Net Tokens Remaining on SoDEX */}
-                <NetRemainingCard />
-              </div>
+              )}
             </div>
           </Suspense>
         )

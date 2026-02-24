@@ -22,6 +22,15 @@ export function FundFlowChart() {
     const [isLoading, setIsLoading] = useState(true)
     const [showNetRemaining, setShowNetRemaining] = useState(false)
     const [timeRange, setTimeRange] = useState<'1w' | '1m' | '3m' | '6m' | '1y'>('1m')
+    const [isMobile, setIsMobile] = useState(false)
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 1024)
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -212,7 +221,7 @@ export function FundFlowChart() {
                                 fillOpacity={1}
                                 fill="url(#colorDepo)"
                                 strokeWidth={2}
-                                isAnimationActive={true}
+                                isAnimationActive={!isMobile}
                                 animationDuration={1500}
                                 dot={false}
                                 activeDot={{ r: 4, strokeWidth: 0, fill: '#22c55e' }}
@@ -225,7 +234,7 @@ export function FundFlowChart() {
                                 fillOpacity={1}
                                 fill="url(#colorWith)"
                                 strokeWidth={2}
-                                isAnimationActive={true}
+                                isAnimationActive={!isMobile}
                                 animationDuration={1500}
                                 dot={false}
                                 activeDot={{ r: 4, strokeWidth: 0, fill: '#ef4444' }}
@@ -239,7 +248,7 @@ export function FundFlowChart() {
                                     fill="none"
                                     strokeWidth={2}
                                     strokeDasharray="4 4"
-                                    isAnimationActive={true}
+                                    isAnimationActive={!isMobile}
                                     animationDuration={1500}
                                     dot={false}
                                 />

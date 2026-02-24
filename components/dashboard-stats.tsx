@@ -1,7 +1,7 @@
 'use client'
 
 import { Card } from '@/components/ui/card'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ResponsiveContainer, PieChart, Pie, Cell, Sector } from 'recharts'
 import { formatNumber } from '@/lib/format-number'
 import { useDexData } from '@/context/dex-data-context'
@@ -15,6 +15,14 @@ export function DashboardStats({ variant = 'default' }: DashboardStatsProps) {
   const { overallStats, isLoading: dexLoading } = useDexData()
   const { volumeData, isLoading: volumeLoading } = useVolumeData()
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const isLoading = dexLoading || volumeLoading
 
@@ -104,7 +112,7 @@ export function DashboardStats({ variant = 'default' }: DashboardStatsProps) {
                 outerRadius={65}
                 paddingAngle={4}
                 dataKey="value"
-                isAnimationActive={true}
+                isAnimationActive={!isMobile}
                 stroke="none"
               >
                 <Cell fill="#fb923c" className="drop-shadow-[0_0_8px_rgba(251,146,60,0.4)]" />

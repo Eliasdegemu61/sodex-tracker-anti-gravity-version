@@ -193,3 +193,23 @@
     stroke: none !important;
   }
 }
+
+/* Performance optimizations for mobile */
+@media (max-width: 1024px) {
+
+  .backdrop-blur-xl,
+  .backdrop-blur-2xl,
+  .backdrop-blur-3xl {
+    backdrop-filter: blur(4px) !important;
+    -webkit-backdrop-filter: blur(4px) !important;
+  }
+
+  .animate-spin {
+    animation: none !important;
+  }
+
+  .blur-3xl {
+    filter: none !important;
+    opacity: 0.1 !important;
+  }
+}

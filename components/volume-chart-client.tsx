@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import type { CachedVolumeData, ChartDataPoint } from '@/lib/volume-service'
@@ -55,6 +55,14 @@ function filterChartData(chartData: ChartDataPoint[] | undefined, timeRange: Tim
 export function VolumeChartClient({ data, chartData }: VolumeChartClientProps) {
   const [timeRange, setTimeRange] = useState<TimeRange>('1m')
   const processedChartData = filterChartData(chartData, timeRange)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   return (
     <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col">
@@ -139,7 +147,7 @@ export function VolumeChartClient({ data, chartData }: VolumeChartClientProps) {
               stroke="#fb923c"
               fill="url(#colorSpot)"
               strokeWidth={2}
-              isAnimationActive={true}
+              isAnimationActive={!isMobile}
               animationDuration={1500}
               name="Spot"
               dot={false}

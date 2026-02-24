@@ -246,57 +246,59 @@ export function OpenPositions() {
             <Card key={pos.id} className="group relative overflow-hidden bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl transition-all hover:border-accent/10">
               <div className={`absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-10 transition-colors ${isProfit ? 'bg-green-500' : 'bg-red-500'}`} />
 
-              <div className="p-5 space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-secondary/30 flex items-center justify-center overflow-hidden border border-border/10">
+              <div className="p-4 md:p-5 space-y-3">
+                {/* Top row: token info + PnL */}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div className="w-8 h-8 md:w-10 md:h-10 shrink-0 rounded-xl bg-secondary/30 flex items-center justify-center overflow-hidden border border-border/10">
                       {getTokenLogo(pos.symbol) ? (
                         <img
                           src={getTokenLogo(pos.symbol)}
                           alt={pos.symbol}
-                          className="w-6 h-6 object-contain"
+                          className="w-5 h-5 md:w-6 md:h-6 object-contain"
                         />
                       ) : (
-                        <span className="font-bold text-sm text-muted-foreground">{pos.symbol.charAt(0)}</span>
+                        <span className="font-bold text-xs text-muted-foreground">{pos.symbol.charAt(0)}</span>
                       )}
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h3 className="text-sm font-bold tracking-tight">{pos.symbol}</h3>
-                        <span className={`px-1.5 py-0.5 rounded text-[8px] uppercase font-bold tracking-wider ${pos.side === 'LONG' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-400'}`}>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <h3 className="text-xs md:text-sm font-bold tracking-tight truncate">{pos.symbol}</h3>
+                        <span className={`px-1 py-0.5 rounded text-[7px] md:text-[8px] uppercase font-bold tracking-wider shrink-0 ${pos.side === 'LONG' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-400'}`}>
                           {pos.side} {pos.leverage}x
                         </span>
                       </div>
-                      <p className="text-[9px] text-muted-foreground/30">#{pos.positionId}</p>
+                      <p className="text-[8px] text-muted-foreground/30">#{pos.positionId}</p>
                     </div>
                   </div>
-                  <div className="flex-1 px-4 h-8 self-center">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart data={pos.history}>
-                        <defs>
-                          <linearGradient id={`pnlGradient-${pos.id}`} x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor={isProfit ? '#4ade80' : '#f87171'} stopOpacity={0.2} />
-                            <stop offset="95%" stopColor={isProfit ? '#4ade80' : '#f87171'} stopOpacity={0} />
-                          </linearGradient>
-                        </defs>
-                        <Area
-                          type="monotone"
-                          dataKey="pnl"
-                          stroke={isProfit ? '#4ade80' : '#f87171'}
-                          strokeWidth={1.5}
-                          fillOpacity={1}
-                          fill={`url(#pnlGradient-${pos.id})`}
-                          isAnimationActive={false}
-                        />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  </div>
-                  <div className="text-right">
-                    <p className={`text-xl font-bold tracking-tighter ${isProfit ? 'text-green-400' : 'text-red-400'}`}>
+                  <div className="text-right shrink-0">
+                    <p className={`text-base md:text-xl font-bold tracking-tighter ${isProfit ? 'text-green-400' : 'text-red-400'}`}>
                       {isProfit ? '+' : ''}${Math.abs(pos.unrealized).toFixed(2)}
                     </p>
-                    <p className="text-[8px] text-muted-foreground/40 uppercase font-bold tracking-widest mt-0.5">unrealized pnl</p>
+                    <p className="text-[7px] md:text-[8px] text-muted-foreground/40 uppercase font-bold tracking-widest mt-0.5">unrealized pnl</p>
                   </div>
+                </div>
+                {/* Graph row: full width, always visible */}
+                <div className="w-full h-10 md:h-8">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={pos.history}>
+                      <defs>
+                        <linearGradient id={`pnlGradient-${pos.id}`} x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor={isProfit ? '#4ade80' : '#f87171'} stopOpacity={0.2} />
+                          <stop offset="95%" stopColor={isProfit ? '#4ade80' : '#f87171'} stopOpacity={0} />
+                        </linearGradient>
+                      </defs>
+                      <Area
+                        type="monotone"
+                        dataKey="pnl"
+                        stroke={isProfit ? '#4ade80' : '#f87171'}
+                        strokeWidth={1.5}
+                        fillOpacity={1}
+                        fill={`url(#pnlGradient-${pos.id})`}
+                        isAnimationActive={false}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
                 </div>
 
                 <div className="grid grid-cols-4 gap-2">

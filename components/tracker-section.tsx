@@ -303,13 +303,15 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
 
 
 
-        {/* Calendar (Full width now rankings are integrated) */}
-        <div className="grid grid-cols-1 gap-6">
-          <MonthlyCalendar />
+        {/* Calendar and Open Positions Side by Side */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div className="xl:col-span-1">
+            <MonthlyCalendar />
+          </div>
+          <div className="xl:col-span-2">
+            <OpenPositions />
+          </div>
         </div>
-
-        {/* Open Positions */}
-        <OpenPositions />
       </div>
 
     </PortfolioProvider>

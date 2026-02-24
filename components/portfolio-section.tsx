@@ -8,6 +8,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { PortfolioOverview } from './portfolio-overview';
 import { PnLChart } from './pnl-chart';
 import { PositionsTable } from './positions-table';
+import { OpenPositions } from './open-positions';
 import { WalletBindForm } from './wallet-bind-form';
 import { FundFlowTable } from './fund-flow-table';
 import { AssetFlowCard } from './asset-flow-card';
@@ -153,9 +154,14 @@ export function PortfolioSection() {
           {walletAddress && <AssetFlowCard walletAddress={sourceWalletAddress || walletAddress} />}
         </div>
 
-        {/* Calendar */}
-        <div className="grid grid-cols-1 gap-6">
-          <MonthlyCalendar />
+        {/* Calendar and Open Positions Side by Side */}
+        <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          <div className="xl:col-span-1">
+            <MonthlyCalendar />
+          </div>
+          <div className="xl:col-span-2">
+            <OpenPositions />
+          </div>
         </div>
       </div>
 

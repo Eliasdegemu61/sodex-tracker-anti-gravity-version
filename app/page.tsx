@@ -629,7 +629,7 @@ export default function Dashboard() {
                 : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
                 }`}
             >
-              Dex Status
+              SoDex Status
             </button>
             <button
               onClick={() => setCurrentPage('tracker')}
@@ -742,7 +742,7 @@ export default function Dashboard() {
       {/* Main Content - Only render active tab */}
       {
         currentPage === 'dex-status' && (
-          <Suspense fallback={<div className="w-full h-screen flex items-center justify-center"><div className="text-muted-foreground">Loading DEX Status...</div></div>}>
+          <Suspense fallback={<div className="w-full h-screen flex items-center justify-center"><div className="text-muted-foreground">Loading SoDex Status...</div></div>}>
             <div className="flex flex-col lg:flex-row overflow-y-auto w-full">
               {/* Top Stats - Mobile Only */}
               <div className="w-full lg:hidden p-3 order-0 border-b border-border">

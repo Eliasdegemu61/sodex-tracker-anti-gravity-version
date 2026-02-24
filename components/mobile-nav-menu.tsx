@@ -28,7 +28,7 @@ export function MobileNavMenu({ currentPage, onNavigate }: MobileNavMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const navItems = [
-    { id: 'dex-status', label: 'Dex Status', icon: Activity },
+    { id: 'dex-status', label: 'SoDex Status', icon: Activity },
     { id: 'tracker', label: 'Address Tracker', icon: TrendingUp },
     { id: 'portfolio', label: 'Portfolio', icon: Wallet },
     { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },

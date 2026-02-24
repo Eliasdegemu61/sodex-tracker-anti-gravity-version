@@ -27,7 +27,7 @@ export function LandingPage() {
   ];
 
   const tabs = [
-    { id: 'dex-status', label: 'Dex Status', icon: Compass },
+    { id: 'dex-status', label: 'SoDex Status', icon: Compass },
     { id: 'tracker', label: 'Tracker', icon: LineChart },
     { id: 'portfolio', label: 'Portfolio', icon: PieChart },
     { id: 'leaderboard', label: 'Leaderboard', icon: Trophy },

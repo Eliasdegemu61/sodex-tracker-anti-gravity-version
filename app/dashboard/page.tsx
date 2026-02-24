@@ -654,7 +654,7 @@ export default function Dashboard() {
           <div className="flex items-center gap-2 md:gap-3">
             <nav className="hidden xl:flex items-center gap-2 mr-2">
               {[
-                { id: 'dex-status', label: 'Network' },
+                { id: 'dex-status', label: 'SoDex Status' },
                 { id: 'tracker', label: 'Monitor' },
                 { id: 'portfolio', label: 'Assets' },
                 { id: 'leaderboard', label: 'Rankings' },

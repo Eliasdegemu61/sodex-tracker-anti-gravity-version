@@ -35,7 +35,6 @@ import { TrackerSection } from '@/components/tracker-section'
 import { Footer } from '@/components/footer'
 import { SopointsAnalyzer } from '@/components/sopoints-analyzer'
 import { AboutSodex } from '@/components/about-sodex'
-import { WhaleTracker } from '@/components/whale-tracker'
 import { useSessionCache } from '@/context/session-cache-context'
 
 function LoadingCard() {
@@ -795,13 +794,6 @@ export default function Dashboard() {
         </Suspense>
       )}
 
-      {currentPage === 'whale-tracker' && (
-        <Suspense fallback={<LoadingCard />}>
-          <div className="p-4 md:p-6 overflow-y-auto w-full">
-            <WhaleTracker />
-          </div>
-        </Suspense>
-      )}
 
       {/* Announcement Side Panel */}
       <AnnouncementSidePanel />

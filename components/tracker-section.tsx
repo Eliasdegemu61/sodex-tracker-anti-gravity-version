@@ -291,9 +291,6 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
         {/* Overview Stats */}
         <PortfolioOverview />
 
-        {/* Vault Card */}
-        <VaultCard walletAddress={sourceWalletAddress || walletAddress || ''} />
-
         {/* Main Charts Row */}
         <div className="grid grid-cols-1 gap-6">
           {/* PnL Chart */}

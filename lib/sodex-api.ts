@@ -211,6 +211,16 @@ export interface TokenBalance {
   balance: number;
 }
 
+export interface OpenOrderData {
+  orderId: string;
+  symbol: string;
+  positionId: string;
+  triggerProfitPrice?: string;
+  triggerStopPrice?: string;
+  [key: string]: any;
+}
+
+
 export interface DetailedBalanceData {
   totalUsdValue: number;
   tokens: TokenBalance[];
@@ -223,6 +233,7 @@ export interface DetailedBalanceData {
 export interface AccountDetailsData {
   positions: OpenPositionData[];
   balances: BalanceData[];
+  openOrders?: OpenOrderData[];
   isolatedMargin: string;
   crossMargin: string;
   availableMarginForIsolated: string;
@@ -249,6 +260,20 @@ export async function fetchAccountDetails(userId: string | number): Promise<Acco
     const data: AccountDetailsResponse = await response.json();
     if (data.code !== 0) {
       throw new Error(`API error: Failed to fetch account details`);
+    }
+
+    // Also fetch open orders to get TP/SL mapping
+    try {
+      const ordersUrl = `https://mainnet-gw.sodex.dev/futures/fapi/trade/v1/public/list?accountId=${userId}`;
+      const ordersResponse = await fetch(ordersUrl);
+      if (ordersResponse.ok) {
+        const ordersJson = await ordersResponse.json();
+        if (ordersJson.code === 0 && ordersJson.data) {
+          data.data.openOrders = ordersJson.data;
+        }
+      }
+    } catch (e) {
+      console.error('[v0] Failed to fetch open orders for TP/SL mapping:', e);
     }
 
     console.log('[v0] Fetched account details - positions:', data.data.positions.length, 'balance:', data.data.balances[0]?.walletBalance);

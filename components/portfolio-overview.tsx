@@ -8,6 +8,7 @@ import { TrendingUp, TrendingDown, DollarSign, Activity, Target, AlertCircle, Ba
 import { usePortfolio } from '@/context/portfolio-context';
 import { fetchPnLOverview, getVolumeFromPnLOverview, fetchDetailedBalance } from '@/lib/sodex-api';
 import { fetchSpotTradesData } from '@/lib/spot-api';
+import { getTokenPrice } from '@/lib/token-price-service';
 
 // Cool loading animation component with gradient shimmer effect
 function LoadingAnimation() {
@@ -71,7 +72,7 @@ interface PortfolioStat {
 }
 
 export function PortfolioOverview() {
-  const { positions, userId, vaultBalance } = usePortfolio();
+  const { positions, userId, vaultBalance, setVaultBalance } = usePortfolio();
   const [totalBalance, setTotalBalance] = useState<number>(0);
   const [spotBalance, setSpotBalance] = useState<number>(0);
   const [futuresBalance, setFuturesBalance] = useState<number>(0);
@@ -82,11 +83,16 @@ export function PortfolioOverview() {
   const [spotFees, setSpotFees] = useState<number>(0);
   const [hasUnpriced, setHasUnpriced] = useState(false);
 
+  // Vault data state
+  const [vaultData, setVaultData] = useState<{ pnl: number; shares: number; sharesUsd: number } | null>(null);
+  const [isLoadingVault, setIsLoadingVault] = useState(false);
+
   // Individual card loading states for independent loading
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const [isLoadingPnL, setIsLoadingPnL] = useState(false);
   const [isLoadingVolume, setIsLoadingVolume] = useState(false);
   const [isLoadingFees, setIsLoadingFees] = useState(false);
+  const [isLoadingAll, setIsLoadingAll] = useState(false);
 
   // Fetch combined balance using new detailed balance function
   useEffect(() => {
@@ -187,6 +193,50 @@ export function PortfolioOverview() {
     const interval = setInterval(fetchVolumeAndFees, 30000);
     return () => clearInterval(interval);
   }, [userId, positions]);
+
+  // Fetch Vault data
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchVault = async () => {
+      setIsLoadingVault(true);
+      try {
+        const walletAddr = localStorage.getItem('portfolio_wallet_address');
+        if (!walletAddr) return;
+
+        const response = await fetch('/api/sodex/vault-position', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ address: walletAddr }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.code === '0' && data.data) {
+            const shares = data.data.shares || 0;
+            const mag7Price = await getTokenPrice('MAG7.ssi');
+            const sharesUsd = shares * mag7Price;
+
+            setVaultData({
+              pnl: data.data.pnl,
+              shares: shares,
+              sharesUsd: sharesUsd
+            });
+
+            setVaultBalance(sharesUsd);
+          }
+        }
+      } catch (err) {
+        console.error('[v0] Error fetching vault in overview:', err);
+      } finally {
+        setIsLoadingVault(false);
+      }
+    };
+
+    fetchVault();
+    const interval = setInterval(fetchVault, 60000); // 1 minute refresh for vault
+    return () => clearInterval(interval);
+  }, [userId, setVaultBalance]);
 
   const stats = useMemo(() => {
     // Calculate total volume and fees
@@ -305,92 +355,147 @@ export function PortfolioOverview() {
     ];
   }, [positions, totalBalance, futuresVolume, spotVolume, futuresFees, spotFees, walletBalance, spotBalance, vaultBalance]);
 
-  // Determine loading state for each card independently
-  const getCardLoadingState = (idx: number) => {
-    switch (idx) {
-      case 0: return isLoadingBalance; // Total Balance
-      case 1: return isLoadingPnL;      // Realized PnL
-      case 2: return isLoadingVolume;   // Volume
-      case 3: return isLoadingFees;     // Total Fees
-      default: return false;
-    }
-  };
+  const isAnyLoading = isLoadingBalance || isLoadingPnL || isLoadingVolume || isLoadingFees || isLoadingVault;
+
+  // Calculate final aggregated values
+  const totalVolume = futuresVolume + spotVolume;
+  const totalFees = futuresFees + spotFees;
+  const combinedBalance = totalBalance + (vaultData?.sharesUsd || 0);
+  const totalPnL = positions.reduce((sum: number, p: any) => sum + (p.realizedPnlValue || 0), 0);
+  const vaultValue = vaultData?.sharesUsd || 0;
+  const vaultPnL = vaultData?.pnl || 0;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      {stats.map((stat, idx) => {
-        const isLoading = getCardLoadingState(idx);
+    <Card className="group relative overflow-hidden bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm transition-all hover:border-accent/10">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[100px] -mr-32 -mt-32" />
 
-        return (
-          <Card key={idx} className="group relative overflow-hidden p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl transition-all hover:border-accent/30 shadow-sm">
-            <div className="flex items-start justify-between relative z-10">
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-semibold text-muted-foreground/60 mb-2">
-                  {stat.label}
-                </p>
+      <div className="p-8 md:p-10 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
-                {isLoading ? (
-                  <div className="min-h-[40px] flex items-center">
-                    <LoadingAnimation />
-                  </div>
-                ) : (
-                  <div className="space-y-1">
-                    <div className="flex items-baseline gap-2">
-                      <p className="text-2xl font-bold tracking-tight text-foreground truncate">
-                        {stat.value}
-                      </p>
-                    </div>
-
-                    {stat.subtitle && (
-                      <p className="text-[9px] text-accent/50 font-bold  ">
-                        {stat.subtitle}
-                      </p>
-                    )}
-
-                    {stat.breakdown && (
-                      <div className="flex flex-col gap-1 mt-3 pt-3 border-t border-border/5">
-                        <div className="flex items-center justify-between text-[10px]">
-                          <span className="text-muted-foreground/40 font-bold uppercase tracking-tight">{stat.breakdown.futures_label}</span>
-                          <span className=" text-foreground/70">${stat.breakdown.futures?.toLocaleString('en-US', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) || '0.0'}</span>
-                        </div>
-                        <div className="flex items-center justify-between text-[10px]">
-                          <span className="text-muted-foreground/40 font-bold uppercase tracking-tight">{stat.breakdown.spot_label}</span>
-                          <span className=" text-foreground/70">${stat.breakdown.spot?.toLocaleString('en-US', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) || '0.0'}</span>
-                        </div>
-                        {stat.breakdown.vault !== undefined && stat.breakdown.vault_label && (
-                          <div className="flex items-center justify-between text-[10px]">
-                            <span className="text-muted-foreground/40 font-bold uppercase tracking-tight">{stat.breakdown.vault_label}</span>
-                            <span className=" text-foreground/70">${stat.breakdown.vault?.toLocaleString('en-US', { maximumFractionDigits: 1, minimumFractionDigits: 1 }) || '0.0'}</span>
-                          </div>
-                        )}
-                      </div>
-                    )}
-
-                    {stat.change !== undefined && (
-                      <div className="flex items-center gap-1.5 mt-2">
-                        {stat.change >= 0 ? (
-                          <TrendingUp className="w-3 h-3 text-green-400" />
-                        ) : (
-                          <TrendingDown className="w-3 h-3 text-red-400" />
-                        )}
-                        <span className={`text-[10px] font-bold ${stat.change >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                          {stat.change >= 0 ? '+' : ''}{stat.change.toFixed(1)}%
-                        </span>
-                      </div>
-                    )}
-                  </div>
+          {/* Main Balance Column */}
+          <div className="lg:col-span-4 space-y-4">
+            <div>
+              <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest mb-1.5 flex items-center gap-2">
+                <DollarSign className="w-3 h-3" /> Total Net Worth
+              </p>
+              <div className="flex items-baseline gap-3">
+                <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+                  ${combinedBalance.toLocaleString('en-US', { maximumFractionDigits: 2 })}
+                </h2>
+                {hasUnpriced && (
+                  <span className="text-[10px] font-bold text-accent/50 lowercase animate-pulse">+ other assets</span>
                 )}
               </div>
-              <div className="p-2 rounded-xl bg-secondary/10 text-accent/40 group-hover:text-accent/60 transition-colors">
-                <div className="w-4 h-4 flex items-center justify-center">
-                  {stat.icon}
-                </div>
+            </div>
+
+            <div className="flex flex-col gap-2 pt-4 border-t border-border/5">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] text-muted-foreground/30 font-semibold lowercase">futures</span>
+                <span className="text-[11px] font-bold text-foreground/70">${futuresBalance.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] text-muted-foreground/30 font-semibold lowercase">spot</span>
+                <span className="text-[11px] font-bold text-foreground/70">${spotBalance.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] text-muted-foreground/30 font-semibold lowercase">vault</span>
+                <span className="text-[11px] font-bold text-orange-400/80">${vaultValue.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
               </div>
             </div>
-          </Card>
-        );
-      })}
-    </div>
+          </div>
+
+          {/* Metrics Grid Column */}
+          <div className="lg:col-span-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 h-full items-center">
+
+              {/* PnL Stat */}
+              <div className="space-y-2">
+                <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest flex items-center gap-2">
+                  <TrendingUp className="w-2.5 h-2.5" /> Realized PnL
+                </p>
+                <p className={`text-xl font-bold tracking-tight ${totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  {totalPnL >= 0 ? '+' : ''}${Math.abs(totalPnL).toLocaleString('en-US', { maximumFractionDigits: 2 })}
+                </p>
+                <div className="w-full h-1 bg-secondary/20 rounded-full overflow-hidden">
+                  <div className={`h-full ${totalPnL >= 0 ? 'bg-green-500' : 'bg-red-500'} w-[60%] opacity-30`} />
+                </div>
+              </div>
+
+              {/* Vault Stat */}
+              <div className="space-y-2">
+                <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest flex items-center gap-2">
+                  <Target className="w-2.5 h-2.5" /> Vault PnL
+                </p>
+                <div className="space-y-0.5">
+                  <p className={`text-xl font-bold tracking-tight ${vaultPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {vaultPnL >= 0 ? '+' : ''}{Math.abs(vaultPnL).toFixed(4)}
+                  </p>
+                  <p className="text-[10px] font-bold text-orange-400/60 lowercase flex items-center gap-1.5">
+                    {vaultData?.shares.toFixed(4)} <span className="text-[8px] text-muted-foreground/30 uppercase font-medium">mag7.ssi</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Volume Stat */}
+              <div className="space-y-2">
+                <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest flex items-center gap-2">
+                  <Activity className="w-2.5 h-2.5" /> Volume
+                </p>
+                <div className="space-y-1">
+                  <p className="text-xl font-bold tracking-tight text-foreground/80">
+                    ${(totalVolume / 1000).toFixed(1)}k
+                  </p>
+                  <div className="flex flex-col gap-0.5">
+                    <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-tighter">
+                      <span className="text-muted-foreground/20">futures</span>
+                      <span className="text-foreground/40">${(futuresVolume / 1000).toFixed(1)}k</span>
+                    </div>
+                    <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-tighter">
+                      <span className="text-muted-foreground/20">spot</span>
+                      <span className="text-foreground/40">${(spotVolume / 1000).toFixed(1)}k</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Fees Stat */}
+              <div className="space-y-2">
+                <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest flex items-center gap-2">
+                  <Zap className="w-2.5 h-2.5" /> Fees Paid
+                </p>
+                <div className="space-y-1">
+                  <p className="text-xl font-bold tracking-tight text-foreground/80">
+                    ${totalFees.toFixed(2)}
+                  </p>
+                  <div className="flex flex-col gap-0.5">
+                    <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-tighter">
+                      <span className="text-muted-foreground/20">futures</span>
+                      <span className="text-foreground/40">${futuresFees.toFixed(1)}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-tighter">
+                      <span className="text-muted-foreground/20">spot</span>
+                      <span className="text-foreground/40">${spotFees.toFixed(1)}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        {/* Sync Indicator */}
+        <div className="absolute bottom-4 right-8 flex items-center gap-2">
+          {isAnyLoading && (
+            <div className="flex items-center gap-2 text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest">
+              <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse shadow-[0_0_8px_rgba(var(--color-accent),0.5)]" />
+              Syncing
+            </div>
+          )}
+        </div>
+      </div>
+    </Card>
   );
 }
 

@@ -36,7 +36,6 @@ import { TrackerSection } from '@/components/tracker-section'
 import { Footer } from '@/components/footer'
 import { SopointsAnalyzer } from '@/components/sopoints-analyzer'
 import { AboutSodex } from '@/components/about-sodex'
-import { WhaleTracker } from '@/components/whale-tracker'
 
 function LoadingCard() {
   return <Card className="p-4 md:p-6 bg-card border border-border h-64 animate-pulse" />
@@ -688,13 +687,6 @@ export default function Dashboard() {
                 <div className="absolute top-full left-0 pt-2 w-48 z-50">
                   <div className="bg-card border border-border rounded-xl shadow-xl py-2 animate-in fade-in slide-in-from-top-2 duration-200">
                     <button
-                      onClick={() => { setCurrentPage('whale-tracker'); setShowMoreMenu(false); }}
-                      className={`w-full text-left px-4 py-2 text-sm hover:bg-secondary transition-colors ${currentPage === 'whale-tracker' ? 'text-accent font-bold' : 'text-foreground'
-                        }`}
-                    >
-                      Whale Tracker
-                    </button>
-                    <button
                       onClick={() => { setCurrentPage('about'); setShowMoreMenu(false); }}
                       className={`w-full text-left px-4 py-2 text-sm hover:bg-secondary transition-colors ${currentPage === 'about' ? 'text-accent font-bold' : 'text-foreground'
                         }`}
@@ -925,13 +917,6 @@ export default function Dashboard() {
         )
       }
 
-      {
-        currentPage === 'whale-tracker' && (
-          <div className="p-4 md:p-8 max-w-7xl mx-auto w-full">
-            <WhaleTracker />
-          </div>
-        )
-      }
 
       {
         currentPage === 'about' && (

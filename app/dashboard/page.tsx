@@ -29,12 +29,9 @@ import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer } from 'recha
 import { MobileNavMenu } from '@/components/mobile-nav-menu'
 import { NewTradersTracker } from '@/components/new-traders-tracker'
 import { AnnouncementSidePanel } from '@/components/announcement-side-panel'
-import { PortfolioSection } from '@/components/portfolio-section'
-import { OpenPositions } from '@/components/open-positions'
 import { TrackerSection } from '@/components/tracker-section'
 import { Footer } from '@/components/footer'
 import { SopointsAnalyzer } from '@/components/sopoints-analyzer'
-import { AboutSodex } from '@/components/about-sodex'
 import { useSessionCache } from '@/context/session-cache-context'
 
 function LoadingCard() {
@@ -575,7 +572,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
 export default function Dashboard() {
   const { theme, toggleTheme, mounted } = useTheme()
   const { preloadLeaderboardData } = useSessionCache()
-  const [currentPage, setCurrentPage] = useState<'dex-status' | 'tracker' | 'portfolio' | 'leaderboard' | 'analyzer' | 'about' | 'whale-tracker'>('dex-status')
+  const [currentPage, setCurrentPage] = useState<'dex-status' | 'tracker' | 'leaderboard' | 'analyzer'>('dex-status')
   const [searchAddressInput, setSearchAddressInput] = useState('')
   const [trackerSearchAddress, setTrackerSearchAddress] = useState('')
   const [showMoreMenu, setShowMoreMenu] = useState(false)
@@ -589,7 +586,7 @@ export default function Dashboard() {
   // Handle tab parameter from URL - lazy load only when user navigates
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
-    const tabParam = searchParams.get('tab') as 'dex-status' | 'tracker' | 'portfolio' | 'leaderboard' | 'analyzer' | null;
+    const tabParam = searchParams.get('tab') as 'dex-status' | 'tracker' | 'leaderboard' | 'analyzer' | null;
     const addressParam = searchParams.get('address');
 
     // Set tracker search address if provided
@@ -597,7 +594,7 @@ export default function Dashboard() {
       setTrackerSearchAddress(decodeURIComponent(addressParam));
     }
 
-    if (tabParam && ['dex-status', 'tracker', 'portfolio', 'leaderboard', 'analyzer', 'about', 'whale-tracker'].includes(tabParam as any)) {
+    if (tabParam && ['dex-status', 'tracker', 'leaderboard', 'analyzer'].includes(tabParam as any)) {
       setCurrentPage(tabParam as any);
     } else {
       // Default to leaderboard on first load (faster load than dex-status)
@@ -655,7 +652,6 @@ export default function Dashboard() {
               {[
                 { id: 'dex-status', label: 'SoDex Status' },
                 { id: 'tracker', label: 'Monitor' },
-                { id: 'portfolio', label: 'Assets' },
                 { id: 'leaderboard', label: 'Rankings' },
                 { id: 'analyzer', label: 'Forensics' },
               ].map((item) => (
@@ -763,14 +759,7 @@ export default function Dashboard() {
         </Suspense>
       )}
 
-      {currentPage === 'portfolio' && (
-        <Suspense fallback={<LoadingCard />}>
-          <div className="p-4 md:p-6 overflow-y-auto w-full space-y-6">
-            <PortfolioSection />
-            <OpenPositions />
-          </div>
-        </Suspense>
-      )}
+
 
       {currentPage === 'leaderboard' && (
         <Suspense fallback={<LoadingCard />}>
@@ -786,13 +775,7 @@ export default function Dashboard() {
         </Suspense>
       )}
 
-      {currentPage === 'about' && (
-        <Suspense fallback={<LoadingCard />}>
-          <div className="p-4 md:p-6 overflow-y-auto w-full">
-            <AboutSodex />
-          </div>
-        </Suspense>
-      )}
+
 
 
       {/* Announcement Side Panel */}

@@ -893,7 +893,6 @@ export default function Dashboard() {
           <Suspense fallback={<LoadingCard />}>
             <div className="p-4 md:p-6 overflow-y-auto w-full space-y-6">
               <PortfolioSection />
-              <OpenPositions />
             </div>
           </Suspense>
         )

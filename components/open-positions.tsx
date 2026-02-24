@@ -219,21 +219,21 @@ export function OpenPositions() {
 
       {/* Balance Info */}
       {balanceData && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8">
-          <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
-            <p className="text-[7px] text-muted-foreground/30 font-bold  ">Wallet Balance</p>
-            <p className="text-xl font-bold tracking-tight text-foreground/80">${parseFloat(balanceData.walletBalance).toFixed(2)}</p>
-            <p className="text-[7px] text-muted-foreground/20 font-bold ">perpetuals (usdc)</p>
+        <div className="grid grid-cols-3 gap-2 mb-8">
+          <div className="p-2 md:p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
+            <p className="text-[7px] text-muted-foreground/30 font-bold">Wallet Balance</p>
+            <p className="text-sm md:text-xl font-bold tracking-tight text-foreground/80">${parseFloat(balanceData.walletBalance).toFixed(2)}</p>
+            <p className="text-[7px] text-muted-foreground/20 font-bold hidden sm:block">perpetuals (usdc)</p>
           </div>
-          <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
-            <p className="text-[7px] text-muted-foreground/30 font-bold  ">Liquidity</p>
-            <p className="text-xl font-bold tracking-tight text-green-400">${parseFloat(balanceData.availableBalance).toFixed(2)}</p>
-            <p className="text-[7px] text-muted-foreground/20 font-bold ">Available to trade</p>
+          <div className="p-2 md:p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
+            <p className="text-[7px] text-muted-foreground/30 font-bold">Liquidity</p>
+            <p className="text-sm md:text-xl font-bold tracking-tight text-green-400">${parseFloat(balanceData.availableBalance).toFixed(2)}</p>
+            <p className="text-[7px] text-muted-foreground/20 font-bold hidden sm:block">Available to trade</p>
           </div>
-          <div className="p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
-            <p className="text-[7px] text-muted-foreground/30 font-bold  ">Exposure</p>
-            <p className="text-xl font-bold tracking-tight text-orange-400">${parseFloat(balanceData.openOrderMarginFrozen).toFixed(2)}</p>
-            <p className="text-[7px] text-muted-foreground/20 font-bold ">Margin in use</p>
+          <div className="p-2 md:p-4 rounded-2xl bg-secondary/5 border border-border/5 space-y-1">
+            <p className="text-[7px] text-muted-foreground/30 font-bold">Exposure</p>
+            <p className="text-sm md:text-xl font-bold tracking-tight text-orange-400">${parseFloat(balanceData.openOrderMarginFrozen).toFixed(2)}</p>
+            <p className="text-[7px] text-muted-foreground/20 font-bold hidden sm:block">Margin in use</p>
           </div>
         </div>
       )}
@@ -339,58 +339,7 @@ export function OpenPositions() {
         })}
       </div>
 
-      {/* Pagination Controls */}
-      <div className="flex flex-col md:flex-row items-center justify-between mt-8 pt-8 border-t border-border/5 gap-6">
-        <div className="flex items-center gap-3">
-          <span className="text-[10px] font-bold  text-muted-foreground/30 ">Rows</span>
-          <div className="flex gap-1.5 p-1 bg-secondary/10 rounded-xl border border-border/5">
-            {[5, 10, 20, 50].map((value) => (
-              <button
-                key={value}
-                onClick={() => handleRowsPerPageChange(value)}
-                className={`px-3 py-1 text-[10px] font-bold rounded-lg transition-all ${rowsPerPage === value
-                  ? 'bg-accent text-accent-foreground shadow-lg'
-                  : 'text-muted-foreground/40 hover:text-foreground hover:bg-secondary/20'
-                  }`}
-              >
-                {value}
-              </button>
-            ))}
-          </div>
-        </div>
 
-        <div className="text-[10px] font-bold text-muted-foreground/20 ">
-          {startIndex + 1}-{Math.min(endIndex, displayPositions.length)} of {displayPositions.length}
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Button
-            onClick={handlePrevPage}
-            disabled={currentPage === 1}
-            variant="outline"
-            className="h-8 md:h-9 bg-secondary/10 border-border/10 rounded-xl hover:bg-accent/10 hover:text-accent transition-all text-[10px] font-bold "
-          >
-            <ChevronLeft className="w-4 h-4 mr-1" />
-            Prev
-          </Button>
-
-          <div className="px-3 py-1.5 bg-secondary/5 rounded-xl border border-border/5">
-            <span className="text-[10px] font-bold text-muted-foreground/60">
-              {currentPage} / {totalPages}
-            </span>
-          </div>
-
-          <Button
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-            variant="outline"
-            className="h-8 md:h-9 bg-secondary/10 border-border/10 rounded-xl hover:bg-accent/10 hover:text-accent transition-all text-[10px] font-bold "
-          >
-            Next
-            <ChevronRight className="w-4 h-4 ml-1" />
-          </Button>
-        </div>
-      </div>
     </Card>
   );
 }

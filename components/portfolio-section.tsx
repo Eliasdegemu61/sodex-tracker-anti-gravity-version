@@ -7,7 +7,6 @@ import { Loader2 } from 'lucide-react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { PortfolioOverview } from './portfolio-overview';
 import { PnLChart } from './pnl-chart';
-import { PositionsTable } from './positions-table';
 import { OpenPositions } from './open-positions';
 import { WalletBindForm } from './wallet-bind-form';
 import { FundFlowTable } from './fund-flow-table';
@@ -144,9 +143,6 @@ export function PortfolioSection() {
             <PnLChart />
           </div>
         </div>
-
-        {/* Positions Table */}
-        <PositionsTable />
 
         {/* Fund Flow Table and Asset Flow Card */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

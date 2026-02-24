@@ -608,18 +608,6 @@ export default function Dashboard() {
             <span className="hidden sm:inline text-xs md:text-sm font-semibold text-foreground">Tracker</span>
           </div>
 
-          <div className="flex-1 max-w-xs md:max-w-md">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                placeholder="Search address"
-                className="pl-10 bg-secondary border-border focus:border-accent text-xs md:text-sm"
-                value={searchAddressInput}
-                onChange={(e) => setSearchAddressInput(e.target.value)}
-                onKeyDown={handleSearchBarSubmit}
-              />
-            </div>
-          </div>
 
           <div className="hidden md:flex items-center gap-8">
             <button

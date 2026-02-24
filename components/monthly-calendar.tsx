@@ -4,7 +4,7 @@ import React, { useState, useMemo } from 'react';
 import { Card } from '@/components/ui/card';
 import { usePortfolio } from '@/context/portfolio-context';
 import { useTheme } from '@/app/providers';
-import { X } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface DayTrades {
   date: Date;
@@ -87,9 +87,13 @@ export function MonthlyCalendar() {
   const monthStats = useMemo(() => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
+    const monthKeyPrefix = `${year}-${String(month + 1).padStart(2, '0')}`;
+
     let totalPnL = 0, totalTrades = 0, winDays = 0, loseDays = 0;
-    dayData.forEach((d) => {
-      if (d.date.getFullYear() === year && d.date.getMonth() === month) {
+
+    // Only iterate once through the map instead of daily calculations
+    dayData.forEach((d, key) => {
+      if (key.startsWith(monthKeyPrefix)) {
         totalPnL += d.pnl;
         totalTrades += d.trades.length;
         if (d.pnl > 0) winDays++;
@@ -118,11 +122,30 @@ export function MonthlyCalendar() {
 
       {/* Calendar */}
       <Card className="p-4 sm:p-6 bg-card border border-border rounded-3xl shadow-xl overflow-hidden">
-        {/* Header Navigation */}
-        <div className="flex items-center justify-center gap-5 mb-6">
-          <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))} className="text-muted-foreground hover:text-foreground transition-colors font-bold text-xl leading-none">&lt;</button>
-          <h3 className="text-sm sm:text-base font-bold text-foreground tracking-wide select-none min-w-[160px] text-center">{monthYear}</h3>
-          <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))} className="text-muted-foreground hover:text-foreground transition-colors font-bold text-xl leading-none">&gt;</button>
+        {/* Header Navigation - Modern Layout */}
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-col">
+            <h3 className="text-xl sm:text-2xl font-bold text-foreground tracking-tight select-none">
+              {currentDate.toLocaleDateString('en-US', { month: 'long' })}
+            </h3>
+            <span className="text-xs font-medium text-muted-foreground/60">{currentDate.getFullYear()}</span>
+          </div>
+
+          <div className="flex items-center gap-2 bg-secondary/10 p-1 rounded-2xl border border-border/10">
+            <button
+              onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))}
+              className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary/40 transition-all active:scale-90"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <div className="w-px h-4 bg-border/20 mx-1" />
+            <button
+              onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))}
+              className="p-2 rounded-xl text-muted-foreground hover:text-foreground hover:bg-secondary/40 transition-all active:scale-90"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Weekday Headers */}
@@ -177,10 +200,9 @@ export function MonthlyCalendar() {
                   ${cellBg} ${hasActivity && isCurrentMonth ? 'cursor-pointer scale-[1.02] shadow-sm' : 'cursor-default'}`}
               >
                 {/* Day number — top left */}
-                <span className={`text-[9px] sm:text-[12px] font-semibold leading-none ${numColor}`}>
+                <span className={`text-[10px] sm:text-[13px] font-bold leading-none ${numColor}`}>
                   {date.getDate()}
                 </span>
-                |
                 {/* Simplified PnL info — bottom right */}
                 {hasActivity && isCurrentMonth && dayTrades && (
                   <div className="flex flex-col items-end text-right mt-auto gap-0.5">

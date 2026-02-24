@@ -605,7 +605,7 @@ export default function Dashboard() {
               loading="eager"
               decoding="async"
             />
-            <span className="hidden sm:inline text-xs md:text-sm font-semibold text-foreground">Tracker</span>
+            <span className="text-xs md:text-sm font-semibold text-foreground">Tracker</span>
           </div>
 
 

@@ -66,7 +66,7 @@ export function VolumeChartClient({ data, chartData }: VolumeChartClientProps) {
               key={range}
               onClick={() => setTimeRange(range)}
               className={`text-[9px] font-bold  px-3 py-1.5 rounded-lg transition-all ${timeRange === range
-                ? 'bg-orange-500 text-white shadow-lg'
+                ? 'bg-orange-500 text-black shadow-lg'
                 : 'text-muted-foreground/40 hover:text-foreground hover:bg-secondary/20'
                 }`}
             >

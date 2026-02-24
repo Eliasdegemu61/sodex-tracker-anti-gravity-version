@@ -60,27 +60,26 @@ export function TodayTopPairs() {
             return (
               <div key={pair.pair} className="group flex items-center justify-between p-3 bg-secondary/10 rounded-2xl border border-border/5 hover:bg-orange-500/5 hover:border-orange-500/10 transition-all duration-300">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="relative">
-                    {getTokenLogo(pair.pair) ? (
-                      <img
-                        src={getTokenLogo(pair.pair)}
-                        alt={pair.pair}
-                        className="w-6 h-6 rounded-full flex-shrink-0 bg-background/50 p-0.5 border border-border/10 group-hover:border-orange-500/20"
-                        onError={(e) => {
-                          e.currentTarget.style.display = 'none'
-                        }}
-                      />
-                    ) : (
-                      <div className="w-6 h-6 rounded-full bg-orange-500/10 flex items-center justify-center text-[8px] font-bold text-orange-400">
-                        {pair.pair.slice(0, 1)}
-                      </div>
-                    )}
-                    <div className={`absolute -bottom-1 -right-1 w-2.5 h-2.5 rounded-full border border-background flex items-center justify-center text-[6px] font-bold ${isSpot ? 'bg-orange-400 text-white' : 'bg-orange-600 text-white'
-                      }`}>
-                      {isSpot ? 'S' : 'F'}
+                  {getTokenLogo(pair.pair) ? (
+                    <img
+                      src={getTokenLogo(pair.pair)}
+                      alt={pair.pair}
+                      className="w-6 h-6 rounded-full flex-shrink-0 bg-background/50 p-0.5 border border-border/10 group-hover:border-orange-500/20"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none'
+                      }}
+                    />
+                  ) : (
+                    <div className="w-6 h-6 rounded-full bg-orange-500/10 flex items-center justify-center text-[8px] font-bold text-orange-400">
+                      {pair.pair.slice(0, 1)}
                     </div>
+                  )}
+                  <div className="flex flex-col min-w-0">
+                    <span className="text-[12px] font-bold text-foreground/80 tracking-tight">{pair.pair}</span>
+                    <span className={`text-[8px] font-bold uppercase tracking-wider ${isSpot ? 'text-orange-400' : 'text-orange-600'}`}>
+                      {isSpot ? 'Spot' : 'Futures'}
+                    </span>
                   </div>
-                  <span className="text-[12px] font-bold text-foreground/80 tracking-tight">{pair.pair}</span>
                 </div>
                 <span className="text-[11px] font-bold text-orange-400/90">${formatVolume(pair.volume)}</span>
               </div>

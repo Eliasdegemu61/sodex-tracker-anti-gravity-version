@@ -593,7 +593,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div>
+    <div className="min-h-screen">
       {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="flex items-center justify-between h-16 px-3 md:px-6 gap-2 md:gap-4">
@@ -707,7 +707,7 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <MobileNavMenu currentPage={currentPage} onNavigate={(page: any) => setCurrentPage(page)} />
+
 
           <div className="flex items-center gap-2 md:gap-4">
             {mounted && (
@@ -734,207 +734,218 @@ export default function Dashboard() {
                 <span className="text-sm font-semibold text-accent">Trade</span>
               </Button>
             </a>
-            <Button
-              variant="ghost"
-              className="hidden md:flex items-center gap-2 text-foreground hover:bg-secondary px-2 h-9"
-            >
-              <span className="text-xs font-semibold text-accent">v1.01</span>
-            </Button>
+            <MobileNavMenu currentPage={currentPage} onNavigate={(page: any) => setCurrentPage(page)} />
           </div>
         </div>
       </header>
 
       {/* Main Content - Only render active tab */}
-      {currentPage === 'dex-status' && (
-        <Suspense fallback={<div className="w-full h-screen flex items-center justify-center"><div className="text-muted-foreground">Loading DEX Status...</div></div>}>
-          <div className="flex flex-col lg:flex-row overflow-y-auto w-full">
-            {/* Top Stats - Mobile Only */}
-            <div className="w-full lg:hidden p-3 order-0 border-b border-border">
-              <DashboardStats variant="compact" />
-            </div>
+      {
+        currentPage === 'dex-status' && (
+          <Suspense fallback={<div className="w-full h-screen flex items-center justify-center"><div className="text-muted-foreground">Loading DEX Status...</div></div>}>
+            <div className="flex flex-col lg:flex-row overflow-y-auto w-full">
+              {/* Top Stats - Mobile Only */}
+              <div className="w-full lg:hidden p-3 order-0 border-b border-border">
+                <DashboardStats variant="compact" />
+              </div>
 
-            {/* Left Sidebar - Desktop Only */}
-            <div className="hidden lg:block lg:w-64 lg:border-r border-border p-3 md:p-4 space-y-4 lg:flex-shrink-0 lg:order-1">
-              {/* Key Metrics */}
-              <DashboardStats />
+              {/* Left Sidebar - Desktop Only */}
+              <div className="hidden lg:block lg:w-64 lg:border-r border-border p-3 md:p-4 space-y-4 lg:flex-shrink-0 lg:order-1">
+                {/* Key Metrics */}
+                <DashboardStats />
 
-              {/* Overall Profit Efficiency */}
-              <TVLCard />
+                {/* Overall Profit Efficiency */}
+                <TVLCard />
 
-              {/* Top Pairs */}
-              <TodayTopPairs />
+                {/* Top Pairs */}
+                <TodayTopPairs />
 
-              {/* Top Traders (Perps) */}
-              <TopTradersCard />
-
-              {/* Overall Deposits & Withdrawals */}
-              <OverallDepositsCard />
-            </div>
-
-            {/* Center Content */}
-            <div className="flex-1 lg:border-r border-border p-2 md:p-6 space-y-2 md:space-y-4 lg:flex-shrink-0 order-1 lg:order-2">
-              {/* Chart Area */}
-              <VolumeChart />
-              <FundFlowChart />
-
-              {/* Volume Range Analysis */}
-              <VolumeRangeCard />
-
-              {/* Top Trading Pairs */}
-              <TopPairsWidget />
-            </div>
-
-            {/* Mobile Cards Section - Correct order for mobile */}
-            <div className="lg:hidden order-2 p-2 space-y-3 w-full">
-              {/* Today's Top Pairs */}
-              <TodayTopPairs />
-
-              {/* Total Value Locked */}
-              <TVLCard />
-
-              {/* Top Traders Perps + Spot - Side by Side */}
-              <div className="grid grid-cols-2 gap-2">
+                {/* Top Traders (Perps) */}
                 <TopTradersCard />
-                <TopSpotTradersCard />
-              </div>
 
-              {/* Top 5 Gainers + Top 5 Losers - Side by Side */}
-              <div className="grid grid-cols-2 gap-2">
-                <TopGainersCard />
-                <TopLosersCard />
-              </div>
-
-              {/* Net Tokens + Overall Deposits - Side by Side */}
-              <div className="grid grid-cols-2 gap-2">
-                <NetRemainingCard />
+                {/* Overall Deposits & Withdrawals */}
                 <OverallDepositsCard />
               </div>
 
-              {/* Announcements */}
-              <AnnouncementsPanel />
+              {/* Center Content */}
+              <div className="flex-1 lg:border-r border-border p-2 md:p-6 space-y-2 md:space-y-4 lg:flex-shrink-0 order-1 lg:order-2">
+                {/* Chart Area */}
+                <VolumeChart />
+                <FundFlowChart />
 
-              {/* Trade on SoDex Promo */}
-              <div className="relative overflow-hidden rounded-lg border border-border hover:border-accent/50 transition-all duration-300 group">
-                <img
-                  src="https://sodex.com/_next/image?url=%2Fimg%2Fhome%2Fcontent1-inner.webp&w=1920&q=75"
-                  alt="Trade on SoDex"
-                  className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                <div className="absolute inset-0 flex flex-col items-center justify-end p-4">
-                  <a
-                    href="https://sodex.com/join/TRADING"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full"
-                  >
-                    <button
-                      type="button"
-                      className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 font-sans"
-                    >
-                      Trade on SoDex
-                    </button>
-                  </a>
-                </div>
-              </div>
-            </div>
+                {/* Volume Range Analysis */}
+                <VolumeRangeCard />
 
-            {/* Right Sidebar - Desktop Only */}
-            <div className="hidden lg:block lg:w-72 lg:border-l border-border p-2 md:p-4 space-y-2 md:space-y-4 lg:flex-shrink-0 lg:order-3">
-              {/* Announcements */}
-              <AnnouncementsPanel />
-
-              {/* Top Gainers */}
-              <TopGainersCard />
-
-              {/* Top Losers */}
-              <TopLosersCard />
-
-              {/* SoDex Promo Card */}
-              <div className="relative overflow-hidden rounded-lg border border-border hover:border-accent/50 transition-all duration-300 group">
-                <img
-                  src="https://sodex.com/_next/image?url=%2Fimg%2Fhome%2Fcontent1-inner.webp&w=1920&q=75"
-                  alt="Trade on SoDex"
-                  className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                <div className="absolute inset-0 flex flex-col items-center justify-end p-4">
-                  <a
-                    href="https://sodex.com/join/TRADING"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full"
-                  >
-                    <button
-                      type="button"
-                      className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 font-sans"
-                    >
-                      Trade on SoDex
-                    </button>
-                  </a>
-                </div>
+                {/* Top Trading Pairs */}
+                <TopPairsWidget />
               </div>
 
-              {/* Top Traders Spot */}
-              <TopSpotTradersCard />
+              {/* Mobile Cards Section - Correct order for mobile */}
+              <div className="lg:hidden order-2 p-2 space-y-3 w-full">
+                {/* Today's Top Pairs */}
+                <TodayTopPairs />
 
-              {/* Net Tokens Remaining on SoDEX */}
-              <NetRemainingCard />
+                {/* Total Value Locked */}
+                <TVLCard />
+
+                {/* Top Traders Perps + Spot - Side by Side */}
+                <div className="grid grid-cols-2 gap-2">
+                  <TopTradersCard />
+                  <TopSpotTradersCard />
+                </div>
+
+                {/* Top 5 Gainers + Top 5 Losers - Side by Side */}
+                <div className="grid grid-cols-2 gap-2">
+                  <TopGainersCard />
+                  <TopLosersCard />
+                </div>
+
+                {/* Net Tokens + Overall Deposits - Side by Side */}
+                <div className="grid grid-cols-2 gap-2">
+                  <NetRemainingCard />
+                  <OverallDepositsCard />
+                </div>
+
+                {/* Announcements */}
+                <AnnouncementsPanel />
+
+                {/* Trade on SoDex Promo */}
+                <div className="relative overflow-hidden rounded-lg border border-border hover:border-accent/50 transition-all duration-300 group">
+                  <img
+                    src="https://sodex.com/_next/image?url=%2Fimg%2Fhome%2Fcontent1-inner.webp&w=1920&q=75"
+                    alt="Trade on SoDex"
+                    className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                  <div className="absolute inset-0 flex flex-col items-center justify-end p-4">
+                    <a
+                      href="https://sodex.com/join/TRADING"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full"
+                    >
+                      <button
+                        type="button"
+                        className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 font-sans"
+                      >
+                        Trade on SoDex
+                      </button>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Sidebar - Desktop Only */}
+              <div className="hidden lg:block lg:w-72 lg:border-l border-border p-2 md:p-4 space-y-2 md:space-y-4 lg:flex-shrink-0 lg:order-3">
+                {/* Announcements */}
+                <AnnouncementsPanel />
+
+                {/* Top Gainers */}
+                <TopGainersCard />
+
+                {/* Top Losers */}
+                <TopLosersCard />
+
+                {/* SoDex Promo Card */}
+                <div className="relative overflow-hidden rounded-lg border border-border hover:border-accent/50 transition-all duration-300 group">
+                  <img
+                    src="https://sodex.com/_next/image?url=%2Fimg%2Fhome%2Fcontent1-inner.webp&w=1920&q=75"
+                    alt="Trade on SoDex"
+                    className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                  <div className="absolute inset-0 flex flex-col items-center justify-end p-4">
+                    <a
+                      href="https://sodex.com/join/TRADING"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full"
+                    >
+                      <button
+                        type="button"
+                        className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 font-sans"
+                      >
+                        Trade on SoDex
+                      </button>
+                    </a>
+                  </div>
+                </div>
+
+                {/* Top Traders Spot */}
+                <TopSpotTradersCard />
+
+                {/* Net Tokens Remaining on SoDEX */}
+                <NetRemainingCard />
+              </div>
             </div>
+          </Suspense>
+        )
+      }
+
+      {
+        currentPage === 'tracker' && (
+          <Suspense fallback={<LoadingCard />}>
+            <div className="p-4 md:p-6 overflow-y-auto w-full">
+              <TrackerSection initialSearchAddress={trackerSearchAddress} />
+            </div>
+          </Suspense>
+        )
+      }
+
+      {
+        currentPage === 'portfolio' && (
+          <Suspense fallback={<LoadingCard />}>
+            <div className="p-4 md:p-6 overflow-y-auto w-full space-y-6">
+              <PortfolioSection />
+              <OpenPositions />
+            </div>
+          </Suspense>
+        )
+      }
+
+      {
+        currentPage === 'leaderboard' && (
+          <Suspense fallback={<LoadingCard />}>
+            <LeaderboardPage onBack={() => setCurrentPage('dex-status')} />
+          </Suspense>
+        )
+      }
+
+      {
+        currentPage === 'analyzer' && (
+          <Suspense fallback={<LoadingCard />}>
+            <div className="p-4 md:p-6">
+              <DistributionAnalyzerPage onBack={() => setCurrentPage('dex-status')} />
+            </div>
+          </Suspense>
+        )
+      }
+
+      {
+        currentPage === 'whale-tracker' && (
+          <div className="p-4 md:p-8 max-w-7xl mx-auto w-full">
+            <WhaleTracker />
           </div>
-        </Suspense>
-      )}
+        )
+      }
 
-      {currentPage === 'tracker' && (
-        <Suspense fallback={<LoadingCard />}>
-          <div className="p-4 md:p-6 overflow-y-auto w-full">
-            <TrackerSection initialSearchAddress={trackerSearchAddress} />
-          </div>
-        </Suspense>
-      )}
-
-      {currentPage === 'portfolio' && (
-        <Suspense fallback={<LoadingCard />}>
-          <div className="p-4 md:p-6 overflow-y-auto w-full space-y-6">
-            <PortfolioSection />
-            <OpenPositions />
-          </div>
-        </Suspense>
-      )}
-
-      {currentPage === 'leaderboard' && (
-        <Suspense fallback={<LoadingCard />}>
-          <LeaderboardPage onBack={() => setCurrentPage('dex-status')} />
-        </Suspense>
-      )}
-
-      {currentPage === 'analyzer' && (
-        <Suspense fallback={<LoadingCard />}>
-          <div className="p-4 md:p-6">
-            <DistributionAnalyzerPage onBack={() => setCurrentPage('dex-status')} />
-          </div>
-        </Suspense>
-      )}
-
-      {currentPage === 'whale-tracker' && (
-        <div className="p-4 md:p-8 max-w-7xl mx-auto w-full">
-          <WhaleTracker />
-        </div>
-      )}
-
-      {currentPage === 'about' && (
-        <Suspense fallback={<LoadingCard />}>
-          <AboutSodex />
-        </Suspense>
-      )}
+      {
+        currentPage === 'about' && (
+          <Suspense fallback={<LoadingCard />}>
+            <AboutSodex />
+          </Suspense>
+        )
+      }
 
       {/* Announcement Side Panel */}
       <AnnouncementSidePanel />
 
       {/* Footer - Only show on relevant pages */}
-      {currentPage !== 'dex-status' && currentPage !== 'about' && (
-        <Footer />
-      )}
-    </div>
+      {
+        currentPage !== 'dex-status' && currentPage !== 'about' && (
+          <Footer />
+        )
+      }
+    </div >
   )
 }

@@ -3,6 +3,8 @@
 import React, { useState, useMemo } from 'react';
 import { Card } from '@/components/ui/card';
 import { usePortfolio } from '@/context/portfolio-context';
+import { useTheme } from '@/app/providers';
+import { X } from 'lucide-react';
 
 interface DayTrades {
   date: Date;
@@ -12,7 +14,9 @@ interface DayTrades {
 
 export function MonthlyCalendar() {
   const { positions } = usePortfolio();
+  const { theme } = useTheme();
   const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDay, setSelectedDay] = useState<DayTrades | null>(null);
 
   const dayData = useMemo(() => {
     if (!positions || positions.length === 0) {
@@ -105,28 +109,26 @@ export function MonthlyCalendar() {
           { label: 'Green Days', value: monthStats.winDays, color: 'text-green-400' },
           { label: 'Red Days', value: monthStats.loseDays, color: 'text-red-400' },
         ].map((stat) => (
-          <div key={stat.label} className="bg-card/20 backdrop-blur-xl border border-border/20 rounded-2xl p-4 flex flex-col items-center gap-1">
-            <span className="text-[8px] font-bold text-muted-foreground/40 uppercase tracking-widest">{stat.label}</span>
+          <div key={stat.label} className="bg-card shadow-sm border border-border/50 rounded-2xl p-4 flex flex-col items-center gap-1">
+            <span className="text-[8px] font-bold text-muted-foreground/60 uppercase tracking-widest">{stat.label}</span>
             <span className={`text-base font-bold ${stat.color}`}>{stat.value}</span>
           </div>
         ))}
       </div>
 
       {/* Calendar */}
-      <Card className="p-4 sm:p-6 bg-[#111111] border border-white/[0.06] rounded-3xl shadow-2xl overflow-hidden">
+      <Card className="p-4 sm:p-6 bg-card border border-border rounded-3xl shadow-xl overflow-hidden">
         {/* Header Navigation */}
         <div className="flex items-center justify-center gap-5 mb-6">
-          <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear() - 1, currentDate.getMonth()))} className="text-white/30 hover:text-white transition-colors font-bold text-sm leading-none">&lt;&lt;</button>
-          <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))} className="text-white/30 hover:text-white transition-colors font-bold text-sm leading-none">&lt;</button>
-          <h3 className="text-sm sm:text-base font-bold text-white/90 tracking-wide select-none min-w-[160px] text-center">{monthYear}</h3>
-          <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))} className="text-white/30 hover:text-white transition-colors font-bold text-sm leading-none">&gt;</button>
-          <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear() + 1, currentDate.getMonth()))} className="text-white/30 hover:text-white transition-colors font-bold text-sm leading-none">&gt;&gt;</button>
+          <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1))} className="text-muted-foreground hover:text-foreground transition-colors font-bold text-xl leading-none">&lt;</button>
+          <h3 className="text-sm sm:text-base font-bold text-foreground tracking-wide select-none min-w-[160px] text-center">{monthYear}</h3>
+          <button onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1))} className="text-muted-foreground hover:text-foreground transition-colors font-bold text-xl leading-none">&gt;</button>
         </div>
 
         {/* Weekday Headers */}
         <div className="grid grid-cols-7 gap-1.5 sm:gap-2 mb-1.5 sm:mb-2">
           {weekDays.map((d) => (
-            <div key={d} className="text-center text-[8px] sm:text-[10px] font-bold text-white/50 tracking-widest py-2">
+            <div key={d} className="text-center text-[8px] sm:text-[10px] font-bold text-muted-foreground uppercase tracking-widest py-2">
               {d}
             </div>
           ))}
@@ -151,41 +153,39 @@ export function MonthlyCalendar() {
             let numColor = '';
 
             if (!isCurrentMonth) {
-              cellBg = 'bg-[#0c0c0c] opacity-40';
-              numColor = 'text-white/20';
+              cellBg = 'bg-secondary/10 opacity-30';
+              numColor = 'text-muted-foreground/30';
             } else if (hasActivity) {
               cellBg = isPositive
-                ? 'bg-[#0d2b16] border border-green-700/50 hover:border-green-600/70'
-                : 'bg-[#2b0d0d] border border-red-700/50 hover:border-red-600/70';
-              numColor = 'text-white/80';
+                ? 'bg-green-500/10 border border-green-500/20 hover:border-green-500/40 text-green-600 dark:text-green-400'
+                : 'bg-red-500/10 border border-red-500/20 hover:border-red-500/40 text-red-600 dark:text-red-400';
+              numColor = 'text-foreground/80';
             } else if (isToday) {
-              cellBg = 'bg-[#1c1c1c] border border-white/20';
-              numColor = 'text-white/90';
+              cellBg = 'bg-accent/5 border border-accent/20';
+              numColor = 'text-foreground font-bold';
             } else {
-              cellBg = 'bg-[#191919] border border-transparent hover:bg-[#212121]';
-              numColor = 'text-white/40';
+              cellBg = 'bg-secondary/5 border border-border/10 hover:bg-secondary/10';
+              numColor = 'text-muted-foreground/50';
             }
 
             return (
               <div
                 key={idx}
+                onClick={() => hasActivity && isCurrentMonth && setSelectedDay(dayTrades)}
                 className={`relative rounded-xl sm:rounded-2xl transition-all duration-200 flex flex-col justify-between p-2 sm:p-3 
                   aspect-[3/2.4] sm:aspect-[3/2.2]
-                  ${cellBg} ${isCurrentMonth ? 'cursor-pointer' : 'cursor-default'}`}
+                  ${cellBg} ${hasActivity && isCurrentMonth ? 'cursor-pointer scale-[1.02] shadow-sm' : 'cursor-default'}`}
               >
                 {/* Day number — top left */}
                 <span className={`text-[9px] sm:text-[12px] font-semibold leading-none ${numColor}`}>
                   {date.getDate()}
                 </span>
-
-                {/* PnL info — bottom right */}
+                |
+                {/* Simplified PnL info — bottom right */}
                 {hasActivity && isCurrentMonth && dayTrades && (
                   <div className="flex flex-col items-end text-right mt-auto gap-0.5">
-                    <span className={`text-[7px] sm:text-[9px] font-bold leading-tight ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
-                      {isPositive ? '' : '-'}${Math.abs(dayTrades.pnl).toFixed(2)} P&L
-                    </span>
-                    <span className="text-[6px] sm:text-[8px] text-white/30 font-semibold leading-tight">
-                      {dayTrades.trades.length} Trade{dayTrades.trades.length !== 1 ? 's' : ''}
+                    <span className={`text-[8px] sm:text-[11px] font-bold leading-tight ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
+                      {isPositive ? '+' : '-'}${Math.abs(dayTrades.pnl).toFixed(2)}
                     </span>
                   </div>
                 )}
@@ -194,6 +194,78 @@ export function MonthlyCalendar() {
           })}
         </div>
       </Card>
+
+      {/* Trade Details Popup */}
+      {selectedDay && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setSelectedDay(null)}>
+          <Card
+            className="w-full max-w-lg bg-card border border-border shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-4 border-b border-border flex items-center justify-between bg-secondary/10">
+              <div className="flex flex-col">
+                <h3 className="text-lg font-bold text-foreground">
+                  Trades for {selectedDay.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                </h3>
+                <div className={`text-sm font-bold ${selectedDay.pnl >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                  Daily PnL: {selectedDay.pnl >= 0 ? '+' : '-'}${Math.abs(selectedDay.pnl).toFixed(2)}
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedDay(null)}
+                className="p-2 rounded-full hover:bg-secondary/40 transition-colors"
+              >
+                <X className="w-5 h-5 text-muted-foreground" />
+              </button>
+            </div>
+            <div className="max-h-[60vh] overflow-y-auto p-2">
+              <div className="space-y-2">
+                {selectedDay.trades.map((trade, i) => (
+                  <div key={i} className="flex flex-col p-4 bg-secondary/5 rounded-xl border border-border/50 gap-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex flex-col">
+                        <span className="text-base font-bold text-foreground">{trade.pairName}</span>
+                        <div className="flex gap-2 items-center">
+                          <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${trade.positionSideLabel === 'LONG' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'}`}>
+                            {trade.positionSideLabel} {trade.leverage}x
+                          </span>
+                          <span className="text-[10px] text-muted-foreground uppercase">{new Date(trade.created_at).toLocaleTimeString()}</span>
+                        </div>
+                      </div>
+                      <div className={`text-base font-bold ${trade.realizedPnlValue >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                        {trade.realizedPnlValue >= 0 ? '+' : '-'}${Math.abs(trade.realizedPnlValue).toFixed(2)}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-4 border-t border-border/30 pt-3">
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[10px] text-muted-foreground uppercase font-semibold">Entry</span>
+                        <span className="text-sm font-medium">${parseFloat(trade.avg_entry_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[10px] text-muted-foreground uppercase font-semibold">Exit</span>
+                        <span className="text-sm font-medium">${parseFloat(trade.avg_close_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}</span>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <span className="text-[10px] text-muted-foreground uppercase font-semibold">Size</span>
+                        <span className="text-sm font-medium">{trade.closedSize.toLocaleString()}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="p-4 bg-secondary/5 border-t border-border flex justify-end">
+              <button
+                onClick={() => setSelectedDay(null)}
+                className="px-6 py-2 bg-foreground text-background font-bold rounded-xl hover:opacity-90 transition-opacity"
+              >
+                Close
+              </button>
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }

@@ -615,35 +615,35 @@ export default function Dashboard() {
   }
 
   return (
-    <div>
+    <div className="min-h-screen">
       {/* Header */}
-      <header className="border-b border-border/10 bg-background/20 backdrop-blur-2xl sticky top-0 z-50">
-        <div className="max-w-[1800px] mx-auto flex items-center justify-between h-20 px-6 gap-8">
-          <div className="flex items-center gap-4 flex-shrink-0 cursor-pointer" onClick={() => setCurrentPage('leaderboard')}>
+      <header className="border-b border-white/5 bg-[#0A0A0A]/80 backdrop-blur-2xl sticky top-0 z-50">
+        <div className="max-w-[1800px] mx-auto flex items-center justify-between h-20 px-4 md:px-6 gap-3 md:gap-8">
+          {/* Logo Section */}
+          <div className="flex items-center gap-3 flex-shrink-0 cursor-pointer" onClick={() => setCurrentPage('leaderboard')}>
             <div className="relative">
-              <div className="absolute -inset-1 bg-gradient-to-r from-orange-400 to-orange-600 rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
               <img
                 src={theme === 'dark' ? 'https://sodex.com/_next/image?url=%2Flogo%2Flogo.webp&w=256&q=75' : 'https://testnet.sodex.com/assets/SoDEX-Dh5Mk-Pl.svg'}
                 alt="Sodex Logo"
-                className="relative h-8 w-auto object-contain"
+                className="h-7 md:h-8 w-auto object-contain"
                 loading="eager"
-                decoding="async"
               />
             </div>
-            <div className="flex flex-col">
-              <span className="text-xs font-bold text-orange-500 leading-none">Intelligence</span>
-              <span className="text-xs font-bold text-foreground/80 tracking-tight">TERMINAL</span>
+            <div className="hidden sm:flex flex-col">
+              <span className="text-[10px] md:text-xs font-bold text-orange-500 leading-none">Intelligence</span>
+              <span className="text-[10px] md:text-xs font-bold text-white/80 tracking-tight">TERMINAL</span>
             </div>
           </div>
 
-          <div className="flex-1 max-w-xl hidden lg:block">
-            <div className="relative group">
-              <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                <Search className="w-4 h-4 text-muted-foreground/40 group-focus-within:text-orange-400 transition-colors" />
+          {/* Search Bar - Visible on Mobile and Desktop */}
+          <div className="flex-1 max-w-xl group">
+            <div className="relative">
+              <div className="absolute inset-y-0 left-3 md:left-4 flex items-center pointer-events-none">
+                <Search className="w-3.5 h-3.5 md:w-4 md:h-4 text-white/20 group-focus-within:text-orange-400 transition-colors" />
               </div>
               <Input
-                placeholder="Scan Network Address..."
-                className="h-10 pl-11 pr-4 bg-secondary/5 border-border/10 focus:border-orange-500/30 focus:ring-0 rounded-2xl text-sm tracking-tight transition-all placeholder:text-muted-foreground/20"
+                placeholder="Search address"
+                className="h-9 md:h-10 pl-9 md:pl-11 pr-4 bg-white/[0.03] border-white/5 focus:border-orange-500/30 focus:ring-0 rounded-xl md:rounded-2xl text-[13px] md:text-sm tracking-tight transition-all placeholder:text-white/20"
                 value={searchAddressInput}
                 onChange={(e) => setSearchAddressInput(e.target.value)}
                 onKeyDown={handleSearchBarSubmit}
@@ -651,77 +651,42 @@ export default function Dashboard() {
             </div>
           </div>
 
-          <nav className="hidden xl:flex items-center gap-2">
-            {[
-              { id: 'dex-status', label: 'Network' },
-              { id: 'tracker', label: 'Monitor' },
-              { id: 'portfolio', label: 'Assets' },
-              { id: 'leaderboard', label: 'Rankings' },
-              { id: 'analyzer', label: 'Forensics' },
-            ].map((item) => (
-              <button
-                key={item.id}
-                onClick={() => setCurrentPage(item.id as any)}
-                className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 ${currentPage === item.id
-                  ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
-                  : 'text-muted-foreground/60 hover:text-foreground hover:bg-secondary/10'
-                  }`}
-              >
-                {item.label}
-              </button>
-            ))}
+          <div className="flex items-center gap-2 md:gap-3">
+            <nav className="hidden xl:flex items-center gap-2 mr-2">
+              {[
+                { id: 'dex-status', label: 'Network' },
+                { id: 'tracker', label: 'Monitor' },
+                { id: 'portfolio', label: 'Assets' },
+                { id: 'leaderboard', label: 'Rankings' },
+                { id: 'analyzer', label: 'Forensics' },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setCurrentPage(item.id as any)}
+                  className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 ${currentPage === item.id
+                    ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
+                    : 'text-white/40 hover:text-white hover:bg-white/5'
+                    }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </nav>
 
-            <div
-              className="relative"
-              onMouseEnter={() => setShowMoreMenu(true)}
-              onMouseLeave={() => setShowMoreMenu(false)}
-            >
-              <button
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 ${currentPage === 'about' || currentPage === 'whale-tracker'
-                  ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20'
-                  : 'text-muted-foreground/60 hover:text-foreground hover:bg-secondary/10'
-                  }`}
-              >
-                Access
-                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${showMoreMenu ? 'rotate-180' : ''}`} />
-              </button>
-
-              {showMoreMenu && (
-                <div className="absolute top-full right-0 pt-2 w-56 z-50">
-                  <div className="bg-card/90 backdrop-blur-2xl border border-border/20 rounded-[2rem] shadow-2xl p-2 animate-in fade-in slide-in-from-top-4 duration-300">
-                    <button
-                      onClick={() => { setCurrentPage('whale-tracker'); setShowMoreMenu(false); }}
-                      className={`w-full text-left px-5 py-3 rounded-2xl text-xs font-medium transition-all ${currentPage === 'whale-tracker' ? 'bg-orange-500 text-white' : 'text-muted-foreground/60 hover:bg-secondary/20 hover:text-foreground'}`}
-                    >
-                      Whale Signals
-                    </button>
-                    <button
-                      onClick={() => { setCurrentPage('about'); setShowMoreMenu(false); }}
-                      className={`w-full text-left px-5 py-3 rounded-2xl text-xs font-medium transition-all ${currentPage === 'about' ? 'bg-orange-500 text-white' : 'text-muted-foreground/60 hover:bg-secondary/20 hover:text-foreground'}`}
-                    >
-                      System Protocol
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </nav>
-
-          <div className="flex items-center gap-3">
             {mounted && (
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={toggleTheme}
-                className="h-10 w-10 rounded-2xl bg-secondary/5 border border-border/5 text-muted-foreground/60 hover:text-orange-400 hover:bg-orange-400/5 transition-all"
+                className="h-9 w-9 md:h-10 md:w-10 rounded-xl md:rounded-2xl bg-white/[0.03] border border-white/5 text-white/40 hover:text-orange-400 hover:bg-orange-400/5 transition-all"
               >
-                {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5" />}
+                {theme === 'light' ? <Moon className="w-4 h-4 md:w-5 md:h-5" /> : <Sun className="w-4 h-4 md:w-5 md:h-5" />}
               </Button>
             )}
 
-            <div className="h-6 w-[1px] bg-border/10 hidden md:block mx-1" />
+            <div className="hidden md:block h-6 w-[1px] bg-white/5 mx-1" />
 
-            <a href="https://sodex.com/join/TRADING" target="_blank" rel="noopener noreferrer" className="hidden md:block">
+            <a href="https://sodex.com/join/TRADING" target="_blank" rel="noopener noreferrer" className="hidden lg:block">
               <Button className="h-10 px-6 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl text-[10px] font-bold uppercase tracking-[0.2em] italic shadow-lg shadow-orange-500/20 transition-all active:scale-95">
                 Execute Trade
               </Button>
@@ -731,6 +696,7 @@ export default function Dashboard() {
           </div>
         </div>
       </header>
+
 
       {/* Main Content - Only render active tab */}
       {currentPage === 'dex-status' && (

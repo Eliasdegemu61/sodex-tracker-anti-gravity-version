@@ -67,7 +67,7 @@ export function MobileNavMenu({ currentPage, onNavigate }: MobileNavMenuProps) {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "flex items-center justify-center w-10 h-10 rounded-xl transition-all active:scale-90 border",
+          "flex items-center justify-center w-9 h-9 rounded-xl transition-all active:scale-90 border",
           theme === 'light'
             ? "bg-black/5 border-black/10 text-black hover:text-orange-500 hover:border-orange-500/50"
             : "bg-white/[0.03] border-white/5 text-white/40 hover:text-orange-400 hover:border-orange-400/50",
@@ -79,8 +79,8 @@ export function MobileNavMenu({ currentPage, onNavigate }: MobileNavMenuProps) {
 
       {/* Popover Menu */}
       {isOpen && (
-        <div className="fixed inset-x-0 top-[76px] z-[100] px-4 animate-in fade-in slide-in-from-top-2 duration-200">
-          <div className="bg-[#0D0D0D] border border-white/10 rounded-[2rem] shadow-[0_40px_80px_rgba(0,0,0,0.9)] p-2 max-w-[280px] ml-auto">
+        <div className="fixed inset-x-0 top-[70px] z-[100] px-4 animate-in fade-in slide-in-from-top-2 duration-200">
+          <div className="bg-[#0D0D0D] border border-white/10 rounded-[1.8rem] shadow-[0_40px_80px_rgba(0,0,0,0.9)] p-1 max-w-[220px] ml-auto">
             <div className="flex flex-col gap-1">
               {navItems.map((item) => {
                 const Icon = item.icon;
@@ -90,18 +90,18 @@ export function MobileNavMenu({ currentPage, onNavigate }: MobileNavMenuProps) {
                     key={item.id}
                     onClick={() => handleNavClick(item.id)}
                     className={cn(
-                      "flex items-center gap-4 px-5 py-4 rounded-[1.5rem] transition-all duration-200 text-left w-full border border-transparent",
+                      "flex items-center gap-3 px-3.5 py-2 rounded-xl transition-all duration-200 text-left w-full border border-transparent",
                       isActive
                         ? "bg-[#251808] text-[#F97316] border-[#F97316]/40 shadow-[inset_0_0_20px_rgba(249,115,22,0.05)]"
                         : "text-white/60 hover:text-white hover:bg-white/5"
                     )}
                   >
                     <Icon className={cn(
-                      "w-5 h-5 stroke-[1.5]",
+                      "w-4 h-4 stroke-[1.5]",
                       isActive ? "text-[#F97316]" : "text-white/40"
                     )} />
                     <span className={cn(
-                      "text-[15px] font-medium tracking-tight",
+                      "text-[13.5px] font-medium tracking-tight",
                       isActive ? "text-[#F97316]" : "text-white/90"
                     )}>
                       {item.label}

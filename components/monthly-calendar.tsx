@@ -113,7 +113,7 @@ export function MonthlyCalendar() {
           { label: 'Green Days', value: monthStats.winDays, color: 'text-green-400' },
           { label: 'Red Days', value: monthStats.loseDays, color: 'text-red-400' },
         ].map((stat) => (
-          <div key={stat.label} className="bg-card shadow-sm border border-border/50 rounded-2xl p-4 flex flex-col items-center gap-1">
+          <div key={stat.label} className="bg-card/20 backdrop-blur-xl shadow-sm border border-border/20 rounded-2xl p-4 flex flex-col items-center gap-1">
             <span className="text-[8px] font-bold text-muted-foreground/60 uppercase tracking-widest">{stat.label}</span>
             <span className={`text-base font-bold ${stat.color}`}>{stat.value}</span>
           </div>
@@ -121,7 +121,7 @@ export function MonthlyCalendar() {
       </div>
 
       {/* Calendar */}
-      <Card className="p-4 sm:p-6 bg-card border border-border rounded-3xl shadow-xl overflow-hidden">
+      <Card className="p-4 sm:p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-xl overflow-hidden">
         {/* Header Navigation - Modern Layout */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex flex-col">
@@ -221,7 +221,7 @@ export function MonthlyCalendar() {
       {selectedDay && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setSelectedDay(null)}>
           <Card
-            className="w-full max-w-lg bg-card border border-border shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
+            className="w-full max-w-lg bg-card/90 backdrop-blur-2xl border border-border/20 shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-4 border-b border-border flex items-center justify-between bg-secondary/10">

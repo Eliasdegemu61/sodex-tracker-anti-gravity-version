@@ -473,12 +473,6 @@ export function PortfolioOverview() {
                       #{rankData.spotVolumeRank || '-'}
                     </p>
                   </div>
-                  <div className="text-right">
-                    <p className="text-[7px] font-bold text-muted-foreground/30 uppercase tracking-tighter">yield</p>
-                    <p className={`text-sm font-bold tracking-tighter ${getRankColor(rankData.pnlRank)}`}>
-                      #{rankData.pnlRank || '-'}
-                    </p>
-                  </div>
                 </div>
                 <p className="text-[8px] font-bold text-accent/20 uppercase tracking-widest">rank</p>
               </div>
@@ -533,15 +527,15 @@ export function PortfolioOverview() {
               </div>
 
               {/* Volume Stat */}
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest flex items-center gap-2">
                   <Activity className="w-2.5 h-2.5" /> Volume
                 </p>
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   <p className="text-xl font-bold tracking-tight text-foreground/80">
                     ${(totalVolume / 1000).toFixed(1)}k
                   </p>
-                  <div className="flex flex-col gap-0.5">
+                  <div className="flex flex-col">
                     <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-tighter">
                       <span className="text-muted-foreground/20">futures</span>
                       <span className="text-foreground/40">${(futuresVolume / 1000).toFixed(1)}k</span>
@@ -555,15 +549,15 @@ export function PortfolioOverview() {
               </div>
 
               {/* Fees Stat */}
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest flex items-center gap-2">
                   <Zap className="w-2.5 h-2.5" /> Fees Paid
                 </p>
-                <div className="space-y-1">
+                <div className="space-y-0.5">
                   <p className="text-xl font-bold tracking-tight text-foreground/80">
                     ${totalFees.toFixed(2)}
                   </p>
-                  <div className="flex flex-col gap-0.5">
+                  <div className="flex flex-col">
                     <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-tighter">
                       <span className="text-muted-foreground/20">futures</span>
                       <span className="text-foreground/40">${futuresFees.toFixed(1)}</span>

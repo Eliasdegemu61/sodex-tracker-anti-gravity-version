@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { PortfolioOverview } from './portfolio-overview';
-import { PortfolioHeatmap } from './portfolio-heatmap';
 import { PnLChart } from './pnl-chart';
 import { PositionsTable } from './positions-table';
 import { WalletBindForm } from './wallet-bind-form';
@@ -14,8 +13,6 @@ import { FundFlowTable } from './fund-flow-table';
 import { AssetFlowCard } from './asset-flow-card';
 import { MonthlyCalendar } from './monthly-calendar';
 import { usePortfolio } from '@/context/portfolio-context';
-import { RankingCard } from './ranking-card';
-import { VaultCard } from './vault-card';
 import { DemoTransition } from './demo-transition';
 
 // Loading Spinner Component
@@ -156,18 +153,10 @@ export function PortfolioSection() {
           {walletAddress && <AssetFlowCard walletAddress={sourceWalletAddress || walletAddress} />}
         </div>
 
-
-
-        {/* Calendar and Ranking Side by Side */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <MonthlyCalendar />
-          </div>
-          <RankingCard walletAddress={walletAddress} />
+        {/* Calendar */}
+        <div className="grid grid-cols-1 gap-6">
+          <MonthlyCalendar />
         </div>
-
-        {/* Trading Activity Heatmap */}
-        <PortfolioHeatmap />
       </div>
 
       <AlertDialog open={showUnbindConfirm} onOpenChange={setShowUnbindConfirm}>

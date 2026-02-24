@@ -7,7 +7,6 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Search, X, Loader2 } from 'lucide-react';
 import { PortfolioOverview } from './portfolio-overview';
-import { PortfolioHeatmap } from './portfolio-heatmap';
 import { PnLChart } from './pnl-chart';
 import { PositionsTable } from './positions-table';
 import { OpenPositions } from './open-positions';
@@ -17,8 +16,6 @@ import { MonthlyCalendar } from './monthly-calendar';
 import { PortfolioProvider } from '@/context/portfolio-context';
 import type { EnrichedPosition } from '@/lib/sodex-api';
 import { getUserIdByAddress, fetchAllPositions, enrichPositions } from '@/lib/sodex-api';
-import { RankingCard } from './ranking-card';
-import { VaultCard } from './vault-card';
 import { DEMO_SOURCE_ADDRESS, DEMO_DISPLAY_ADDRESS } from '@/lib/demo-config';
 import { usePortfolio } from '@/context/portfolio-context';
 import { DemoTransition } from './demo-transition';
@@ -81,10 +78,6 @@ function TrackerLoadingSkeleton() {
         </Card>
       </div>
 
-      {/* Heatmap Skeleton */}
-      <Card className="p-6 bg-card border border-border h-64">
-        <div className="h-full bg-secondary/50 rounded animate-pulse"></div>
-      </Card>
     </div>
   );
 }
@@ -310,19 +303,13 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
 
 
 
-        {/* Calendar and Ranking Side by Side */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <MonthlyCalendar />
-          </div>
-          <RankingCard walletAddress={sourceWalletAddress || walletAddress || ''} />
+        {/* Calendar (Full width now rankings are integrated) */}
+        <div className="grid grid-cols-1 gap-6">
+          <MonthlyCalendar />
         </div>
 
         {/* Open Positions */}
         <OpenPositions />
-
-        {/* Trading Activity Heatmap */}
-        <PortfolioHeatmap />
       </div>
 
     </PortfolioProvider>

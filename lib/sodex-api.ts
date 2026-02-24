@@ -205,6 +205,21 @@ export interface BalanceData {
   availableBalance: string;
 }
 
+export interface TokenBalance {
+  token: string;
+  coin: string;
+  balance: number;
+}
+
+export interface DetailedBalanceData {
+  totalUsdValue: number;
+  tokens: TokenBalance[];
+  futuresBalance: number;
+  spotBalance: number;
+  hasUnpricedAssets: boolean;
+  unpricedTokens: string[];
+}
+
 export interface AccountDetailsData {
   positions: OpenPositionData[];
   balances: BalanceData[];
@@ -424,7 +439,7 @@ async function fetchCoinGeckoPrice(tokenName: string): Promise<number | null> {
   }
 }
 
-export async function fetchDetailedBalance(userId: string | number): Promise<BalanceData> {
+export async function fetchDetailedBalance(userId: string | number): Promise<DetailedBalanceData> {
   const cacheKey = `detailedBalance_${userId}`;
 
   return cacheManager.deduplicate(cacheKey, async () => {
@@ -446,7 +461,7 @@ export async function fetchDetailedBalance(userId: string | number): Promise<Bal
       console.log('[v0] Futures USDC balance:', futuresBalance);
 
       // Fetch detailed spot balance with precise USD calculations
-      let spotDetailedBalance = { tokens: [] as any[], totalUsdValue: 0 };
+      let spotDetailedBalance = { tokens: [] as any[], totalUsdValue: 0, hasUnpricedAssets: false, unpricedTokens: [] as string[] };
       try {
         spotDetailedBalance = await fetchDetailedSpotBalance(accountId);
         console.log('[v0] Spot balance calculated - total USD:', spotDetailedBalance.totalUsdValue);
@@ -486,22 +501,14 @@ export async function fetchTotalBalance(userId: string | number): Promise<{ spot
 
   return cacheManager.deduplicate(cacheKey, async () => {
     try {
-      // Fetch account details and spot balance in parallel
-      const [accountData, spotResponse] = await Promise.all([
-        fetchAccountDetails(userId),
-        fetch(`/api/spot/balance?user_id=${userId}`),
-      ]);
+      // Fetch account details for futures balance
+      const accountData = await fetchAccountDetails(userId);
 
       // Get futures balance directly from account data (already in USD)
       const futuresBalance = parseFloat(accountData.balances[0]?.walletBalance || '0');
 
-      // Get spot balance directly from API (totalUsdtAmount is already calculated USD value)
+      // Spot balance fetch was removed as it was failing and unused in UX
       let spotBalance = 0;
-      if (spotResponse.ok) {
-        const spotData = await spotResponse.json();
-        spotBalance = parseFloat(spotData.data?.totalUsdtAmount || '0');
-        console.log('[v0] Spot balance from API:', spotBalance);
-      }
 
       const totalBalance = spotBalance + futuresBalance;
 

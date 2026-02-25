@@ -449,10 +449,14 @@ export function PortfolioOverview() {
                   <DollarSign className="w-3 h-3" /> Total Net Worth
                 </p>
                 <div className="flex items-baseline gap-3">
-                  <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
-                    ${combinedBalance.toLocaleString('en-US', { maximumFractionDigits: 2 })}
-                  </h2>
-                  {hasUnpriced && (
+                  {isLoadingBalance ? (
+                    <div className="h-10 w-48 rounded-xl bg-secondary/40 animate-pulse" />
+                  ) : (
+                    <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+                      ${combinedBalance.toLocaleString('en-US', { maximumFractionDigits: 2 })}
+                    </h2>
+                  )}
+                  {!isLoadingBalance && hasUnpriced && (
                     <span className="text-[10px] font-bold text-accent/50 lowercase animate-pulse">+ other assets</span>
                   )}
                 </div>

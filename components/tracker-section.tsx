@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Search, X, Loader2 } from 'lucide-react';
 import { PortfolioOverview } from './portfolio-overview';
 import { PnLChart } from './pnl-chart';
+import { PositionsTable } from './positions-table';
 import { OpenPositions } from './open-positions';
 import { FundFlowTable } from './fund-flow-table';
 import { AssetFlowCard } from './asset-flow-card';
@@ -290,6 +291,9 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
             <PnLChart />
           </div>
         </div>
+
+        {/* Positions Table */}
+        <PositionsTable />
 
         {/* Fund Flow Table and Asset Flow Card */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

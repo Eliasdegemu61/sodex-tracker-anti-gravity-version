@@ -133,7 +133,8 @@ export function OpenPositions() {
         positionId: position.positionId,
         margin_type: position.positionType
       };
-    });
+      // Sort by positionId ascending for a stable, consistent order on every refresh
+    }).sort((a, b) => String(a.positionId).localeCompare(String(b.positionId)));
   }, [openPositions, openOrders]);
 
   // Pagination logic

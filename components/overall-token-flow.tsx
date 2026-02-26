@@ -16,6 +16,14 @@ export function OverallDepositsCard() {
     const [data, setData] = useState<TokenFlow[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [showAll, setShowAll] = useState(false)
+    const [isMobile, setIsMobile] = useState(false)
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768)
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
 
     useEffect(() => {
         async function fetchData() {
@@ -59,7 +67,8 @@ export function OverallDepositsCard() {
         )
     }
 
-    const displayData = showAll ? data : data.slice(0, 10);
+    const limit = isMobile ? 5 : 10;
+    const displayData = showAll ? data : data.slice(0, limit);
 
     return (
         <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm group">
@@ -90,12 +99,12 @@ export function OverallDepositsCard() {
                     </div>
                 ))}
             </div>
-            {data.length > 10 && (
+            {data.length > limit && (
                 <button
                     onClick={() => setShowAll(!showAll)}
                     className="w-full mt-4 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
                 >
-                    {showAll ? 'See less' : 'See more'}
+                    {showAll ? 'See less' : `See more (${data.length - limit} more)`}
                 </button>
             )}
         </Card>
@@ -106,6 +115,14 @@ export function NetRemainingCard() {
     const [data, setData] = useState<TokenFlow[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const [showAll, setShowAll] = useState(false)
+    const [isMobile, setIsMobile] = useState(false)
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768)
+        checkMobile()
+        window.addEventListener('resize', checkMobile)
+        return () => window.removeEventListener('resize', checkMobile)
+    }, [])
 
     useEffect(() => {
         async function fetchData() {
@@ -163,7 +180,8 @@ export function NetRemainingCard() {
         )
     }
 
-    const displayData = showAll ? data : data.slice(0, 10);
+    const limit = isMobile ? 5 : 10;
+    const displayData = showAll ? data : data.slice(0, limit);
 
     return (
         <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm flex-1 group">
@@ -182,16 +200,14 @@ export function NetRemainingCard() {
                     </div>
                 ))}
             </div>
-            {data.length > 10 && (
+            {data.length > limit && (
                 <button
                     onClick={() => setShowAll(!showAll)}
                     className="w-full mt-4 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
                 >
-                    {showAll ? 'See less' : 'See more'}
+                    {showAll ? 'See less' : `See more (${data.length - limit} more)`}
                 </button>
             )}
         </Card>
     )
 }
-
-

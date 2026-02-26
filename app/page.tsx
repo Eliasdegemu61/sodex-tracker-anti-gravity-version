@@ -31,7 +31,7 @@ import { MobileNavMenu } from '@/components/mobile-nav-menu'
 import { NewTradersTracker } from '@/components/new-traders-tracker'
 import { AnnouncementSidePanel } from '@/components/announcement-side-panel'
 import { PortfolioSection } from '@/components/portfolio-section'
-import { OpenPositions } from '@/components/open-positions'
+
 import { TrackerSection } from '@/components/tracker-section'
 import { Footer } from '@/components/footer'
 import { SopointsAnalyzer } from '@/components/sopoints-analyzer'
@@ -893,7 +893,6 @@ export default function Dashboard() {
           <Suspense fallback={<LoadingCard />}>
             <div className="p-4 md:p-6 overflow-y-auto w-full space-y-6">
               <PortfolioSection />
-              <OpenPositions />
             </div>
           </Suspense>
         )

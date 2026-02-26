@@ -17,6 +17,7 @@ export function OverallDepositsCard() {
     const [isLoading, setIsLoading] = useState(true)
     const [showAll, setShowAll] = useState(false)
     const [isMobile, setIsMobile] = useState(false)
+    const [expandedTokens, setExpandedTokens] = useState<Set<string>>(new Set())
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth < 768)
@@ -70,6 +71,15 @@ export function OverallDepositsCard() {
     const limit = isMobile ? 5 : 10;
     const displayData = showAll ? data : data.slice(0, limit);
 
+    const toggleToken = (token: string) => {
+        setExpandedTokens(prev => {
+            const next = new Set(prev)
+            if (next.has(token)) next.delete(token)
+            else next.add(token)
+            return next
+        })
+    }
+
     return (
         <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm group">
             <div className="flex items-center justify-between mb-4">
@@ -77,27 +87,44 @@ export function OverallDepositsCard() {
                 <Wallet className="w-3.5 h-3.5 text-orange-400/40" />
             </div>
             <div className="space-y-2">
-                {displayData.map((item) => (
-                    <div key={item.token} className="flex items-center justify-between p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-orange-500/5 transition-all duration-300">
-                        <span className="text-[11px] font-bold text-foreground/80 w-16 truncate">{item.token}</span>
-                        <div className="flex items-center gap-4">
-                            <div className="flex flex-col items-end">
-                                <span className="text-[7px] text-muted-foreground/20 font-bold   leading-none mb-1">Inflow</span>
-                                <span className="flex items-center gap-1 text-[10px] font-bold text-green-400">
-                                    <ArrowDownRight className="w-2.5 h-2.5" />
-                                    {formatNumber(item.overall_deposit)}
-                                </span>
+                {displayData.map((item) => {
+                    const isExpanded = expandedTokens.has(item.token)
+                    return (
+                        <div
+                            key={item.token}
+                            onClick={() => toggleToken(item.token)}
+                            className="cursor-pointer p-3 bg-secondary/5 rounded-2xl border border-border/5 hover:bg-orange-500/5 transition-all duration-300"
+                        >
+                            {/* Collapsed: token name + arrow indicators */}
+                            <div className="flex items-center justify-between">
+                                <span className="text-[11px] font-bold text-foreground/80 w-16 truncate">{item.token}</span>
+                                <div className="flex items-center gap-1.5">
+                                    <ArrowDownRight className="w-3 h-3 text-green-400" />
+                                    <ArrowUpRight className="w-3 h-3 text-red-400" />
+                                </div>
                             </div>
-                            <div className="flex flex-col items-end">
-                                <span className="text-[7px] text-muted-foreground/20 font-bold   leading-none mb-1">Outflow</span>
-                                <span className="flex items-center gap-1 text-[10px] font-bold text-red-400">
-                                    <ArrowUpRight className="w-2.5 h-2.5" />
-                                    {formatNumber(item.overall_withdrawal)}
-                                </span>
-                            </div>
+                            {/* Expanded: full inflow/outflow details */}
+                            {isExpanded && (
+                                <div className="flex items-center gap-4 mt-3 pt-3 border-t border-border/10">
+                                    <div className="flex flex-col items-start flex-1">
+                                        <span className="text-[7px] text-muted-foreground/30 font-bold uppercase leading-none mb-1">Inflow</span>
+                                        <span className="flex items-center gap-1 text-[10px] font-bold text-green-400">
+                                            <ArrowDownRight className="w-2.5 h-2.5" />
+                                            {formatNumber(item.overall_deposit)}
+                                        </span>
+                                    </div>
+                                    <div className="flex flex-col items-end flex-1">
+                                        <span className="text-[7px] text-muted-foreground/30 font-bold uppercase leading-none mb-1">Outflow</span>
+                                        <span className="flex items-center gap-1 text-[10px] font-bold text-red-400">
+                                            <ArrowUpRight className="w-2.5 h-2.5" />
+                                            {formatNumber(item.overall_withdrawal)}
+                                        </span>
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                    </div>
-                ))}
+                    )
+                })}
             </div>
             {data.length > limit && (
                 <button

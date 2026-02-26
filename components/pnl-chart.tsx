@@ -1,7 +1,7 @@
 'use client';
 
 import { Card } from '@/components/ui/card';
-import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, Area } from 'recharts';
+import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, Area, ReferenceLine } from 'recharts';
 import { usePortfolio } from '@/context/portfolio-context';
 import { useMemo, useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -113,6 +113,28 @@ export function PnLChart({ title = 'Profit & Loss' }: PnLChartProps) {
 
   const hasData = chartData.length > 0;
 
+  // New: Calculate synchronized domains to align the zero line
+  const domains = useMemo(() => {
+    if (!hasData) return { daily: [0, 0], cumulative: [0, 0] };
+
+    const dailyValues = chartData.map(d => d.pnl);
+    const cumValues = chartData.map(d => d.cumulative);
+
+    const dMin = Math.min(...dailyValues, 0);
+    const dMax = Math.max(...dailyValues, 0);
+    const cMin = Math.min(...cumValues, 0);
+    const cMax = Math.max(...cumValues, 0);
+
+    // Make domains symmetric around 0 to guarantee alignment in the center
+    const dAbs = Math.max(Math.abs(dMin), Math.abs(dMax)) * 1.1;
+    const cAbs = Math.max(Math.abs(cMin), Math.abs(cMax)) * 1.25; // More headroom for the line
+
+    return {
+      daily: [-dAbs, dAbs],
+      cumulative: [-cAbs, cAbs]
+    };
+  }, [chartData, hasData]);
+
   return (
     <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
       <div className="mb-6">
@@ -160,19 +182,25 @@ export function PnLChart({ title = 'Profit & Loss' }: PnLChartProps) {
               />
               <YAxis
                 yAxisId="cumulative-axis"
+                domain={domains.cumulative}
                 stroke="#ffffff10"
                 tick={{ fill: '#f97316', fontSize: 9, fontWeight: 700, fontFamily: 'monospace' }}
+                tickFormatter={(value) => value.toLocaleString('en-US', { maximumFractionDigits: 2 })}
                 axisLine={false}
                 tickLine={false}
                 orientation="left"
+                hide={false}
               />
               <YAxis
                 yAxisId="daily-axis"
+                domain={domains.daily}
                 stroke="#ffffff10"
                 tick={{ fill: '#ffffff30', fontSize: 9, fontWeight: 700, fontFamily: 'monospace' }}
+                tickFormatter={(value) => value.toLocaleString('en-US', { maximumFractionDigits: 2 })}
                 axisLine={false}
                 tickLine={false}
                 orientation="right"
+                hide={false}
               />
               <Tooltip
                 contentStyle={{
@@ -185,7 +213,7 @@ export function PnLChart({ title = 'Profit & Loss' }: PnLChartProps) {
                   boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
                   backdropFilter: 'blur(10px)'
                 }}
-                itemStyle={{ fontSize: '10px', fontWeight: 700, textTransform: 'uppercase' }}
+                itemStyle={{ fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', color: '#fff' }}
                 labelStyle={{ color: '#ffffff30', marginBottom: '4px', fontSize: '9px' }}
                 cursor={{ stroke: 'rgba(255,255,255,0.05)', strokeWidth: 1 }}
                 formatter={(value: any, name: any, props: any) => {
@@ -200,6 +228,8 @@ export function PnLChart({ title = 'Profit & Loss' }: PnLChartProps) {
                   return [displayValue, 'Daily PnL'];
                 }}
               />
+              {/* Unified zero line using the cumulative axis (scales are aligned now) */}
+              <ReferenceLine yAxisId="cumulative-axis" y={0} stroke="rgba(255,255,255,0.1)" strokeWidth={1} strokeDasharray="4 4" />
               <Bar
                 yAxisId="daily-axis"
                 dataKey="pnl"

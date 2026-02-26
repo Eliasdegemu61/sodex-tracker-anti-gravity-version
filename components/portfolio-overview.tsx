@@ -13,46 +13,15 @@ import { useSessionCache } from '@/context/session-cache-context';
 import { cn } from '@/lib/utils';
 
 // Cool loading animation component with gradient shimmer effect
-function LoadingAnimation() {
+function LoadingShimmer({ className }: { className?: string }) {
   return (
-    <div className="flex items-center gap-2">
+    <div className={cn("relative overflow-hidden bg-muted/20 rounded-lg animate-pulse", className)}>
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" style={{ animationName: 'shimmer' }} />
       <style>{`
         @keyframes shimmer {
-          0% {
-            background-position: -1000px 0;
-          }
-          100% {
-            background-position: 1000px 0;
-          }
-        }
-        @keyframes pulse-glow {
-          0%, 100% {
-            opacity: 0.4;
-            box-shadow: 0 0 6px rgba(var(--color-accent), 0.4);
-          }
-          50% {
-            opacity: 1;
-            box-shadow: 0 0 12px rgba(var(--color-accent), 0.8);
-          }
-        }
-        .loading-bar {
-          animation: shimmer 2s infinite;
-          background: linear-gradient(
-            90deg,
-            transparent,
-            rgba(139, 92, 246, 0.3),
-            transparent
-          );
-          background-size: 1000px 100%;
-        }
-        .pulse-dot {
-          animation: pulse-glow 1.5s ease-in-out infinite;
+          100% { transform: translateX(100%); }
         }
       `}</style>
-      <div className="pulse-dot w-2 h-2 bg-accent rounded-full" style={{ animationDelay: '0s' }} />
-      <div className="pulse-dot w-2 h-2 bg-accent rounded-full" style={{ animationDelay: '0.3s' }} />
-      <div className="pulse-dot w-2 h-2 bg-accent rounded-full" style={{ animationDelay: '0.6s' }} />
-      <div className="loading-bar flex-1 h-2 rounded-full" />
     </div>
   );
 }
@@ -256,9 +225,13 @@ export function PortfolioOverview() {
                 <DollarSign className="w-3 h-3 text-orange-500" /> Total Balance
               </p>
               <div className="flex items-baseline gap-2">
-                <h2 className="text-3xl md:text-4xl font-black italic tracking-tighter text-foreground drop-shadow-sm">
-                  ${totalNetWorth.toLocaleString('en-US', { maximumFractionDigits: 0 })}
-                </h2>
+                {loading.balances && totalNetWorth === 0 ? (
+                  <LoadingShimmer className="h-10 w-32 md:h-12 md:w-40" />
+                ) : (
+                  <h2 className="text-3xl md:text-4xl font-black italic tracking-tighter text-foreground drop-shadow-sm">
+                    ${totalNetWorth.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                  </h2>
+                )}
                 {balances.hasUnpricedAssets && (
                   <span className="text-[10px] font-bold text-accent/40">+ assets</span>
                 )}
@@ -267,15 +240,19 @@ export function PortfolioOverview() {
 
             <div className="flex flex-col gap-2.5 pt-6 border-t border-border/10 max-w-[180px]">
               {[
-                { label: 'Futures', value: balances.futures, color: 'text-foreground/60' },
-                { label: 'Spot', value: balances.spot, color: 'text-foreground/60' },
-                { label: 'Vault', value: balances.vault, color: 'text-orange-500 font-black' }
+                { label: 'Futures', value: balances.futures, color: 'text-foreground/60', isLoading: loading.balances },
+                { label: 'Spot', value: balances.spot, color: 'text-foreground/60', isLoading: loading.balances },
+                { label: 'Vault', value: balances.vault, color: 'text-orange-500 font-black', isLoading: loading.vault }
               ].map((item, idx) => (
                 <div key={idx} className="flex items-center justify-between group/item">
                   <span className="text-[9px] text-muted-foreground/60 font-bold uppercase tracking-widest group-hover/item:text-muted-foreground/80 transition-colors">{item.label}</span>
-                  <span className={cn("text-[11px] font-bold transition-all group-hover/item:scale-105", item.color)}>
-                    ${item.value.toLocaleString('en-US', { maximumFractionDigits: 0 })}
-                  </span>
+                  {item.isLoading && item.value === 0 ? (
+                    <LoadingShimmer className="h-4 w-16" />
+                  ) : (
+                    <span className={cn("text-[11px] font-bold transition-all group-hover/item:scale-105", item.color)}>
+                      ${item.value.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
@@ -324,9 +301,13 @@ export function PortfolioOverview() {
                 <Target className="w-2.5 h-2.5" /> Vault
               </p>
               <div className="flex items-baseline justify-between">
-                <p className="text-2xl font-black tracking-tighter text-orange-400">
-                  {metrics.vaultShares.toFixed(2)} <span className="text-[8px] opacity-30">MAG7</span>
-                </p>
+                {loading.metrics && metrics.vaultShares === 0 ? (
+                  <LoadingShimmer className="h-8 w-24" />
+                ) : (
+                  <p className="text-2xl font-black tracking-tighter text-orange-400">
+                    {metrics.vaultShares.toFixed(2)} <span className="text-[8px] opacity-30">MAG7</span>
+                  </p>
+                )}
                 <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded-lg bg-background/50 backdrop-blur-md border border-border/10", metrics.vaultPnl >= 0 ? "text-green-500/80" : "text-red-500/80")}>
                   {metrics.vaultPnl >= 0 ? '↑' : '↓'} {Math.abs(metrics.vaultPnl).toFixed(4)}
                 </span>
@@ -342,11 +323,19 @@ export function PortfolioOverview() {
                 <div className="flex gap-10">
                   <div className="flex flex-col">
                     <span className="text-[9px] font-bold text-muted-foreground/50 uppercase">Futures</span>
-                    <span className="text-lg font-black text-foreground italic leading-none">${formatCompactNumber(metrics.futuresVolume)}</span>
+                    {loading.metrics && metrics.futuresVolume === 0 ? (
+                      <LoadingShimmer className="h-5 w-16 mt-1" />
+                    ) : (
+                      <span className="text-lg font-black text-foreground italic leading-none">${formatCompactNumber(metrics.futuresVolume)}</span>
+                    )}
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[9px] font-bold text-muted-foreground/50 uppercase">Spot</span>
-                    <span className="text-lg font-black text-foreground italic leading-none">${formatCompactNumber(metrics.spotVolume)}</span>
+                    {loading.metrics && metrics.spotVolume === 0 ? (
+                      <LoadingShimmer className="h-5 w-16 mt-1" />
+                    ) : (
+                      <span className="text-lg font-black text-foreground italic leading-none">${formatCompactNumber(metrics.spotVolume)}</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -358,11 +347,19 @@ export function PortfolioOverview() {
                 <div className="flex gap-10">
                   <div className="flex flex-col">
                     <span className="text-[9px] font-bold text-muted-foreground/50 uppercase">Futures</span>
-                    <span className="text-lg font-black text-foreground/80 italic leading-none">${metrics.futuresFees.toFixed(1)}</span>
+                    {loading.metrics && metrics.futuresFees === 0 ? (
+                      <LoadingShimmer className="h-5 w-16 mt-1" />
+                    ) : (
+                      <span className="text-lg font-black text-foreground/80 italic leading-none">${metrics.futuresFees.toFixed(1)}</span>
+                    )}
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[9px] font-bold text-muted-foreground/50 uppercase">Spot</span>
-                    <span className="text-lg font-black text-foreground/80 italic leading-none">${metrics.spotFees.toFixed(1)}</span>
+                    {loading.metrics && metrics.spotFees === 0 ? (
+                      <LoadingShimmer className="h-5 w-16 mt-1" />
+                    ) : (
+                      <span className="text-lg font-black text-foreground/80 italic leading-none">${metrics.spotFees.toFixed(1)}</span>
+                    )}
                   </div>
                 </div>
               </div>

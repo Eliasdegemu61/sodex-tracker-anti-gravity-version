@@ -8,8 +8,6 @@ import {
   getUserIdByAddress,
   fetchTotalBalance
 } from '@/lib/sodex-api';
-import { DEMO_SOURCE_ADDRESS, DEMO_DISPLAY_ADDRESS } from '@/lib/demo-config';
-
 interface PortfolioContextType {
   walletAddress: string | null;
   sourceWalletAddress: string | null;

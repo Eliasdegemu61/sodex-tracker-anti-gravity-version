@@ -14,7 +14,6 @@ import { FundFlowTable } from './fund-flow-table';
 import { AssetFlowCard } from './asset-flow-card';
 import { MonthlyCalendar } from './monthly-calendar';
 import { usePortfolio } from '@/context/portfolio-context';
-import { DemoTransition } from './demo-transition';
 
 // Loading Spinner Component
 function LoadingSpinner({ message }: { message: string }) {

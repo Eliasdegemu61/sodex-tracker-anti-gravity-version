@@ -15,7 +15,7 @@ export function WalletBindForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
-  const { setWalletAddress, enterDemoMode } = usePortfolio();
+  const { setWalletAddress } = usePortfolio();
 
   const handleBind = async () => {
     if (!address.trim()) {
@@ -97,22 +97,13 @@ export function WalletBindForm() {
               <p className="text-red-400 text-xs font-medium">{error}</p>
             </div>
           )}
-
-          <div className="flex flex-col sm:flex-row gap-4 pt-2 items-center">
+          <div className="pt-2">
             <button
               onClick={handleBind}
               disabled={isLoading || !address.trim()}
-              className="flex-1 w-full sm:w-auto flex items-center justify-center gap-2 py-4 bg-zinc-400 hover:bg-zinc-300 disabled:opacity-50 disabled:cursor-not-allowed text-zinc-900 rounded-2xl font-semibold transition-all duration-300 active:scale-[0.98]"
+              className="w-full flex items-center justify-center gap-2 py-4 bg-zinc-400 hover:bg-zinc-300 disabled:opacity-50 disabled:cursor-not-allowed text-zinc-900 rounded-2xl font-semibold transition-all duration-300 active:scale-[0.98]"
             >
               {isLoading ? 'Loading...' : 'Bind Account'}
-            </button>
-            <button
-              onClick={async () => {
-                await enterDemoMode();
-              }}
-              className="flex-1 w-full sm:w-auto flex items-center justify-center gap-2 py-4 bg-transparent text-foreground dark:text-white hover:text-orange-500 hover:bg-orange-500/5 rounded-2xl font-bold transition-all duration-300"
-            >
-              View Demo Account
             </button>
           </div>
         </div>

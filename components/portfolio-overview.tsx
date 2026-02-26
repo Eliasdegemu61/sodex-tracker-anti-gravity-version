@@ -4,12 +4,13 @@ import React, { useMemo, useState, useEffect } from "react"
 
 
 import { Card } from '@/components/ui/card';
-import { TrendingUp, TrendingDown, DollarSign, Activity, Target, AlertCircle, BarChart3, Zap } from 'lucide-react';
+import { Trophy, TrendingUp, TrendingDown, DollarSign, Activity, Target, AlertCircle, BarChart3, Zap, Wallet } from 'lucide-react';
 import { usePortfolio } from '@/context/portfolio-context';
 import { fetchPnLOverview, getVolumeFromPnLOverview, fetchDetailedBalance } from '@/lib/sodex-api';
 import { fetchSpotTradesData } from '@/lib/spot-api';
 import { getTokenPrice } from '@/lib/token-price-service';
-import { fetchLeaderboardData, fetchSpotLeaderboardData } from '@/lib/volume-service';
+import { useSessionCache } from '@/context/session-cache-context';
+import { cn } from '@/lib/utils';
 
 // Cool loading animation component with gradient shimmer effect
 function LoadingAnimation() {
@@ -74,13 +75,15 @@ interface PortfolioStat {
 
 export function PortfolioOverview() {
   const { positions, userId, vaultBalance, setVaultBalance, walletAddress, sourceWalletAddress } = usePortfolio();
+  const { leaderboardCache } = useSessionCache();
 
   const [balances, setBalances] = useState({
     total: 0,
     spot: 0,
     futures: 0,
     vault: 0,
-    hasUnpriced: false
+    hasUnpricedAssets: false,
+    tokens: [] as any[]
   });
 
   const [metrics, setMetrics] = useState({
@@ -112,7 +115,8 @@ export function PortfolioOverview() {
           total: data.totalUsdValue,
           spot: data.spotBalance,
           futures: data.futuresBalance,
-          hasUnpriced: data.hasUnpricedAssets || false
+          hasUnpricedAssets: data.hasUnpricedAssets || false,
+          tokens: data.tokens || []
         }));
       } catch (err) {
         console.error('[v0] Error fetching balances:', err);
@@ -212,6 +216,15 @@ export function PortfolioOverview() {
     return () => clearInterval(interval);
   }, [walletAddress, sourceWalletAddress, setVaultBalance]);
 
+  // Calculate Ranks from Cache
+  const ranks = useMemo(() => {
+    if (!leaderboardCache || !walletAddress) return { spot: 'N/A', perps: 'N/A' };
+    const userAddr = (sourceWalletAddress || walletAddress).toLowerCase();
+    const spotRank = leaderboardCache.spotData.find(t => t.address?.toLowerCase() === userAddr)?.rank || 'N/A';
+    const perpsRank = leaderboardCache.volumeData.find(t => t.address?.toLowerCase() === userAddr)?.rank || 'N/A';
+    return { spot: spotRank, perps: perpsRank };
+  }, [leaderboardCache, walletAddress, sourceWalletAddress]);
+
   const totalNetWorth = balances.total + balances.vault;
   const isSyncing = loading.balances || loading.metrics || loading.vault;
 
@@ -227,95 +240,132 @@ export function PortfolioOverview() {
   };
 
   return (
-    <Card className="group relative overflow-hidden bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm transition-all hover:border-accent/10">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[100px] -mr-32 -mt-32" />
+    <Card className="group relative overflow-hidden bg-card/40 backdrop-blur-3xl border border-border/40 rounded-[2.5rem] shadow-2xl transition-all duration-500 hover:border-accent/20">
+      {/* Dynamic Background Glows */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/[0.03] dark:bg-accent/[0.01] blur-[120px] -mr-64 -mt-64 rounded-full animate-pulse" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-500/[0.02] dark:bg-purple-500/[0.01] blur-[100px] -ml-40 -mb-40 rounded-full" />
 
       <div className="p-8 md:p-10 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
-          {/* Balance Column */}
-          <div className="lg:col-span-4 space-y-4">
-            <div>
-              <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest mb-1.5 flex items-center gap-2">
-                <DollarSign className="w-3 h-3" /> Total Net Worth
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10">
+
+          {/* 1. Primary Balance Section (Condensed) */}
+          <div className="md:col-span-3 space-y-6">
+            <div className="space-y-1">
+              <p className="text-[10px] font-black text-muted-foreground/60 uppercase tracking-[0.3em] flex items-center gap-2">
+                <DollarSign className="w-3 h-3 text-orange-500" /> Total Balance
               </p>
-              <div className="flex items-baseline gap-3">
-                <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
-                  ${totalNetWorth.toLocaleString('en-US', { maximumFractionDigits: 2 })}
+              <div className="flex items-baseline gap-2">
+                <h2 className="text-3xl md:text-4xl font-black italic tracking-tighter text-foreground drop-shadow-sm">
+                  ${totalNetWorth.toLocaleString('en-US', { maximumFractionDigits: 0 })}
                 </h2>
-                {balances.hasUnpriced && (
-                  <span className="text-[10px] font-bold text-accent/50 lowercase">+ others</span>
+                {balances.hasUnpricedAssets && (
+                  <span className="text-[10px] font-bold text-accent/40">+ assets</span>
                 )}
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 pt-4 border-t border-border/5">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] text-muted-foreground/30 font-semibold lowercase">futures</span>
-                <span className="text-[11px] font-bold text-foreground/70">${balances.futures.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+            <div className="flex flex-col gap-2.5 pt-6 border-t border-border/10 max-w-[180px]">
+              {[
+                { label: 'Futures', value: balances.futures, color: 'text-foreground/60' },
+                { label: 'Spot', value: balances.spot, color: 'text-foreground/60' },
+                { label: 'Vault', value: balances.vault, color: 'text-orange-500 font-black' }
+              ].map((item, idx) => (
+                <div key={idx} className="flex items-center justify-between group/item">
+                  <span className="text-[9px] text-muted-foreground/60 font-bold uppercase tracking-widest group-hover/item:text-muted-foreground/80 transition-colors">{item.label}</span>
+                  <span className={cn("text-[11px] font-bold transition-all group-hover/item:scale-105", item.color)}>
+                    ${item.value.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* 2. Performance & Rankings Section */}
+          <div className="md:col-span-5 space-y-10 md:border-x md:border-border/10 md:px-10">
+            {/* PnL Section */}
+            <div className="space-y-3">
+              <p className="text-[10px] font-black text-muted-foreground/60 uppercase tracking-[0.3em] flex items-center gap-2">
+                <TrendingUp className="w-3 h-3 text-orange-500" /> 30D Performance
+              </p>
+              <div className="flex flex-col gap-1">
+                <p className={cn("text-3xl font-black italic tracking-tighter", metrics.pnl30d >= 0 ? "text-green-500" : "text-red-500")}>
+                  {metrics.pnl30d >= 0 ? '+' : ''}${Math.abs(metrics.pnl30d).toLocaleString('en-US', { maximumFractionDigits: 2 })}
+                </p>
+                <div className="h-1 w-full bg-muted/20 rounded-full overflow-hidden">
+                  <div className={cn("h-full transition-all duration-1000", metrics.pnl30d >= 0 ? "bg-green-500/30 w-1/2" : "bg-red-500/30 w-1/3")} />
+                </div>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] text-muted-foreground/30 font-semibold lowercase">spot</span>
-                <span className="text-[11px] font-bold text-foreground/70">${balances.spot.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] text-muted-foreground/30 font-semibold lowercase">vault</span>
-                <span className="text-[11px] font-bold text-orange-400/80">${balances.vault.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+            </div>
+
+            {/* Global Rankings */}
+            <div className="space-y-4">
+              <p className="text-[10px] font-black text-muted-foreground/60 uppercase tracking-[0.3em] flex items-center gap-2">
+                <Trophy className="w-3 h-3 text-orange-500" /> Leaderboard status
+              </p>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="p-4 rounded-2xl bg-muted/5 border border-border/10 group/rank hover:bg-muted/10 transition-all">
+                  <span className="text-[8px] font-black text-muted-foreground/50 uppercase tracking-widest block mb-1">Futures Rank</span>
+                  <span className="text-xl font-black text-orange-500 italic drop-shadow-sm">#{ranks.perps}</span>
+                </div>
+                <div className="p-4 rounded-2xl bg-muted/5 border border-border/10 group/rank hover:bg-muted/10 transition-all">
+                  <span className="text-[8px] font-black text-muted-foreground/50 uppercase tracking-widest block mb-1">Spot Rank</span>
+                  <span className="text-xl font-black text-green-500 italic drop-shadow-sm">#{ranks.spot}</span>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Metrics Grid */}
-          <div className="lg:col-span-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 h-full items-center">
+          {/* 3. Operational Metrics Section */}
+          <div className="md:col-span-4 space-y-8 flex flex-col justify-center">
+            {/* Vault Shares */}
+            <div className="space-y-1.5 p-5 rounded-3xl bg-orange-500/[0.04] border border-orange-500/10">
+              <p className="text-[9px] font-black text-orange-500/60 uppercase tracking-[0.2em] flex items-center gap-2">
+                <Target className="w-2.5 h-2.5" /> Vault
+              </p>
+              <div className="flex items-baseline justify-between">
+                <p className="text-2xl font-black tracking-tighter text-orange-400">
+                  {metrics.vaultShares.toFixed(2)} <span className="text-[8px] opacity-30">MAG7</span>
+                </p>
+                <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded-lg bg-background/50 backdrop-blur-md border border-border/10", metrics.vaultPnl >= 0 ? "text-green-500/80" : "text-red-500/80")}>
+                  {metrics.vaultPnl >= 0 ? '↑' : '↓'} {Math.abs(metrics.vaultPnl).toFixed(4)}
+                </span>
+              </div>
+            </div>
 
-              <MetricBox
-                label="30D Realized PnL"
-                value={`$${metrics.pnl30d.toLocaleString('en-US', { maximumFractionDigits: 2 })}`}
-                icon={<TrendingUp className="w-2.5 h-2.5" />}
-                isPositive={metrics.pnl30d >= 0}
-              />
+            {/* Volume & Fees Detailed Grid */}
+            <div className="grid grid-cols-1 gap-6 pl-2">
+              <div className="space-y-2">
+                <p className="text-[9px] font-black text-muted-foreground/60 uppercase tracking-[0.22em] flex items-center gap-2">
+                  <BarChart3 className="w-2.5 h-2.5" /> Total Volume
+                </p>
+                <div className="flex gap-10">
+                  <div className="flex flex-col">
+                    <span className="text-[9px] font-bold text-muted-foreground/50 uppercase">Futures</span>
+                    <span className="text-lg font-black text-foreground italic leading-none">${formatCompactNumber(metrics.futuresVolume)}</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[9px] font-bold text-muted-foreground/50 uppercase">Spot</span>
+                    <span className="text-lg font-black text-foreground italic leading-none">${formatCompactNumber(metrics.spotVolume)}</span>
+                  </div>
+                </div>
+              </div>
 
               <div className="space-y-2">
-                <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest flex items-center gap-2">
-                  <Target className="w-2.5 h-2.5" /> Vault Shares
+                <p className="text-[9px] font-black text-muted-foreground/60 uppercase tracking-[0.22em] flex items-center gap-2">
+                  <Zap className="w-2.5 h-2.5" /> Total Fees Paid
                 </p>
-                <div className="space-y-0.5">
-                  <p className="text-xl font-bold tracking-tight text-orange-400/90">
-                    {metrics.vaultShares.toFixed(2)} <span className="text-[8px] text-muted-foreground/30 uppercase font-medium">mag7</span>
-                  </p>
-                  <p className={`text-[9px] font-bold lowercase ${metrics.vaultPnl >= 0 ? 'text-green-400/70' : 'text-red-400/70'} flex items-center gap-1.5`}>
-                    {metrics.vaultPnl >= 0 ? '+' : ''}{metrics.vaultPnl.toFixed(4)} PnL
-                  </p>
+                <div className="flex gap-10">
+                  <div className="flex flex-col">
+                    <span className="text-[9px] font-bold text-muted-foreground/50 uppercase">Futures</span>
+                    <span className="text-lg font-black text-foreground/80 italic leading-none">${metrics.futuresFees.toFixed(1)}</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[9px] font-bold text-muted-foreground/50 uppercase">Spot</span>
+                    <span className="text-lg font-black text-foreground/80 italic leading-none">${metrics.spotFees.toFixed(1)}</span>
+                  </div>
                 </div>
               </div>
-
-              <div className="space-y-1.5">
-                <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest flex items-center gap-2">
-                  <Activity className="w-2.5 h-2.5" /> Volume
-                </p>
-                <p className="text-xl font-bold tracking-tight text-foreground/80">
-                  ${formatCompactNumber(metrics.futuresVolume + metrics.spotVolume)}
-                </p>
-                <div className="flex gap-2 text-[8px] font-bold uppercase text-muted-foreground/30">
-                  <span>f: ${formatCompactNumber(metrics.futuresVolume)}</span>
-                  <span>s: ${formatCompactNumber(metrics.spotVolume)}</span>
-                </div>
-              </div>
-
-              <div className="space-y-1.5">
-                <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest flex items-center gap-2">
-                  <Zap className="w-2.5 h-2.5" /> Fees
-                </p>
-                <p className="text-xl font-bold tracking-tight text-foreground/80">
-                  ${(metrics.futuresFees + metrics.spotFees).toFixed(2)}
-                </p>
-                <div className="flex gap-2 text-[8px] font-bold uppercase text-muted-foreground/30">
-                  <span>f: ${metrics.futuresFees.toFixed(0)}</span>
-                  <span>s: ${metrics.spotFees.toFixed(0)}</span>
-                </div>
-              </div>
-
             </div>
           </div>
         </div>

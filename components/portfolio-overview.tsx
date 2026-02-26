@@ -88,14 +88,7 @@ export function PortfolioOverview() {
   const [vaultData, setVaultData] = useState<{ pnl: number; shares: number; sharesUsd: number } | null>(null);
   const [isLoadingVault, setIsLoadingVault] = useState(false);
 
-  // Rankings state
-  const [rankData, setRankData] = useState<{ perpsVolumeRank: number | null; spotVolumeRank: number | null; pnlRank: number | null }>({
-    perpsVolumeRank: null,
-    spotVolumeRank: null,
-    pnlRank: null,
-  });
-  const [isLoadingRanks, setIsLoadingRanks] = useState(false);
-
+  // Individual card loading states for independent loading
   // Individual card loading states for independent loading
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const [isLoadingPnL, setIsLoadingPnL] = useState(false);
@@ -247,57 +240,6 @@ export function PortfolioOverview() {
     return () => clearInterval(interval);
   }, [userId, setVaultBalance]);
 
-  // Fetch Rankings Data
-  useEffect(() => {
-    if (!userId) return;
-
-    const fetchRanks = async () => {
-      setIsLoadingRanks(true);
-      try {
-        const walletAddr = localStorage.getItem('portfolio_wallet_address');
-        if (!walletAddr) return;
-
-        const [perpsData, spotData] = await Promise.all([
-          fetchLeaderboardData(),
-          fetchSpotLeaderboardData(),
-        ]);
-
-        const walletLower = walletAddr.toLowerCase();
-
-        // Get Perps Volume Rank
-        const perpsVolumeRanked = [...perpsData]
-          .sort((a, b) => Number(b.vol) - Number(a.vol))
-          .map((entry, idx) => ({ ...entry, rank: idx + 1 }));
-        const perpsVolumeEntry = perpsVolumeRanked.find(e => e.address.toLowerCase() === walletLower);
-
-        // Get Perps PnL Rank
-        const perpsPnlRanked = [...perpsData]
-          .sort((a, b) => Number(b.pnl) - Number(a.pnl))
-          .map((entry, idx) => ({ ...entry, rank: idx + 1 }));
-        const perpsPnlEntry = perpsPnlRanked.find(e => e.address.toLowerCase() === walletLower);
-
-        // Get Spot Volume Rank
-        const spotVolumeRanked = [...spotData]
-          .sort((a, b) => b.vol - a.vol)
-          .map((entry, idx) => ({ ...entry, rank: idx + 1 }));
-        const spotVolumeEntry = spotVolumeRanked.find(e => e.address.toLowerCase() === walletLower);
-
-        setRankData({
-          perpsVolumeRank: perpsVolumeEntry?.rank || null,
-          spotVolumeRank: spotVolumeEntry?.rank || null,
-          pnlRank: perpsPnlEntry?.rank || null,
-        });
-      } catch (err) {
-        console.error('[v0] Error fetching ranks in overview:', err);
-      } finally {
-        setIsLoadingRanks(false);
-      }
-    };
-
-    fetchRanks();
-    const interval = setInterval(fetchRanks, 300000); // 5 minute refresh for ranks
-    return () => clearInterval(interval);
-  }, [userId]);
 
   const stats = useMemo(() => {
     // Calculate total volume and fees
@@ -416,7 +358,7 @@ export function PortfolioOverview() {
     ];
   }, [positions, totalBalance, futuresVolume, spotVolume, futuresFees, spotFees, walletBalance, spotBalance, vaultBalance]);
 
-  const isAnyLoading = isLoadingBalance || isLoadingPnL || isLoadingVolume || isLoadingFees || isLoadingVault || isLoadingRanks;
+  const isAnyLoading = isLoadingBalance || isLoadingPnL || isLoadingVolume || isLoadingFees || isLoadingVault;
 
   // Calculate final aggregated values
   const totalVolume = futuresVolume + spotVolume;
@@ -426,13 +368,6 @@ export function PortfolioOverview() {
   const vaultValue = vaultData?.sharesUsd || 0;
   const vaultPnL = vaultData?.pnl || 0;
 
-  const getRankColor = (rank: number | null) => {
-    if (rank === null) return 'text-muted-foreground/20';
-    if (rank <= 10) return 'text-yellow-400';
-    if (rank <= 50) return 'text-emerald-400';
-    if (rank <= 100) return 'text-blue-400';
-    return 'text-muted-foreground/40';
-  };
 
   return (
     <Card className="group relative overflow-hidden bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm transition-all hover:border-accent/10">
@@ -462,24 +397,6 @@ export function PortfolioOverview() {
                 </div>
               </div>
 
-              {/* Rankings Injected Here */}
-              <div className="flex flex-col gap-3 items-end">
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <p className="text-[7px] font-bold text-muted-foreground/30 uppercase tracking-tighter">perps</p>
-                    <p className={`text-sm font-bold tracking-tighter ${getRankColor(rankData.perpsVolumeRank)}`}>
-                      #{rankData.perpsVolumeRank || '-'}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-[7px] font-bold text-muted-foreground/30 uppercase tracking-tighter">spot</p>
-                    <p className={`text-sm font-bold tracking-tighter ${getRankColor(rankData.spotVolumeRank)}`}>
-                      #{rankData.spotVolumeRank || '-'}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-[8px] font-bold text-accent/20 uppercase tracking-widest">rank</p>
-              </div>
             </div>
 
             <div className="flex flex-col gap-2 pt-4 border-t border-border/5">

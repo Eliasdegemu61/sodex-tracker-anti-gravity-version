@@ -187,7 +187,7 @@ export function AssetFlowCard({ walletAddress }: AssetFlowCardProps) {
                 >
                   {/* Color Glow */}
                   <div
-                    className="absolute inset-y-2 left-0 w-1.5 rounded-r-full blur-[2px] opacity-40 transition-opacity group-hover:opacity-80"
+                    className="absolute inset-y-2 left-0 w-1.5 rounded-r-full opacity-60 transition-opacity group-hover:opacity-80"
                     style={{ backgroundColor: asset.color }}
                   />
 

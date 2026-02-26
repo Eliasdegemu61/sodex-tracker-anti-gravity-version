@@ -14,11 +14,8 @@ import { FundFlowTable } from './fund-flow-table';
 import { AssetFlowCard } from './asset-flow-card';
 import { MonthlyCalendar } from './monthly-calendar';
 import { PortfolioProvider } from '@/context/portfolio-context';
-import type { EnrichedPosition } from '@/lib/sodex-api';
-import { getUserIdByAddress, fetchAllPositions, enrichPositions } from '@/lib/sodex-api';
-import { DEMO_SOURCE_ADDRESS, DEMO_DISPLAY_ADDRESS } from '@/lib/demo-config';
+import { getUserIdByAddress, fetchAllPositions, enrichPositions, type EnrichedPosition } from '@/lib/sodex-api';
 import { usePortfolio } from '@/context/portfolio-context';
-import { DemoTransition } from './demo-transition';
 
 // Loading Spinner Component
 function LoadingSpinner({ message }: { message: string }) {
@@ -91,49 +88,9 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Global context for demo transition
-  const { isTransitioning, setIsTransitioning, isDemoMode } = usePortfolio();
-
   const handleSearch = async (addressToSearch?: string) => {
     const valueToSearch = (addressToSearch || searchInput || '').trim();
     if (!valueToSearch) return;
-
-    // Special handling for DEMO - Loading feel with transition
-    if (valueToSearch === DEMO_DISPLAY_ADDRESS) {
-      console.log('[v0] Triggering Demo Search - Synchronizing data load');
-      setIsTransitioning(true);
-      setError(null);
-
-      try {
-        // 1. Create a promise for the minimum 1.5s delay
-        const waitPromise = new Promise(resolve => setTimeout(resolve, 1500));
-
-        // 2. Fetch data properly and wait for it
-        const fetchDataPromise = (async () => {
-          const uid = await getUserIdByAddress(DEMO_SOURCE_ADDRESS);
-          const fetchedPositions = await fetchAllPositions(uid);
-          const enrichedPositions = await enrichPositions(fetchedPositions);
-          return { uid, enrichedPositions };
-        })();
-
-        // 3. Wait for BOTH
-        const [_, data] = await Promise.all([waitPromise, fetchDataPromise]);
-
-        // 4. Update state only after everything is ready
-        setUserId(data.uid);
-        setPositions(data.enrichedPositions);
-        setWalletAddress(DEMO_DISPLAY_ADDRESS);
-        setSourceWalletAddress(DEMO_SOURCE_ADDRESS);
-        console.log('[v0] Tracker demo loading complete for UID:', data.uid);
-      } catch (err) {
-        console.error('[v0] Tracker demo loading failed:', err);
-        setError('Failed to load demo data. Please try again.');
-        setWalletAddress(null);
-      } finally {
-        setIsTransitioning(false);
-      }
-      return;
-    }
 
     setIsLoading(true);
     setError(null);
@@ -166,7 +123,6 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
   // Auto-search when initialSearchAddress is provided
   useEffect(() => {
     if (initialSearchAddress && initialSearchAddress.trim()) {
-      console.log('[v0] Initializing tracker with address:', initialSearchAddress);
       setSearchInput(initialSearchAddress);
       handleSearch(initialSearchAddress);
     }
@@ -188,10 +144,10 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
   };
 
   // Render portfolio data when wallet is found
-  if (isLoading || isTransitioning) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner message={isTransitioning ? "Retrieving demo account data..." : "Searching wallet..."} />
+        <LoadingSpinner message="Searching wallet..." />
       </div>
     );
   }
@@ -230,30 +186,6 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
               <Search className="w-4 h-4" />
               {isLoading ? 'Searching...' : 'Search Wallet'}
             </button>
-
-            <div className="relative flex items-center gap-4 my-6 py-2">
-              <div className="flex-grow border-t border-border/20 dark:border-white/5"></div>
-              <span className="text-[10px] text-muted-foreground/40 font-bold uppercase tracking-widest">Or</span>
-              <div className="flex-grow border-t border-border/20 dark:border-white/5"></div>
-            </div>
-
-            <button
-              disabled={isLoading}
-              onClick={async () => {
-                setSearchInput(DEMO_DISPLAY_ADDRESS);
-                handleSearch(DEMO_DISPLAY_ADDRESS);
-              }}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-transparent text-foreground dark:text-white hover:text-orange-500 hover:bg-orange-500/5 rounded-2xl font-bold transition-all duration-300"
-            >
-              {isLoading && searchInput === DEMO_DISPLAY_ADDRESS ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Loading Demo...
-                </>
-              ) : (
-                'Try Demo Account'
-              )}
-            </button>
           </div>
         </div>
       </div>
@@ -261,14 +193,19 @@ function TrackerContent({ initialSearchAddress }: { initialSearchAddress?: strin
   }
 
   return (
-    <PortfolioProvider initialUserId={userId} initialPositions={positions}>
+    <PortfolioProvider
+      initialUserId={userId}
+      initialPositions={positions}
+      initialWalletAddress={walletAddress}
+      initialSourceWalletAddress={sourceWalletAddress}
+    >
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-start justify-between">
           <div className="space-y-2">
             <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">Wallet Tracker</h1>
             <p className="text-xs md:text-sm text-muted-foreground">
-              Tracking: <span className={`${isDemoMode ? 'blur-[6px] select-none' : ''} inline-block align-middle ml-1`}>{walletAddress}</span>
+              Tracking: <span className="inline-block align-middle ml-1">{walletAddress}</span>
             </p>
           </div>
           <Button

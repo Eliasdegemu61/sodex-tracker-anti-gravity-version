@@ -31,13 +31,8 @@ export function PortfolioSection() {
     walletAddress,
     sourceWalletAddress,
     isLoading,
-    isTransitioning,
-    setIsTransitioning,
     error,
     clearWalletAddress,
-    isDemoMode,
-    exitDemoMode,
-    enterDemoMode
   } = usePortfolio();
   const [showUnbindConfirm, setShowUnbindConfirm] = useState(false);
 
@@ -46,10 +41,10 @@ export function PortfolioSection() {
     setShowUnbindConfirm(false);
   };
 
-  if (isLoading || isTransitioning) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner message={isTransitioning ? "Retrieving demo account data..." : "Calculating portfolio data..."} />
+        <LoadingSpinner message="Calculating portfolio data..." />
       </div>
     );
   }
@@ -72,26 +67,12 @@ export function PortfolioSection() {
           <h2 className="text-2xl font-bold text-red-400 mb-3">Error Loading Portfolio</h2>
           <p className="text-muted-foreground mb-4">{error}</p>
           <button
-            onClick={() => {
-              if (isDemoMode) {
-                enterDemoMode();
-              } else {
-                setShowUnbindConfirm(true);
-              }
-            }}
+            onClick={() => setShowUnbindConfirm(true)}
             className="text-primary hover:underline text-sm"
           >
-            Try again
+            Reset Connection
           </button>
         </Card>
-      </div>
-    );
-  }
-
-  if (isLoading || isTransitioning) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner message={isTransitioning ? "Retrieving demo account data..." : "Calculating portfolio data..."} />
       </div>
     );
   }
@@ -104,33 +85,19 @@ export function PortfolioSection() {
           <div className="space-y-2">
             <div className="flex items-center gap-3">
               <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-foreground">Portfolio</h1>
-              {isDemoMode && (
-                <span className="px-2 py-0.5 rounded-full bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-wider border border-primary/30">
-                  Demo Mode
-                </span>
-              )}
             </div>
             <p className="text-xs md:text-sm text-muted-foreground break-all">
-              Account: <span className={`${isDemoMode ? 'blur-[6px] select-none' : ''} inline-block align-middle ml-1`}>{walletAddress}</span>
+              Account: <span className="inline-block align-middle ml-1">{walletAddress}</span>
             </p>
           </div>
           <div className="flex items-center gap-2 w-full md:w-auto">
-            {isDemoMode ? (
-              <Button
-                onClick={exitDemoMode}
-                className="bg-primary text-primary-foreground hover:bg-primary/90 text-xs md:text-sm px-2 md:px-4 py-1 md:py-2 flex-grow md:flex-grow-0"
-              >
-                Exit Demo Account
-              </Button>
-            ) : (
-              <Button
-                variant="outline"
-                onClick={() => setShowUnbindConfirm(true)}
-                className="text-red-500 hover:bg-red-500/10 border-red-500/30 text-xs md:text-sm px-2 md:px-4 py-1 md:py-2 whitespace-nowrap flex-grow md:flex-grow-0"
-              >
-                Unbind Account
-              </Button>
-            )}
+            <Button
+              variant="outline"
+              onClick={() => setShowUnbindConfirm(true)}
+              className="text-red-500 hover:bg-red-500/10 border-red-500/30 text-xs md:text-sm px-2 md:px-4 py-1 md:py-2 whitespace-nowrap flex-grow md:flex-grow-0"
+            >
+              Unbind Account
+            </Button>
           </div>
         </div>
 

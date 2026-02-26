@@ -73,143 +73,114 @@ interface PortfolioStat {
 }
 
 export function PortfolioOverview() {
-  const { positions, userId, vaultBalance, setVaultBalance } = usePortfolio();
-  const [totalBalance, setTotalBalance] = useState<number>(0);
-  const [spotBalance, setSpotBalance] = useState<number>(0);
-  const [futuresBalance, setFuturesBalance] = useState<number>(0);
-  const [walletBalance, setWalletBalance] = useState<number>(0);
-  const [futuresVolume, setFuturesVolume] = useState<number>(0);
-  const [spotVolume, setSpotVolume] = useState<number>(0);
-  const [futuresFees, setFuturesFees] = useState<number>(0);
-  const [spotFees, setSpotFees] = useState<number>(0);
-  const [hasUnpriced, setHasUnpriced] = useState(false);
+  const { positions, userId, vaultBalance, setVaultBalance, walletAddress, sourceWalletAddress } = usePortfolio();
 
-  // Vault data state
-  const [vaultData, setVaultData] = useState<{ pnl: number; shares: number; sharesUsd: number } | null>(null);
-  const [isLoadingVault, setIsLoadingVault] = useState(false);
+  const [balances, setBalances] = useState({
+    total: 0,
+    spot: 0,
+    futures: 0,
+    vault: 0,
+    hasUnpriced: false
+  });
 
-  // Individual card loading states for independent loading
-  // Individual card loading states for independent loading
-  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
-  const [isLoadingPnL, setIsLoadingPnL] = useState(false);
-  const [isLoadingVolume, setIsLoadingVolume] = useState(false);
-  const [isLoadingFees, setIsLoadingFees] = useState(false);
-  const [isLoadingAll, setIsLoadingAll] = useState(false);
+  const [metrics, setMetrics] = useState({
+    futuresVolume: 0,
+    spotVolume: 0,
+    futuresFees: 0,
+    spotFees: 0,
+    pnl30d: 0,
+    vaultPnl: 0,
+    vaultShares: 0
+  });
 
-  // Fetch combined balance using new detailed balance function
+  const [loading, setLoading] = useState({
+    balances: false,
+    metrics: false,
+    vault: false
+  });
+
+  // 1. Fetch Balances
   useEffect(() => {
     if (!userId) return;
 
-    const fetchBalance = async () => {
-      setIsLoadingBalance(true);
+    const fetchBalances = async () => {
+      setLoading(prev => ({ ...prev, balances: true }));
       try {
-        const balanceData = await fetchDetailedBalance(userId);
-        setSpotBalance(balanceData.spotBalance);
-        setFuturesBalance(balanceData.futuresBalance);
-        setWalletBalance(balanceData.futuresBalance);
-        setTotalBalance(balanceData.totalUsdValue);
-
-        // Use the hasUnpricedAssets flag from balance data
-        setHasUnpriced(balanceData.hasUnpricedAssets || false);
-
-        console.log('[v0] Portfolio balance updated:', {
-          totalBalance: balanceData.totalUsdValue,
-          spotBalance: balanceData.spotBalance,
-          futuresBalance: balanceData.futuresBalance,
-          hasUnpriced: balanceData.hasUnpricedAssets,
-          unpricedTokens: balanceData.unpricedTokens,
-        });
+        const data = await fetchDetailedBalance(userId);
+        setBalances(prev => ({
+          ...prev,
+          total: data.totalUsdValue,
+          spot: data.spotBalance,
+          futures: data.futuresBalance,
+          hasUnpriced: data.hasUnpricedAssets || false
+        }));
       } catch (err) {
-        console.error('[v0] Error fetching balance:', err);
+        console.error('[v0] Error fetching balances:', err);
       } finally {
-        setIsLoadingBalance(false);
+        setLoading(prev => ({ ...prev, balances: false }));
       }
     };
 
-    fetchBalance();
-
-    // Refresh balance every 20 seconds
-    const interval = setInterval(fetchBalance, 20000);
+    fetchBalances();
+    const interval = setInterval(fetchBalances, 30000);
     return () => clearInterval(interval);
-  }, [userId, vaultBalance]);
+  }, [userId]);
 
-  // Fetch PnL data independently
+  // 2. Fetch Metrics (Volume, Fees, PnL)
   useEffect(() => {
-    if (!userId || !positions || positions.length === 0) return;
+    if (!userId || !positions) return;
 
-    const fetchPnL = async () => {
-      setIsLoadingPnL(true);
+    const fetchMetrics = async () => {
+      setLoading(prev => ({ ...prev, metrics: true }));
       try {
+        // Futures volume from PnL overview
         const pnlData = await fetchPnLOverview(userId);
-        const futuresVol = getVolumeFromPnLOverview(pnlData);
-        setFuturesVolume(futuresVol);
-      } catch (err) {
-        console.error('[v0] Error fetching PnL:', err);
-      } finally {
-        setIsLoadingPnL(false);
-      }
-    };
+        const fVol = getVolumeFromPnLOverview(pnlData);
 
-    fetchPnL();
-
-    // Refresh PnL every 30 seconds
-    const pnlInterval = setInterval(fetchPnL, 30000);
-    return () => clearInterval(pnlInterval);
-  }, [userId, positions]);
-
-  // Fetch Volume and Fees data independently
-  useEffect(() => {
-    if (!userId || !positions || positions.length === 0) return;
-
-    const fetchVolumeAndFees = async () => {
-      setIsLoadingVolume(true);
-      setIsLoadingFees(true);
-      try {
-        // Fetch spot data
+        // Spot volume and fees
         const spotData = await fetchSpotTradesData(userId);
-        setSpotVolume(spotData.totalVolume);
-        setIsLoadingVolume(false);
 
-        // Calculate futures fees from positions
-        const calcFuturesFees = positions.reduce((sum: number, p: any) => sum + (parseFloat(p.cum_trading_fee || '0') || 0), 0);
-        setFuturesFees(calcFuturesFees);
-        setSpotFees(spotData.totalFees);
-        setIsLoadingFees(false);
+        // 30D PnL from positions
+        const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
+        const pnl30 = positions
+          .filter(p => (p.updated_at || 0) >= thirtyDaysAgo)
+          .reduce((sum, p) => sum + (p.realizedPnlValue || 0), 0);
 
-        console.log('[v0] Volume and fees updated:', {
-          futuresVolume,
+        // Futures fees from current positions
+        const fFees = positions.reduce((sum, p) => sum + (parseFloat(p.cum_trading_fee || '0') || 0), 0);
+
+        setMetrics(prev => ({
+          ...prev,
+          futuresVolume: fVol,
           spotVolume: spotData.totalVolume,
-          futuresFees: calcFuturesFees,
+          futuresFees: fFees,
           spotFees: spotData.totalFees,
-        });
+          pnl30d: pnl30
+        }));
       } catch (err) {
-        console.error('[v0] Error fetching volume and fees:', err);
-        setIsLoadingVolume(false);
-        setIsLoadingFees(false);
+        console.error('[v0] Error fetching metrics:', err);
+      } finally {
+        setLoading(prev => ({ ...prev, metrics: false }));
       }
     };
 
-    fetchVolumeAndFees();
-
-    // Refresh every 30 seconds
-    const interval = setInterval(fetchVolumeAndFees, 30000);
+    fetchMetrics();
+    const interval = setInterval(fetchMetrics, 45000);
     return () => clearInterval(interval);
   }, [userId, positions]);
 
-  // Fetch Vault data
+  // 3. Fetch Vault Data
   useEffect(() => {
-    if (!userId) return;
+    const addr = sourceWalletAddress || walletAddress;
+    if (!addr) return;
 
     const fetchVault = async () => {
-      setIsLoadingVault(true);
+      setLoading(prev => ({ ...prev, vault: true }));
       try {
-        const walletAddr = localStorage.getItem('portfolio_wallet_address');
-        if (!walletAddr) return;
-
         const response = await fetch('/api/sodex/vault-position', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ address: walletAddr }),
+          body: JSON.stringify({ address: addr }),
         });
 
         if (response.ok) {
@@ -219,155 +190,41 @@ export function PortfolioOverview() {
             const mag7Price = await getTokenPrice('MAG7.ssi');
             const sharesUsd = shares * mag7Price;
 
-            setVaultData({
-              pnl: data.data.pnl,
-              shares: shares,
-              sharesUsd: sharesUsd
-            });
+            setMetrics(prev => ({
+              ...prev,
+              vaultPnl: data.data.pnl,
+              vaultShares: shares
+            }));
 
+            setBalances(prev => ({ ...prev, vault: sharesUsd }));
             setVaultBalance(sharesUsd);
           }
         }
       } catch (err) {
-        console.error('[v0] Error fetching vault in overview:', err);
+        console.error('[v0] Error fetching vault:', err);
       } finally {
-        setIsLoadingVault(false);
+        setLoading(prev => ({ ...prev, vault: false }));
       }
     };
 
     fetchVault();
-    const interval = setInterval(fetchVault, 60000); // 1 minute refresh for vault
+    const interval = setInterval(fetchVault, 60000);
     return () => clearInterval(interval);
-  }, [userId, setVaultBalance]);
+  }, [walletAddress, sourceWalletAddress, setVaultBalance]);
 
+  const totalNetWorth = balances.total + balances.vault;
+  const isSyncing = loading.balances || loading.metrics || loading.vault;
 
-  const stats = useMemo(() => {
-    // Calculate total volume and fees
-    const totalVolume = futuresVolume + spotVolume;
-    const totalFees = futuresFees + spotFees;
-
-    // Declare combinedBalance variable with vault included
-    const combinedBalance = totalBalance + vaultBalance;
-
-    if (!positions || positions.length === 0) {
-      return [
-        {
-          label: 'Total Balance',
-          value: combinedBalance < 1 ? '<$1' : `$${combinedBalance.toFixed(2)}`,
-          subtitle: hasUnpriced ? '+ other assets' : undefined,
-          change: 0,
-          icon: <DollarSign className="w-5 h-5" />,
-          breakdown: {
-            futures: walletBalance,
-            spot: spotBalance,
-            vault: vaultBalance,
-            futures_label: 'Futures',
-            spot_label: 'Spot',
-            vault_label: 'Vault',
-          },
-        },
-        {
-          label: 'Realized PnL',
-          value: '$0',
-          change: 0,
-          icon: <TrendingUp className="w-5 h-5" />,
-          breakdown: null,
-        },
-        {
-          label: 'Volume',
-          value: `$${totalVolume.toFixed(2)}`,
-          change: 0,
-          icon: <BarChart3 className="w-5 h-5" />,
-          breakdown: {
-            futures: futuresVolume,
-            spot: spotVolume,
-            futures_label: 'Futures',
-            spot_label: 'Spot',
-          },
-        },
-        {
-          label: 'Total Fees Paid',
-          value: `$${totalFees.toFixed(2)}`,
-          change: 0,
-          icon: <Zap className="w-5 h-5" />,
-          breakdown: {
-            futures: futuresFees,
-            spot: spotFees,
-            futures_label: 'Futures',
-            spot_label: 'Spot',
-          },
-        },
-      ];
+  // Helper for formatting numbers with K/M suffixes
+  const formatCompactNumber = (num: number) => {
+    if (num >= 1000000) {
+      return (num / 1000000).toFixed(2) + 'M';
     }
-
-    // Calculate Win Rate
-    const winningTrades = positions.filter((p: any) => p.realizedPnlValue > 0).length;
-    const totalTrades = positions.length;
-    const winRate = totalTrades > 0 ? (winningTrades / totalTrades) * 100 : 0;
-
-    // Calculate Total PnL from positions
-    const totalPnL = positions.reduce((sum: number, p: any) => sum + p.realizedPnlValue, 0);
-
-    return [
-      {
-        label: 'Total Balance',
-        value: combinedBalance < 1 ? '<$1' : `$${combinedBalance.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
-        subtitle: hasUnpriced ? '+ other assets' : undefined,
-        change: undefined,
-        icon: <DollarSign className="w-5 h-5" />,
-        breakdown: {
-          futures: walletBalance,
-          spot: spotBalance,
-          vault: vaultBalance,
-          futures_label: 'Futures',
-          spot_label: 'Spot',
-          vault_label: 'Vault',
-        },
-      },
-      {
-        label: 'Realized PnL',
-        value: `$${totalPnL.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
-        change: undefined,
-        icon: <TrendingUp className="w-5 h-5" />,
-        breakdown: null,
-      },
-      {
-        label: 'Volume',
-        value: `$${totalVolume.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
-        change: undefined,
-        icon: <BarChart3 className="w-5 h-5" />,
-        breakdown: {
-          futures: futuresVolume,
-          spot: spotVolume,
-          futures_label: 'Futures',
-          spot_label: 'Spot',
-        },
-      },
-      {
-        label: 'Total Fees Paid',
-        value: `$${totalFees.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
-        change: undefined,
-        icon: <Zap className="w-5 h-5" />,
-        breakdown: {
-          futures: futuresFees,
-          spot: spotFees,
-          futures_label: 'Futures',
-          spot_label: 'Spot',
-        },
-      },
-    ];
-  }, [positions, totalBalance, futuresVolume, spotVolume, futuresFees, spotFees, walletBalance, spotBalance, vaultBalance]);
-
-  const isAnyLoading = isLoadingBalance || isLoadingPnL || isLoadingVolume || isLoadingFees || isLoadingVault;
-
-  // Calculate final aggregated values
-  const totalVolume = futuresVolume + spotVolume;
-  const totalFees = futuresFees + spotFees;
-  const combinedBalance = totalBalance + (vaultData?.sharesUsd || 0);
-  const totalPnL = positions.reduce((sum: number, p: any) => sum + (p.realizedPnlValue || 0), 0);
-  const vaultValue = vaultData?.sharesUsd || 0;
-  const vaultPnL = vaultData?.pnl || 0;
-
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'k';
+    }
+    return num.toFixed(2);
+  };
 
   return (
     <Card className="group relative overflow-hidden bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm transition-all hover:border-accent/10">
@@ -376,137 +233,117 @@ export function PortfolioOverview() {
       <div className="p-8 md:p-10 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
-          {/* Main Balance Column */}
+          {/* Balance Column */}
           <div className="lg:col-span-4 space-y-4">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest mb-1.5 flex items-center gap-2">
-                  <DollarSign className="w-3 h-3" /> Total Net Worth
-                </p>
-                <div className="flex items-baseline gap-3">
-                  {isLoadingBalance ? (
-                    <div className="h-10 w-48 rounded-xl bg-secondary/40 animate-pulse" />
-                  ) : (
-                    <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
-                      ${combinedBalance.toLocaleString('en-US', { maximumFractionDigits: 2 })}
-                    </h2>
-                  )}
-                  {!isLoadingBalance && hasUnpriced && (
-                    <span className="text-[10px] font-bold text-accent/50 lowercase animate-pulse">+ other assets</span>
-                  )}
-                </div>
+            <div>
+              <p className="text-[10px] font-bold text-muted-foreground/40 uppercase tracking-widest mb-1.5 flex items-center gap-2">
+                <DollarSign className="w-3 h-3" /> Total Net Worth
+              </p>
+              <div className="flex items-baseline gap-3">
+                <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+                  ${totalNetWorth.toLocaleString('en-US', { maximumFractionDigits: 2 })}
+                </h2>
+                {balances.hasUnpriced && (
+                  <span className="text-[10px] font-bold text-accent/50 lowercase">+ others</span>
+                )}
               </div>
-
             </div>
 
             <div className="flex flex-col gap-2 pt-4 border-t border-border/5">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] text-muted-foreground/30 font-semibold lowercase">futures</span>
-                <span className="text-[11px] font-bold text-foreground/70">${futuresBalance.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+                <span className="text-[11px] font-bold text-foreground/70">${balances.futures.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-[10px] text-muted-foreground/30 font-semibold lowercase">spot</span>
-                <span className="text-[11px] font-bold text-foreground/70">${spotBalance.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+                <span className="text-[11px] font-bold text-foreground/70">${balances.spot.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-[10px] text-muted-foreground/30 font-semibold lowercase">vault</span>
-                <span className="text-[11px] font-bold text-orange-400/80">${vaultValue.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+                <span className="text-[11px] font-bold text-orange-400/80">${balances.vault.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
               </div>
             </div>
           </div>
 
-          {/* Metrics Grid Column */}
+          {/* Metrics Grid */}
           <div className="lg:col-span-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 h-full items-center">
 
-              {/* PnL Stat */}
-              <div className="space-y-2">
-                <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest flex items-center gap-2">
-                  <TrendingUp className="w-2.5 h-2.5" /> Realized PnL
-                </p>
-                <p className={`text-xl font-bold tracking-tight ${totalPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                  {totalPnL >= 0 ? '+' : ''}${Math.abs(totalPnL).toLocaleString('en-US', { maximumFractionDigits: 2 })}
-                </p>
-                <div className="w-full h-1 bg-secondary/20 rounded-full overflow-hidden">
-                  <div className={`h-full ${totalPnL >= 0 ? 'bg-green-500' : 'bg-red-500'} w-[60%] opacity-30`} />
-                </div>
-              </div>
+              <MetricBox
+                label="30D Realized PnL"
+                value={`$${metrics.pnl30d.toLocaleString('en-US', { maximumFractionDigits: 2 })}`}
+                icon={<TrendingUp className="w-2.5 h-2.5" />}
+                isPositive={metrics.pnl30d >= 0}
+              />
 
-              {/* Vault Stat */}
               <div className="space-y-2">
                 <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest flex items-center gap-2">
-                  <Target className="w-2.5 h-2.5" /> Vault PnL
+                  <Target className="w-2.5 h-2.5" /> Vault Shares
                 </p>
                 <div className="space-y-0.5">
-                  <p className={`text-xl font-bold tracking-tight ${vaultPnL >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                    {vaultPnL >= 0 ? '+' : ''}{Math.abs(vaultPnL).toFixed(4)}
+                  <p className="text-xl font-bold tracking-tight text-orange-400/90">
+                    {metrics.vaultShares.toFixed(2)} <span className="text-[8px] text-muted-foreground/30 uppercase font-medium">mag7</span>
                   </p>
-                  <p className="text-[10px] font-bold text-orange-400/60 lowercase flex items-center gap-1.5">
-                    {vaultData?.shares.toFixed(4)} <span className="text-[8px] text-muted-foreground/30 uppercase font-medium">mag7.ssi</span>
+                  <p className={`text-[9px] font-bold lowercase ${metrics.vaultPnl >= 0 ? 'text-green-400/70' : 'text-red-400/70'} flex items-center gap-1.5`}>
+                    {metrics.vaultPnl >= 0 ? '+' : ''}{metrics.vaultPnl.toFixed(4)} PnL
                   </p>
                 </div>
               </div>
 
-              {/* Volume Stat */}
               <div className="space-y-1.5">
                 <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest flex items-center gap-2">
                   <Activity className="w-2.5 h-2.5" /> Volume
                 </p>
-                <div className="space-y-0.5">
-                  <p className="text-xl font-bold tracking-tight text-foreground/80">
-                    ${(totalVolume / 1000).toFixed(1)}k
-                  </p>
-                  <div className="flex flex-col">
-                    <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-tighter">
-                      <span className="text-muted-foreground/20">futures</span>
-                      <span className="text-foreground/40">${(futuresVolume / 1000).toFixed(1)}k</span>
-                    </div>
-                    <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-tighter">
-                      <span className="text-muted-foreground/20">spot</span>
-                      <span className="text-foreground/40">${(spotVolume / 1000).toFixed(1)}k</span>
-                    </div>
-                  </div>
+                <p className="text-xl font-bold tracking-tight text-foreground/80">
+                  ${formatCompactNumber(metrics.futuresVolume + metrics.spotVolume)}
+                </p>
+                <div className="flex gap-2 text-[8px] font-bold uppercase text-muted-foreground/30">
+                  <span>f: ${formatCompactNumber(metrics.futuresVolume)}</span>
+                  <span>s: ${formatCompactNumber(metrics.spotVolume)}</span>
                 </div>
               </div>
 
-              {/* Fees Stat */}
               <div className="space-y-1.5">
                 <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest flex items-center gap-2">
-                  <Zap className="w-2.5 h-2.5" /> Fees Paid
+                  <Zap className="w-2.5 h-2.5" /> Fees
                 </p>
-                <div className="space-y-0.5">
-                  <p className="text-xl font-bold tracking-tight text-foreground/80">
-                    ${totalFees.toFixed(2)}
-                  </p>
-                  <div className="flex flex-col">
-                    <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-tighter">
-                      <span className="text-muted-foreground/20">futures</span>
-                      <span className="text-foreground/40">${futuresFees.toFixed(1)}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-[8px] font-bold uppercase tracking-tighter">
-                      <span className="text-muted-foreground/20">spot</span>
-                      <span className="text-foreground/40">${spotFees.toFixed(1)}</span>
-                    </div>
-                  </div>
+                <p className="text-xl font-bold tracking-tight text-foreground/80">
+                  ${(metrics.futuresFees + metrics.spotFees).toFixed(2)}
+                </p>
+                <div className="flex gap-2 text-[8px] font-bold uppercase text-muted-foreground/30">
+                  <span>f: ${metrics.futuresFees.toFixed(0)}</span>
+                  <span>s: ${metrics.spotFees.toFixed(0)}</span>
                 </div>
               </div>
 
             </div>
           </div>
-
         </div>
 
-        {/* Sync Indicator */}
-        <div className="absolute bottom-4 right-8 flex items-center gap-2">
-          {isAnyLoading && (
-            <div className="flex items-center gap-2 text-[8px] text-muted-foreground/30 font-bold uppercase tracking-widest">
-              <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse shadow-[0_0_8px_rgba(var(--color-accent),0.5)]" />
-              Syncing
-            </div>
-          )}
-        </div>
+        {isSyncing && (
+          <div className="absolute bottom-4 right-8 flex items-center gap-2 text-[8px] text-muted-foreground/20 font-bold uppercase tracking-widest">
+            <div className="w-1 h-1 bg-accent rounded-full animate-pulse" />
+            Syncing
+          </div>
+        )}
       </div>
     </Card>
+  );
+}
+
+function MetricBox({ label, value, icon, isPositive }: { label: string, value: string, icon: React.ReactNode, isPositive: boolean }) {
+  return (
+    <div className="space-y-2">
+      <p className="text-[9px] font-bold text-muted-foreground/40 uppercase tracking-widest flex items-center gap-2">
+        {icon} {label}
+      </p>
+      <p className={`text-xl font-bold tracking-tight ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
+        {value}
+      </p>
+      <div className="w-full h-1 bg-secondary/20 rounded-full overflow-hidden">
+        <div className={`h-full ${isPositive ? 'bg-green-500' : 'bg-red-500'} w-[40%] opacity-20`} />
+      </div>
+    </div>
   );
 }
 

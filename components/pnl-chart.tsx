@@ -159,10 +159,20 @@ export function PnLChart({ title = 'Profit & Loss' }: PnLChartProps) {
                 tickLine={false}
               />
               <YAxis
+                yAxisId="cumulative-axis"
+                stroke="#ffffff10"
+                tick={{ fill: '#f97316', fontSize: 9, fontWeight: 700, fontFamily: 'monospace' }}
+                axisLine={false}
+                tickLine={false}
+                orientation="left"
+              />
+              <YAxis
+                yAxisId="daily-axis"
                 stroke="#ffffff10"
                 tick={{ fill: '#ffffff30', fontSize: 9, fontWeight: 700, fontFamily: 'monospace' }}
                 axisLine={false}
                 tickLine={false}
+                orientation="right"
               />
               <Tooltip
                 contentStyle={{
@@ -179,30 +189,35 @@ export function PnLChart({ title = 'Profit & Loss' }: PnLChartProps) {
                 labelStyle={{ color: '#ffffff30', marginBottom: '4px', fontSize: '9px' }}
                 cursor={{ stroke: 'rgba(255,255,255,0.05)', strokeWidth: 1 }}
                 formatter={(value: any, name: any, props: any) => {
-                  if (name === 'waterfall') return [null, null];
                   const numValue = value as number;
                   const displayValue = Math.abs(numValue) > 999
                     ? `$${(numValue / 1000).toFixed(1)}K`
                     : `$${numValue.toFixed(2)}`;
 
-                  if (props.payload && name === 'cumulative') {
-                    return [displayValue, 'Cumulative'];
+                  if (name === 'cumulative') {
+                    return [displayValue, 'Cumulative PnL'];
                   }
-                  return [displayValue, name === 'pnl' ? 'Daily' : name];
+                  return [displayValue, 'Daily PnL'];
                 }}
               />
-              <Bar dataKey="waterfall" radius={[2, 2, 2, 2]} barSize={6}>
+              <Bar
+                yAxisId="daily-axis"
+                dataKey="pnl"
+                radius={[4, 4, 0, 0]}
+                barSize={8}
+              >
                 {chartData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={getBarColor(entry.pnl)} />
                 ))}
               </Bar>
               <Line
+                yAxisId="cumulative-axis"
                 type="monotone"
                 dataKey="cumulative"
                 stroke="#f97316"
-                strokeWidth={2}
+                strokeWidth={3}
                 dot={false}
-                isAnimationActive={false}
+                isAnimationActive={true}
               />
             </ComposedChart>
           </ResponsiveContainer>

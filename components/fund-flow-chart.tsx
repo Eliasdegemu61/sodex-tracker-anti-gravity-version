@@ -96,9 +96,14 @@ export function FundFlowChart() {
                 cutoff.setFullYear(now.getFullYear() - 1)
                 break
         }
-        const filtered = tokenData.filter((d) => new Date(d.date) >= cutoff)
+        const cutoffTime = cutoff.getTime();
+        const initialCumulative = tokenData
+            .filter((d) => new Date(d.date).getTime() < cutoffTime)
+            .reduce((sum, d) => sum + (d.total_depo - d.total_with), 0);
 
-        let cumulative = 0;
+        const filtered = tokenData.filter((d) => new Date(d.date).getTime() >= cutoffTime)
+
+        let cumulative = initialCumulative;
         return filtered.map((d) => {
             cumulative += (d.total_depo - d.total_with);
             return {

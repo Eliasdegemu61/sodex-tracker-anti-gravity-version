@@ -1,6 +1,6 @@
 import React from "react"
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Open_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { Providers } from '@/app/providers'
 import { AnnouncementProvider } from '@/context/announcement-context'
@@ -8,8 +8,11 @@ import { ThemeProvider } from '@/context/theme-context'
 import { FAVICON_DATA_URI } from '@/lib/image-constants'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const openSans = Open_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-open-sans',
+})
 
 export const metadata: Metadata = {
   title: 'SoDex Tracker',
@@ -43,7 +46,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`font-sans antialiased bg-background text-foreground`}>
+      <body className={`${openSans.variable} font-sans antialiased bg-background text-foreground`}>
         <AnnouncementProvider>
           <Providers attribute="class" defaultTheme="dark" enableSystem={false}>
             {children}

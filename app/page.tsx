@@ -43,7 +43,7 @@ function LoadingCard() {
 
 function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
   const { leaderboardCache, isPreloadingLeaderboard } = useSessionCache()
-  const [activeTab, setActiveTab] = useState<'distribution' | 'reverse' | 'sopoints'>('distribution')
+  const [activeTab, setActiveTab] = useState<'distribution' | 'reverse' | 'sopoints' | 'pnl'>('distribution')
   const [brackets, setBrackets] = useState([
     { id: '1', volMin: '', volMax: '', pnlMin: '', pnlMax: '' }
   ])
@@ -270,6 +270,15 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
               }`}
           >
             Reverse Search address
+          </button>
+          <button
+            onClick={() => setActiveTab('pnl')}
+            className={`px-4 py-3 font-medium text-sm transition-all border-b-2 ${activeTab === 'pnl'
+              ? 'text-accent border-accent'
+              : 'text-muted-foreground border-transparent hover:text-foreground'
+              }`}
+          >
+            PNL Analyzer
           </button>
         </div>
       </div>
@@ -547,6 +556,12 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
             </div>
           </Card>
         )}
+
+        {activeTab === 'pnl' && (
+          <div className="space-y-6">
+            <VolumeRangeCard />
+          </div>
+        )}
       </div>
     </div>
   )
@@ -554,7 +569,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
 
 export default function Dashboard() {
   const { theme, toggleTheme, mounted } = useTheme()
-  const [currentPage, setCurrentPage] = useState<'dex-status' | 'tracker' | 'portfolio' | 'leaderboard' | 'analyzer' | 'about' | 'whale-tracker'>('dex-status')
+  const [currentPage, setCurrentPage] = useState<'dex-status' | 'tracker' | 'portfolio' | 'leaderboard' | 'analyzer' | 'about' | 'whale-tracker' | 'assets'>('dex-status')
   const [searchAddressInput, setSearchAddressInput] = useState('')
   const [trackerSearchAddress, setTrackerSearchAddress] = useState('')
   const [showMoreMenu, setShowMoreMenu] = useState(false)
@@ -582,7 +597,7 @@ export default function Dashboard() {
       setTrackerSearchAddress(decodeURIComponent(addressParam));
     }
 
-    if (tabParam && ['dex-status', 'tracker', 'portfolio', 'leaderboard', 'analyzer', 'about', 'whale-tracker'].includes(tabParam)) {
+    if (tabParam && ['dex-status', 'tracker', 'portfolio', 'leaderboard', 'analyzer', 'about', 'whale-tracker', 'assets'].includes(tabParam)) {
       setCurrentPage(tabParam);
     } else {
       // Default to dex-status on first load
@@ -674,7 +689,7 @@ export default function Dashboard() {
             >
               <button
                 onClick={() => setShowMoreMenu(!showMoreMenu)}
-                className={`flex items-center gap-1 text-xs md:text-sm border-b-2 transition-all pb-1 ${currentPage === 'about' || currentPage === 'whale-tracker'
+                className={`flex items-center gap-1 text-xs md:text-sm border-b-2 transition-all pb-1 ${currentPage === 'about' || currentPage === 'whale-tracker' || currentPage === 'assets'
                   ? 'text-foreground border-b-orange-400 font-bold'
                   : 'text-foreground border-transparent hover:text-orange-400 hover:border-b-orange-400'
                   }`}
@@ -686,6 +701,13 @@ export default function Dashboard() {
               {showMoreMenu && (
                 <div className="absolute top-full left-0 pt-2 w-48 z-50">
                   <div className="bg-card border border-border rounded-xl shadow-xl py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <button
+                      onClick={() => { setCurrentPage('assets'); setShowMoreMenu(false); }}
+                      className={`w-full text-left px-4 py-2 text-sm hover:bg-secondary transition-colors ${currentPage === 'assets' ? 'text-accent font-bold' : 'text-foreground'
+                        }`}
+                    >
+                      Assets
+                    </button>
                     <button
                       onClick={() => { setCurrentPage('about'); setShowMoreMenu(false); }}
                       className={`w-full text-left px-4 py-2 text-sm hover:bg-secondary transition-colors ${currentPage === 'about' ? 'text-accent font-bold' : 'text-foreground'
@@ -743,35 +765,51 @@ export default function Dashboard() {
 
               {/* Left Sidebar - Desktop Only */}
               {!isMobile && (
-                <div className="hidden lg:block lg:w-64 lg:border-r border-border p-3 md:p-4 space-y-4 lg:flex-shrink-0 lg:order-1">
+                <div className="hidden lg:block lg:w-64 p-3 md:p-4 space-y-4 lg:flex-shrink-0 lg:order-1">
                   {/* Key Metrics */}
                   <DashboardStats />
 
                   {/* Overall Profit Efficiency */}
                   <TVLCard />
 
-                  {/* Top Pairs */}
-                  <TodayTopPairs />
-
                   {/* Top Traders (Perps) */}
                   <TopTradersCard />
 
-                  {/* Overall Deposits & Withdrawals */}
-                  <OverallDepositsCard />
+                  {/* Top Traders (Spot) */}
+                  <TopSpotTradersCard />
+
+                  {/* Trade on SoDex Promo Card (Moved to Left) */}
+                  <div className="relative overflow-hidden rounded-lg border border-border hover:border-accent/50 transition-all duration-300 group">
+                    <img
+                      src="https://sodex.com/_next/image?url=%2Fimg%2Fhome%2Fcontent1-inner.webp&w=1920&q=75"
+                      alt="Trade on SoDex"
+                      className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-end p-4">
+                      <a
+                        href="https://sodex.com/join/TRADING"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full"
+                      >
+                        <button
+                          type="button"
+                          className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 font-sans"
+                        >
+                          Trade on SoDex
+                        </button>
+                      </a>
+                    </div>
+                  </div>
                 </div>
               )}
 
               {/* Center Content */}
-              <div className="flex-1 lg:border-r border-border p-2 md:p-6 space-y-2 md:space-y-4 lg:flex-shrink-0 order-1 lg:order-2">
-                {/* Chart Area */}
+              <div className="flex-1 p-2 md:p-6 space-y-2 md:space-y-4 lg:flex-shrink-0 order-1 lg:order-2">
                 <VolumeChart />
+                <TodayTopPairs />
                 <FundFlowChart />
-
-                {/* Volume Range Analysis */}
-                <VolumeRangeCard />
-
-                {/* Top Trading Pairs */}
-                <TopPairsWidget />
               </div>
 
               {/* Mobile Cards Section - Correct order for mobile */}
@@ -792,12 +830,6 @@ export default function Dashboard() {
                 <div className="grid grid-cols-2 gap-2">
                   <TopGainersCard />
                   <TopLosersCard />
-                </div>
-
-                {/* Net Tokens + Overall Deposits - Side by Side */}
-                <div className="grid grid-cols-2 gap-2">
-                  <NetRemainingCard />
-                  <OverallDepositsCard />
                 </div>
 
                 {/* Announcements */}
@@ -831,46 +863,18 @@ export default function Dashboard() {
 
               {/* Right Sidebar - Desktop Only */}
               {!isMobile && (
-                <div className="hidden lg:block lg:w-72 lg:border-l border-border p-2 md:p-4 space-y-2 md:space-y-4 lg:flex-shrink-0 lg:order-3">
+                <div className="hidden lg:block lg:w-72 p-2 md:p-4 space-y-2 md:space-y-4 lg:flex-shrink-0 lg:order-3">
                   {/* Announcements */}
                   <AnnouncementsPanel />
 
-                  {/* Top Gainers */}
-                  <TopGainersCard />
+                  {/* Top Trading Pairs */}
+                  <TopPairsWidget />
 
                   {/* Top Losers */}
                   <TopLosersCard />
 
-                  {/* SoDex Promo Card */}
-                  <div className="relative overflow-hidden rounded-lg border border-border hover:border-accent/50 transition-all duration-300 group">
-                    <img
-                      src="https://sodex.com/_next/image?url=%2Fimg%2Fhome%2Fcontent1-inner.webp&w=1920&q=75"
-                      alt="Trade on SoDex"
-                      className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                    <div className="absolute inset-0 flex flex-col items-center justify-end p-4">
-                      <a
-                        href="https://sodex.com/join/TRADING"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-full"
-                      >
-                        <button
-                          type="button"
-                          className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-200 font-sans"
-                        >
-                          Trade on SoDex
-                        </button>
-                      </a>
-                    </div>
-                  </div>
-
-                  {/* Top Traders Spot */}
-                  <TopSpotTradersCard />
-
-                  {/* Net Tokens Remaining on SoDEX */}
-                  <NetRemainingCard />
+                  {/* Top Gainers (Positioned below losers as requested) */}
+                  <TopGainersCard />
                 </div>
               )}
             </div>
@@ -925,12 +929,29 @@ export default function Dashboard() {
         )
       }
 
+      {
+        currentPage === 'assets' && (
+          <Suspense fallback={<LoadingCard />}>
+            <div className="p-4 md:p-6 space-y-6 max-w-7xl mx-auto w-full">
+              <div className="flex flex-col gap-1 mb-2">
+                <h1 className="text-2xl font-bold text-foreground">Assets</h1>
+                <p className="text-sm text-muted-foreground">Track token flow and net retention on SoDex.</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <OverallDepositsCard />
+                <NetRemainingCard />
+              </div>
+            </div>
+          </Suspense>
+        )
+      }
+
       {/* Announcement Side Panel */}
       <AnnouncementSidePanel />
 
       {/* Footer - Only show on relevant pages */}
       {
-        (currentPage === 'dex-status' || currentPage === 'about') && (
+        (currentPage === 'dex-status' || currentPage === 'about' || currentPage === 'assets') && (
           <Footer />
         )
       }

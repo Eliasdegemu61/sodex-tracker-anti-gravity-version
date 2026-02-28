@@ -37,7 +37,7 @@ export function TopTradersCard() {
   return (
     <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm group">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Top Performers alltime</h3>
+        <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Top Performers</h3>
         <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold ">Perps</div>
       </div>
 

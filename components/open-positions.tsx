@@ -162,7 +162,7 @@ export function OpenPositions() {
 
   if (!userId) {
     return (
-      <Card className="p-12 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl text-center">
+      <Card className="p-12 bg-card/95 shadow-sm border border-border/20 rounded-3xl text-center">
         <AlertCircle className="w-12 h-12 text-muted-foreground/20 mx-auto mb-3" />
         <h3 className="text-xs font-semibold text-muted-foreground/60 mb-2">No Account Bound</h3>
         <p className="text-[10px] text-muted-foreground/30 font-bold uppercase ">Bind your account to view open positions</p>
@@ -172,7 +172,7 @@ export function OpenPositions() {
 
   if (isLoading) {
     return (
-      <Card className="p-12 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl text-center">
+      <Card className="p-12 bg-card/95 shadow-sm border border-border/20 rounded-3xl text-center">
         <div className="flex flex-col items-center justify-center p-8">
           <div className="w-8 h-8 rounded-full border-2 border-accent/20 border-t-accent animate-spin mb-4" />
           <p className="text-[10px] text-muted-foreground/40 font-bold  ">scanning perimeter...</p>
@@ -183,7 +183,7 @@ export function OpenPositions() {
 
   if (error) {
     return (
-      <Card className="p-8 bg-card/20 backdrop-blur-xl border border-red-500/20 rounded-3xl">
+      <Card className="p-8 bg-card/95 shadow-sm border border-red-500/20 rounded-3xl">
         <div className="flex flex-col items-center justify-center py-6 text-center">
           <AlertCircle className="w-8 h-8 text-red-400/40 mb-3" />
           <h3 className="text-[10px] font-bold  text-red-400/60  mb-1">Signal Interrupted</h3>
@@ -195,7 +195,7 @@ export function OpenPositions() {
 
   if (openPositions.length === 0) {
     return (
-      <Card className="p-12 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl text-center">
+      <Card className="p-12 bg-card/95 shadow-sm border border-border/20 rounded-3xl text-center">
         <h3 className="text-xs font-semibold text-muted-foreground/60 mb-2">No Open Positions</h3>
         <p className="text-[10px] text-muted-foreground/20 font-bold  ">All systems clear</p>
       </Card>
@@ -203,7 +203,7 @@ export function OpenPositions() {
   }
 
   return (
-    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm overflow-hidden">
+    <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl shadow-sm overflow-hidden">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
         <div className="flex items-center gap-3">
           <h3 className="text-xs font-semibold text-muted-foreground/60">Open Positions</h3>
@@ -244,7 +244,7 @@ export function OpenPositions() {
         {paginatedPositions.map((pos) => {
           const isProfit = pos.unrealized >= 0;
           return (
-            <Card key={pos.id} className="group relative overflow-hidden bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl transition-all hover:border-accent/10">
+            <Card key={pos.id} className="group relative overflow-hidden bg-card/95 shadow-sm border border-border/20 rounded-3xl transition-all hover:border-accent/10">
               <div className={`absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-10 transition-colors ${isProfit ? 'bg-green-500' : 'bg-red-500'}`} />
 
               <div className="p-4 md:p-5 space-y-3">

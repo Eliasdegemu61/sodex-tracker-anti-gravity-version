@@ -239,7 +239,7 @@ export function SopointsAnalyzer() {
 
   return (
     <div className="space-y-4">
-      <Card className="p-6 bg-card/20 backdrop-blur-xl border-border/20 border rounded-3xl shadow-sm">
+      <Card className="p-6 bg-card/95 shadow-sm border-border/20 border rounded-3xl shadow-sm">
         <h3 className="text-lg font-semibold mb-6">Volume Analysis (Max 7 Days)</h3>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -357,7 +357,7 @@ export function SopointsAnalyzer() {
       </Card>
 
       {results.length > 0 && (
-        <Card className="p-6 bg-card/20 backdrop-blur-xl border-border/20 border rounded-3xl shadow-sm">
+        <Card className="p-6 bg-card/95 shadow-sm border-border/20 border rounded-3xl shadow-sm">
           <div className="flex justify-between items-center mb-4 gap-4">
             <h3 className="text-lg font-semibold">Results</h3>
             <div className="flex-1 max-w-md relative">

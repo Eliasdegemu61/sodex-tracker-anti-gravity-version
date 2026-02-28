@@ -42,7 +42,7 @@ export function TVLCard() {
 
   if (isLoading) {
     return (
-      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
+      <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl animate-pulse">
         <div className="h-[40px] bg-secondary/10 rounded-xl" />
       </Card>
     )
@@ -50,7 +50,7 @@ export function TVLCard() {
 
   if (error) {
     return (
-      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-red-500/20 rounded-3xl">
+      <Card className="p-5 bg-card/95 shadow-sm border border-red-500/20 rounded-3xl">
         <h3 className="text-[10px] font-bold  text-red-400/60  mb-2">Sync Error</h3>
         <p className="text-[10px] text-muted-foreground/30 font-bold uppercase ">TVL connectivity lost</p>
       </Card>
@@ -58,7 +58,7 @@ export function TVLCard() {
   }
 
   return (
-    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm group hover:border-orange-500/20 transition-all duration-300">
+    <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl shadow-sm group hover:border-orange-500/20 transition-all duration-300">
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Value Locked</h3>
         <div className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />

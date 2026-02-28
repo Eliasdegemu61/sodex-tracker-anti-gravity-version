@@ -209,7 +209,7 @@ export function PortfolioOverview() {
   };
 
   return (
-    <Card className="group relative overflow-hidden bg-card/40 backdrop-blur-3xl border border-border/40 rounded-[2.5rem] shadow-2xl transition-all duration-500 hover:border-accent/20">
+    <Card className="group relative overflow-hidden bg-card/40 border border-border/40 rounded-[2.5rem] shadow-2xl transition-all duration-500 hover:border-accent/20">
       {/* Dynamic Background Glows */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-accent/[0.03] dark:bg-accent/[0.01] blur-[120px] -mr-64 -mt-64 rounded-full animate-pulse" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-500/[0.02] dark:bg-purple-500/[0.01] blur-[100px] -ml-40 -mb-40 rounded-full" />
@@ -308,7 +308,7 @@ export function PortfolioOverview() {
                     {metrics.vaultShares.toFixed(2)} <span className="text-[8px] opacity-30">MAG7</span>
                   </p>
                 )}
-                <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded-lg bg-background/50 backdrop-blur-md border border-border/10", metrics.vaultPnl >= 0 ? "text-green-500/80" : "text-red-500/80")}>
+                <span className={cn("text-[10px] font-bold px-2 py-0.5 rounded-lg bg-background/95 border border-border/10", metrics.vaultPnl >= 0 ? "text-green-500/80" : "text-red-500/80")}>
                   {metrics.vaultPnl >= 0 ? '↑' : '↓'} {Math.abs(metrics.vaultPnl).toFixed(4)}
                 </span>
               </div>

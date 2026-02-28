@@ -11,7 +11,7 @@ export function TopPairsWidget() {
 
   if (isLoading || !volumeData) {
     return (
-      <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] animate-pulse">
+      <Card className="p-8 bg-card/95 shadow-sm border border-border/20 rounded-[2.5rem] animate-pulse">
         <h3 className="text-xs font-semibold text-muted-foreground/60 mb-8">Auditing Volume</h3>
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
@@ -38,7 +38,7 @@ export function TopPairsWidget() {
     .slice(0, 5)
 
   return (
-    <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col">
+    <Card className="p-8 bg-card/95 shadow-sm border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col">
       <div className="flex items-center justify-between mb-8">
         <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Historical Dominance</h3>
         <TrendingUp className="w-4 h-4 text-orange-400/40" />

@@ -65,7 +65,7 @@ export function VolumeChartClient({ data, chartData }: VolumeChartClientProps) {
   }, [])
 
   return (
-    <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col">
+    <Card className="p-8 bg-card/95 shadow-sm border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col">
       <div className="flex items-center justify-between mb-8">
         <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">volume trend</h3>
         <div className="flex gap-1 bg-secondary/10 p-1 rounded-xl border border-border/5">
@@ -122,7 +122,7 @@ export function VolumeChartClient({ data, chartData }: VolumeChartClientProps) {
               content={({ active, payload, label }) => {
                 if (active && payload && payload.length) {
                   return (
-                    <div className="bg-card/90 backdrop-blur-xl border border-border/20 p-4 rounded-2xl shadow-2xl min-w-[140px]">
+                    <div className="bg-card/90 border border-border/20 p-4 rounded-2xl shadow-2xl min-w-[140px]">
                       <p className="text-[9px] text-muted-foreground/40 font-bold   mb-3">{label}</p>
                       <div className="space-y-2">
                         {payload.map((entry: any, index: number) => (

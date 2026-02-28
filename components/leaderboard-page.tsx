@@ -15,7 +15,7 @@ export function LeaderboardPage({ onBack }: { onBack: () => void }) {
     <div className="min-h-screen bg-background flex flex-col space-y-2">
       {/* Leaderboard Type Tabs */}
       <div className="px-4 md:px-8 pt-6">
-        <div className="flex gap-2 p-1 bg-card/20 backdrop-blur-xl border border-border/20 rounded-2xl w-fit">
+        <div className="flex gap-2 p-1 bg-card/95 shadow-sm border border-border/20 rounded-2xl w-fit">
           <button
             onClick={() => setActiveTab('perps')}
             className={`px-6 py-2.5 text-[10px] font-bold   rounded-xl transition-all ${activeTab === 'perps'

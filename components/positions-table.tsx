@@ -89,7 +89,7 @@ export function PositionsTable() {
   }
 
   return (
-    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
+    <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl shadow-sm">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-xs font-semibold text-muted-foreground/60">
           position history

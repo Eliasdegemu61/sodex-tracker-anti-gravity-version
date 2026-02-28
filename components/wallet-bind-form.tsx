@@ -71,7 +71,7 @@ export function WalletBindForm() {
 
   return (
     <div className="flex items-center justify-center min-h-[600px] px-4">
-      <div className="p-8 sm:p-10 bg-card/40 dark:bg-[#141414]/90 backdrop-blur-2xl border border-border/20 dark:border-white/5 rounded-[2rem] shadow-2xl max-w-2xl w-full mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="p-8 sm:p-10 bg-card/40 dark:bg-[#141414]/90 border border-border/20 dark:border-white/5 rounded-[2rem] shadow-2xl max-w-2xl w-full mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
         <h2 className="text-2xl font-bold text-foreground dark:text-white mb-3 tracking-tight">Bind Your Trading Account</h2>
         <p className="text-muted-foreground/80 dark:text-muted-foreground/80 mb-8 text-sm leading-relaxed">Enter your wallet address to load your position history and trading data</p>
 

@@ -18,7 +18,7 @@ export function TodayTopPairs() {
 
   if (error) {
     return (
-      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-red-500/20 rounded-3xl">
+      <Card className="p-5 bg-card/95 shadow-sm border border-red-500/20 rounded-3xl">
         <h3 className="text-[10px] font-bold  text-red-400/60  mb-2">Sync Error</h3>
         <p className="text-[10px] text-muted-foreground/30 font-bold uppercase ">{error}</p>
       </Card>
@@ -27,7 +27,7 @@ export function TodayTopPairs() {
 
   if (isLoading || !volumeData) {
     return (
-      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
+      <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl animate-pulse">
         <div className="space-y-3">
           <div className="h-2 bg-secondary/10 rounded-full w-1/4" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -56,7 +56,7 @@ export function TodayTopPairs() {
   }, [todayData])
 
   return (
-    <Card className="p-6 bg-card/20 backdrop-blur-md border border-border/20 rounded-[2rem] shadow-sm overflow-hidden flex flex-col">
+    <Card className="p-6 bg-card/95 shadow-sm border border-border/20 rounded-[2rem] shadow-sm overflow-hidden flex flex-col">
       <div className="flex items-center justify-between mb-6">
         <div className="flex flex-col">
           <h3 className="text-sm font-bold text-foreground/80 tracking-tight">Today's Top Performers</h3>

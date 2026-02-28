@@ -136,7 +136,7 @@ export function PnLChart({ title = 'Profit & Loss' }: PnLChartProps) {
   }, [chartData, hasData]);
 
   return (
-    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
+    <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl shadow-sm">
       <div className="mb-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xs font-semibold text-muted-foreground/60">

@@ -55,7 +55,7 @@ export function OverallDepositsCard() {
 
     if (isLoading) {
         return (
-            <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
+            <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl animate-pulse">
                 <h3 className="text-xs font-semibold text-muted-foreground/60 mb-4">Tracking Inflows</h3>
                 <div className="space-y-3">
                     {[1, 2, 3].map(i => (
@@ -69,7 +69,7 @@ export function OverallDepositsCard() {
     const displayData = data;
 
     return (
-        <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm group">
+        <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl shadow-sm group">
             <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Token Flow</h3>
                 <Wallet className="w-3.5 h-3.5 text-orange-400/40" />
@@ -162,7 +162,7 @@ export function NetRemainingCard() {
 
     if (isLoading) {
         return (
-            <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
+            <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl animate-pulse">
                 <h3 className="text-xs font-semibold text-muted-foreground/60 mb-4">Auditing Reserves</h3>
                 <div className="space-y-3">
                     {[1, 2].map(i => (
@@ -175,7 +175,7 @@ export function NetRemainingCard() {
 
     if (data.length === 0) {
         return (
-            <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl">
+            <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl">
                 <h3 className="text-[10px] font-bold  text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/80  mb-2">Net Reserves</h3>
                 <p className="text-[10px] text-muted-foreground/30 font-bold uppercase ">No positive retention detected</p>
             </Card>
@@ -185,7 +185,7 @@ export function NetRemainingCard() {
     const displayData = data;
 
     return (
-        <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm flex-1 group">
+        <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl shadow-sm flex-1 group">
             <div className="flex items-center justify-between mb-4">
                 <h3 className="text-[10px] font-bold  text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/80 ">Net Token Retention</h3>
                 <Wallet className="w-3.5 h-3.5 text-green-500/40" />

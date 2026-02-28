@@ -286,7 +286,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
       <div className="p-4 md:p-6 space-y-6">
         {activeTab === 'distribution' && (
           <>
-            <Card className="p-8 md:p-10 bg-card/20 dark:bg-[#141414]/90 backdrop-blur-2xl border border-border/20 dark:border-white/5 rounded-[2rem] shadow-2xl">
+            <Card className="p-8 md:p-10 bg-card/20 dark:bg-[#141414]/90 border border-border/20 dark:border-white/5 rounded-[2rem] shadow-2xl">
               <h2 className="text-xl md:text-2xl font-bold text-foreground dark:text-white mb-8 tracking-tight">Distribution Analyzer</h2>
               <div className="space-y-4">
                 {brackets.map((bracket, idx) => (
@@ -360,7 +360,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
             {distributionResults && Array.isArray(distributionResults) && (
               <div className="space-y-4">
                 {distributionResults.map((bracketResult, idx) => (
-                  <Card key={bracketResult.bracketId} className="p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm hover:border-accent/10 transition-all">
+                  <Card key={bracketResult.bracketId} className="p-6 bg-card/95 shadow-sm border border-border/20 rounded-3xl shadow-sm hover:border-accent/10 transition-all">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {/* Left: Stats */}
                       <div>
@@ -503,7 +503,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
         )}
 
         {activeTab === 'reverse' && (
-          <Card className="p-8 md:p-10 bg-card/20 dark:bg-[#141414]/90 backdrop-blur-2xl border border-border/20 dark:border-white/5 rounded-[2rem] shadow-2xl">
+          <Card className="p-8 md:p-10 bg-card/20 dark:bg-[#141414]/90 border border-border/20 dark:border-white/5 rounded-[2rem] shadow-2xl">
             <h2 className="text-xl md:text-2xl font-bold text-foreground dark:text-white mb-8 tracking-tight">Reverse Search</h2>
             <div className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -621,7 +621,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b border-border bg-card/50 sticky top-0 z-50">
         <div className="flex items-center justify-between h-16 px-3 md:px-6 gap-2 md:gap-4">
           <div className="flex items-center gap-2 flex-shrink-0">
             <img

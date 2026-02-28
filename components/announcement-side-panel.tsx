@@ -107,11 +107,11 @@ export function AnnouncementSidePanel() {
 
       {/* Side Panel */}
       <div
-        className={`fixed right-0 top-0 h-full w-full md:w-96 bg-white/10 dark:bg-black/40 backdrop-blur-3xl border-l border-white/20 dark:border-white/10 z-50 transition-transform duration-300 ease-out ${selectedArticleId ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed right-0 top-0 h-full w-full md:w-96 bg-white/10 dark:bg-black/95 border-l border-white/20 dark:border-white/10 z-50 transition-transform duration-300 ease-out ${selectedArticleId ? 'translate-x-0' : 'translate-x-full'
           } overflow-y-auto shadow-2xl`}
       >
         {/* Header */}
-        <div className="sticky top-0 bg-white/20 dark:bg-black/20 backdrop-blur-lg border-b border-white/10 dark:border-white/5 p-4 flex items-center justify-between z-10 transition-colors">
+        <div className="sticky top-0 bg-white/20 dark:bg-black/95 border-b border-white/10 dark:border-white/5 p-4 flex items-center justify-between z-10 transition-colors">
           <h2 className="text-sm font-semibold text-foreground truncate">Latest Announcements</h2>
           <button
             onClick={handleClose}

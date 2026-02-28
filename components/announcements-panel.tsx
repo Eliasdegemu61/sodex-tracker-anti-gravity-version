@@ -112,7 +112,7 @@ export function AnnouncementsPanel() {
 
   if (isLoading) {
     return (
-      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl animate-pulse">
+      <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl animate-pulse">
         <h3 className="text-xs font-semibold text-muted-foreground/60 mb-4">Scanning Broadcasts</h3>
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
@@ -125,7 +125,7 @@ export function AnnouncementsPanel() {
 
   if (announcements.length === 0) {
     return (
-      <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
+      <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl shadow-sm">
         <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60 mb-4">Latest Announcement</h3>
         <p className="text-[10px] text-muted-foreground/30 font-bold uppercase  text-center py-6">No active transmissions</p>
       </Card>
@@ -133,7 +133,7 @@ export function AnnouncementsPanel() {
   }
 
   return (
-    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm">
+    <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl shadow-sm">
       <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60 mb-4">Latest Announcement</h3>
       <div className="space-y-3">
         {announcementItems}

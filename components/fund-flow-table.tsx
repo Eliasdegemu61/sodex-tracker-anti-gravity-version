@@ -202,7 +202,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
 
   if (isLoading) {
     return (
-      <Card className="p-12 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl text-center">
+      <Card className="p-12 bg-card/95 shadow-sm border border-border/20 rounded-3xl text-center">
         <div className="flex flex-col items-center justify-center p-8">
           <div className="w-8 h-8 rounded-full border-2 border-accent/20 border-t-accent animate-spin mb-4" />
           <p className="text-[10px] text-muted-foreground/40 font-bold  ">Interrogating ledgers...</p>
@@ -213,7 +213,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
 
   if (error) {
     return (
-      <Card className="p-8 bg-card/20 backdrop-blur-xl border border-red-500/20 rounded-3xl">
+      <Card className="p-8 bg-card/95 shadow-sm border border-red-500/20 rounded-3xl">
         <div className="flex flex-col items-center justify-center py-6 text-center">
           <AlertCircle className="w-8 h-8 text-red-400/40 mb-3" />
           <h3 className="text-[10px] font-bold  text-red-400/60  mb-1">Stream Blocked</h3>
@@ -228,7 +228,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
 
   if (flows.length === 0) {
     return (
-      <Card className="p-12 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl text-center">
+      <Card className="p-12 bg-card/95 shadow-sm border border-border/20 rounded-3xl text-center">
         <h3 className="text-xs font-semibold text-muted-foreground/60 mb-2">Fund Flow</h3>
         <p className="text-[10px] text-muted-foreground/20 font-bold  ">No transfers detected</p>
       </Card>
@@ -236,7 +236,7 @@ export function FundFlowTable({ walletAddress }: FundFlowTableProps) {
   }
 
   return (
-    <Card className="p-5 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm overflow-hidden">
+    <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl shadow-sm overflow-hidden">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
         <h3 className="text-xs font-semibold text-muted-foreground/60">Fund Flow</h3>
 

@@ -137,7 +137,7 @@ export function PerpsLeaderboard() {
     <div className="min-h-screen bg-background flex flex-col space-y-6 p-4 md:p-8">
       {/* Controls Section */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <Card className="lg:col-span-12 p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm">
+        <Card className="lg:col-span-12 p-6 bg-card/95 shadow-sm border border-border/20 rounded-[2.5rem] shadow-sm">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-4">
               <h3 className="text-[10px] font-bold  text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/70 ">Leaderboard Logic</h3>
@@ -176,7 +176,7 @@ export function PerpsLeaderboard() {
 
       {/* Search Result Card */}
       {searchResult && (
-        <Card className="p-8 bg-orange-500/[0.03] backdrop-blur-xl border border-orange-500/20 rounded-[2.5rem] shadow-xl animate-in fade-in slide-in-from-top-4 duration-500">
+        <Card className="p-8 bg-orange-500/[0.03] border border-orange-500/20 rounded-[2.5rem] shadow-xl animate-in fade-in slide-in-from-top-4 duration-500">
           <div className="flex flex-col md:flex-row md:items-center gap-8">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
@@ -221,7 +221,7 @@ export function PerpsLeaderboard() {
       )}
 
       {/* Table Section */}
-      <Card className="flex-1 overflow-hidden bg-card/10 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col p-6 md:p-10">
+      <Card className="flex-1 overflow-hidden bg-[oklch(0.145_0_0)] shadow-sm border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col p-6 md:p-10">
         <div className="flex items-center justify-between mb-8">
           <h3 className="text-[10px] font-bold  text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/70 ">
             {sortBy === 'volume' ? 'Volume Dominance' : 'Profit Efficiency'} Rankings

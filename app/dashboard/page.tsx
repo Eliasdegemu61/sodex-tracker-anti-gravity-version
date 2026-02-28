@@ -280,7 +280,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
       <div className="p-4 md:p-6 space-y-6">
         {activeTab === 'distribution' && (
           <>
-            <Card className="p-8 md:p-10 bg-card/20 dark:bg-[#141414]/90 backdrop-blur-2xl border border-border/20 dark:border-white/5 rounded-[2rem] shadow-2xl">
+            <Card className="p-8 md:p-10 bg-card/20 dark:bg-[#141414]/90 border border-border/20 dark:border-white/5 rounded-[2rem] shadow-2xl">
               <h2 className="text-xl md:text-2xl font-bold text-foreground dark:text-white mb-8 tracking-tight">Distribution Analyzer</h2>
               <div className="space-y-4">
                 {brackets.map((bracket, idx) => (
@@ -354,7 +354,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
             {distributionResults && Array.isArray(distributionResults) && (
               <div className="space-y-4">
                 {distributionResults.map((bracketResult, idx) => (
-                  <Card key={bracketResult.bracketId} className="p-6 bg-card/20 backdrop-blur-xl border border-border/20 rounded-3xl shadow-sm hover:border-accent/10 transition-all">
+                  <Card key={bracketResult.bracketId} className="p-6 bg-card/95 shadow-sm border border-border/20 rounded-3xl shadow-sm hover:border-accent/10 transition-all">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {/* Left: Stats */}
                       <div>
@@ -497,7 +497,7 @@ function DistributionAnalyzerPage({ onBack }: { onBack: () => void }) {
         )}
 
         {activeTab === 'reverse' && (
-          <Card className="p-8 md:p-10 bg-card/20 dark:bg-[#141414]/90 backdrop-blur-2xl border border-border/20 dark:border-white/5 rounded-[2rem] shadow-2xl">
+          <Card className="p-8 md:p-10 bg-card/20 dark:bg-[#141414]/90 border border-border/20 dark:border-white/5 rounded-[2rem] shadow-2xl">
             <h2 className="text-xl md:text-2xl font-bold text-foreground dark:text-white mb-8 tracking-tight">Reverse Search</h2>
             <div className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -613,7 +613,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="border-b border-white/5 bg-[#0A0A0A]/80 backdrop-blur-2xl sticky top-0 z-50">
+      <header className="border-b border-white/5 bg-[#0A0A0A]/80 sticky top-0 z-50">
         <div className="max-w-[1800px] mx-auto flex items-center justify-between h-20 px-4 md:px-6 gap-3 md:gap-8">
           {/* Logo Section */}
           <div className="flex items-center gap-3 flex-shrink-0 cursor-pointer" onClick={() => setCurrentPage('leaderboard')}>
@@ -737,7 +737,7 @@ export default function Dashboard() {
                     <p className="text-xs font-bold text-white leading-relaxed">Execute high-frequency trades on the most liquid DEX protocol.</p>
                   </div>
                   <a href="https://sodex.com/join/TRADING" target="_blank" rel="noopener noreferrer">
-                    <button className="w-full py-3 bg-white/10 hover:bg-orange-500 text-white rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all backdrop-blur-md border border-white/10 hover:border-orange-400">
+                    <button className="w-full py-3 bg-white/10 hover:bg-orange-500 text-white rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all border border-white/10 hover:border-orange-400">
                       Open Terminal
                     </button>
                   </a>

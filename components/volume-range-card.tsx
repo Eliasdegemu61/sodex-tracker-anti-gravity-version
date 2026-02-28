@@ -16,7 +16,7 @@ export function VolumeRangeCard() {
 
   if (isLoading) {
     return (
-      <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] animate-pulse">
+      <Card className="p-8 bg-card/95 shadow-sm border border-border/20 rounded-[2.5rem] animate-pulse">
         <h3 className="text-xs font-semibold text-muted-foreground/60 mb-8">Aggregating Flow</h3>
         <div className="space-y-4">
           {[...Array(6)].map((_, i) => (
@@ -29,7 +29,7 @@ export function VolumeRangeCard() {
 
   if (volumeRangeData.length === 0) {
     return (
-      <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem]">
+      <Card className="p-8 bg-card/95 shadow-sm border border-border/20 rounded-[2.5rem]">
         <h3 className="text-xs font-semibold text-muted-foreground/60 mb-2">Volume Analysis</h3>
         <p className="text-[11px] text-muted-foreground/30 font-bold uppercase ">No cohort data synchronized</p>
       </Card>
@@ -41,7 +41,7 @@ export function VolumeRangeCard() {
 
   return (
     <TooltipProvider>
-      <Card className="p-8 bg-card/20 backdrop-blur-xl border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col">
+      <Card className="p-8 bg-card/95 shadow-sm border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col">
         <div className="flex items-center justify-between mb-8">
           <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Avg PNL by Volume range</h3>
         </div>
@@ -88,7 +88,7 @@ export function VolumeRangeCard() {
                     </div>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent side="top" className="bg-card/90 backdrop-blur-xl border border-border/20 text-foreground shadow-2xl rounded-2xl p-4">
+                <TooltipContent side="top" className="bg-card/90 border border-border/20 text-foreground shadow-2xl rounded-2xl p-4">
                   <div className="space-y-2">
                     <p className="text-[10px] text-muted-foreground/40 font-bold  ">{entry.range} Cohort</p>
                     <div className="flex items-center gap-3">

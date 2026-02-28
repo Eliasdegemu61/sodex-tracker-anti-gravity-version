@@ -43,11 +43,11 @@
 }
 
 .dark {
-  --background: #0f0f0d;
+  --background: #080808;
   --foreground: #e8e8e6;
-  --card: #1a1a18;
+  --card: #111111;
   --card-foreground: #e8e8e6;
-  --popover: #1a1a18;
+  --popover: #111111;
   --popover-foreground: #e8e8e6;
   --primary: #ffffff;
   --primary-foreground: #0f0f0d;
@@ -60,14 +60,14 @@
   --destructive: #ff4444;
   --destructive-foreground: #fff;
   --border: #2a2a27;
-  --input: #1a1a18;
+  --input: #111111;
   --ring: #ffffff;
   --chart-1: #f97316;
   --chart-2: #fb923c;
   --chart-3: #fed7aa;
   --chart-4: #dc2626;
   --chart-5: #92400e;
-  --sidebar: #1a1a18;
+  --sidebar: #111111;
   --sidebar-foreground: #e8e8e6;
   --sidebar-primary: #ffffff;
   --sidebar-primary-foreground: #0f0f0d;

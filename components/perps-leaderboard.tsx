@@ -200,18 +200,18 @@ export function PerpsLeaderboard() {
               </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-6 min-w-[300px]">
+            <div className="grid grid-cols-3 gap-3 md:gap-6 min-w-[150px] md:min-w-[300px]">
               <div className="space-y-1 text-center">
-                <p className="text-[8px] text-muted-foreground/30 font-bold  ">Rank</p>
-                <p className="text-2xl font-bold text-orange-400">#{searchResult.rank}</p>
+                <p className="text-[8px] md:text-[10px] text-muted-foreground/30 font-bold">Rank</p>
+                <p className="text-sm md:text-2xl font-bold text-orange-400">#{searchResult.rank}</p>
               </div>
               <div className="space-y-1 text-center">
-                <p className="text-[8px] text-muted-foreground/30 font-bold  ">Volume</p>
-                <p className="text-2xl font-bold text-foreground/80">${formatNumber(searchResult.vol)}</p>
+                <p className="text-[8px] md:text-[10px] text-muted-foreground/30 font-bold">Volume</p>
+                <p className="text-sm md:text-2xl font-bold text-foreground/80">${formatNumber(searchResult.vol)}</p>
               </div>
               <div className="space-y-1 text-center">
-                <p className="text-[8px] text-muted-foreground/30 font-bold  ">PnL</p>
-                <p className={`text-2xl font-bold ${searchResult.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                <p className="text-[8px] md:text-[10px] text-muted-foreground/30 font-bold">PnL</p>
+                <p className={`text-sm md:text-2xl font-bold ${searchResult.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                   {searchResult.pnl >= 0 ? '+' : ''}${formatNumber(Math.abs(searchResult.pnl))}
                 </p>
               </div>
@@ -221,7 +221,7 @@ export function PerpsLeaderboard() {
       )}
 
       {/* Table Section */}
-      <Card className="flex-1 overflow-hidden bg-[oklch(0.145_0_0)] shadow-sm border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col p-6 md:p-10">
+      <Card className="flex-1 overflow-hidden bg-card/95 border border-border/20 rounded-[2.5rem] shadow-sm flex flex-col p-6 md:p-10">
         <div className="flex items-center justify-between mb-8">
           <h3 className="text-[10px] font-bold  text-muted-foreground/40 dark:text-muted-foreground/40 text-muted-foreground/70 ">
             {sortBy === 'volume' ? 'Volume Dominance' : 'Profit Efficiency'} Rankings
@@ -232,20 +232,20 @@ export function PerpsLeaderboard() {
         <div className="overflow-x-auto">
           <table className="w-full border-separate border-spacing-y-2">
             <thead>
-              <tr className="text-[10px] font-bold  text-muted-foreground/30 ">
-                <th className="px-6 py-3 text-left">Rank</th>
-                <th className="px-6 py-3 text-left">Address</th>
-                <th className="px-6 py-3 text-right">Volume</th>
-                <th className="px-6 py-3 text-right">PnL Flow</th>
+              <tr className="text-[9px] md:text-[10px] font-bold text-muted-foreground/30">
+                <th className="px-2 md:px-6 py-2 md:py-3 text-left">Rank</th>
+                <th className="px-2 md:px-6 py-2 md:py-3 text-left">Address</th>
+                <th className="px-2 md:px-6 py-2 md:py-3 text-right">Volume</th>
+                <th className="px-2 md:px-6 py-2 md:py-3 text-right">PnL Flow</th>
               </tr>
             </thead>
             <tbody>
               {displayData.map((entry) => (
-                <tr key={`${entry.userId}-${entry.address}`} className="group relative bg-secondary/5 hover:bg-secondary/10 transition-all rounded-2xl">
-                  <td className="px-6 py-4 first:rounded-l-2xl last:rounded-r-2xl font-bold text-orange-500/80">#{entry.rank}</td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <span className=" text-xs text-foreground/60 dark:text-foreground/60 text-foreground/80">
+                <tr key={`${entry.userId}-${entry.address}`} className="group relative bg-secondary/5 hover:bg-secondary/10 transition-all rounded-xl md:rounded-2xl">
+                  <td className="px-2 md:px-6 py-3 md:py-4 first:rounded-l-xl md:first:rounded-l-2xl last:rounded-r-xl md:last:rounded-r-2xl text-[11px] md:text-sm font-bold text-orange-500/80">#{entry.rank}</td>
+                  <td className="px-2 md:px-6 py-3 md:py-4">
+                    <div className="flex items-center gap-2 md:gap-3">
+                      <span className="text-[10px] md:text-xs text-foreground/60 dark:text-foreground/60 text-foreground/80">
                         {entry.address.slice(0, 6)}...{entry.address.slice(-4)}
                       </span>
                       <button
@@ -256,8 +256,8 @@ export function PerpsLeaderboard() {
                       </button>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-right font-bold text-foreground/70 tracking-tight">${formatNumber(entry.vol)}</td>
-                  <td className={`px-6 py-4 text-right first:rounded-l-2xl last:rounded-r-2xl font-bold ${entry.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  <td className="px-2 md:px-6 py-3 md:py-4 text-right text-[10px] md:text-sm font-bold text-foreground/70 tracking-tight">${formatNumber(entry.vol)}</td>
+                  <td className={`px-2 md:px-6 py-3 md:py-4 text-right first:rounded-l-xl md:first:rounded-l-2xl last:rounded-r-xl md:last:rounded-r-2xl text-[10px] md:text-sm font-bold ${entry.pnl >= 0 ? 'text-green-400' : 'text-red-400'}`}>
                     {entry.pnl >= 0 ? '+' : ''}${formatNumber(Math.abs(entry.pnl))}
                   </td>
                 </tr>

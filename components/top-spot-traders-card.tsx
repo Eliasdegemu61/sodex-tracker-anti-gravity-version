@@ -4,6 +4,8 @@ import { Card } from '@/components/ui/card'
 import { formatNumber } from '@/lib/format-number'
 import { useState } from 'react'
 import { useDexData } from '@/context/dex-data-context'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { HelpCircle } from 'lucide-react'
 
 interface SpotTrader {
   address: string
@@ -36,7 +38,19 @@ export function TopSpotTradersCard() {
   return (
     <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl shadow-sm group">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Top Performers</h3>
+        <div className="flex items-center gap-2">
+          <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Top Performers Spot</h3>
+          <TooltipProvider delayDuration={100}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <HelpCircle className="w-3.5 h-3.5 text-muted-foreground/40 hover:text-muted-foreground/80 transition-colors cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent className="bg-popover text-popover-foreground border-border text-xs max-w-[220px]">
+                <p>top5 traders with the biggest volume on spot trading</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
         <div className="px-2 py-0.5 rounded-lg bg-orange-500/10 text-orange-400 text-[8px] font-bold ">Spot</div>
       </div>
 

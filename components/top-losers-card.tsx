@@ -2,7 +2,8 @@
 
 import { useState } from 'react'
 import { Card } from '@/components/ui/card'
-import { TrendingDown } from 'lucide-react'
+import { TrendingDown, HelpCircle } from 'lucide-react'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { formatNumber } from '@/lib/format-number'
 import { useDexData } from '@/context/dex-data-context'
 
@@ -40,7 +41,19 @@ export function TopLosersCard() {
   return (
     <Card className="p-5 bg-card/95 shadow-sm border border-border/20 rounded-3xl shadow-sm group">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Top 5 Losers</h3>
+        <div className="flex items-center gap-2">
+          <h3 className="text-xs font-semibold text-muted-foreground/80 dark:text-muted-foreground/60">Top 5 Losers</h3>
+          <TooltipProvider delayDuration={100}>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <HelpCircle className="w-3.5 h-3.5 text-muted-foreground/40 hover:text-muted-foreground/80 transition-colors cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent className="bg-popover text-popover-foreground border-border text-xs max-w-[220px]">
+                <p>top 5 traders with the biggest loss on futures trading</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
         <TrendingDown className="w-4 h-4 text-red-400/40" />
       </div>
 
